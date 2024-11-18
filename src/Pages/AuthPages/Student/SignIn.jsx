@@ -10,11 +10,25 @@ const SignIn = () => {
         <form action="" className="login-form">
           <div className="input-box">
             <label htmlFor="">Email</label>
-            <input type="email" className="field" name="" id="" required />
+            <input
+              type="email"
+              className="field"
+              name=""
+              id=""
+              placeholder="Enter your email"
+              required
+            />
           </div>
           <div className="input-box">
             <label htmlFor="">Password</label>
-            <input type="password" className="field" name="" id="" required />
+            <input
+              type="password"
+              className="field"
+              name=""
+              id=""
+              placeholder="Enter your password"
+              required
+            />
           </div>
           <button type="submit">Log In</button>
         </form>

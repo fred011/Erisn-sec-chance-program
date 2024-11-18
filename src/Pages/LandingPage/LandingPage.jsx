@@ -53,7 +53,7 @@ const LandingPage = () => {
         </nav>
 
         <button className="login" onClick={handleSignIn}>
-          LogIn
+          Sign In
         </button>
       </header>
       <section id="hero" className="hero">

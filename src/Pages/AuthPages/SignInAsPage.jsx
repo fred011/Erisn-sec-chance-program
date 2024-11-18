@@ -27,17 +27,17 @@ const SignInAsPage = () => {
         <div className="card">
           <div className="card-title">Admin</div>
           <img src={admin} alt="" />
-          <button onClick={adminLogin}>SignIn</button>
+          <button onClick={adminLogin}>Sign In</button>
         </div>
         <div className="card">
           <div className="card-title">Teacher</div>
           <img src={teacher} alt="" />
-          <button onClick={teacherLogin}>SignIn</button>
+          <button onClick={teacherLogin}>Sign In</button>
         </div>
         <div className="card">
           <div className="card-title">Student</div>
           <img src={student} alt="" />
-          <button onClick={studentLogin}>SignIn</button>
+          <button onClick={studentLogin}>Sign In</button>
         </div>
       </div>
     </div>

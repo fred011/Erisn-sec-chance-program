@@ -10,7 +10,14 @@ const SignInAsAdmin = () => {
       <form action="" className="login-form">
         <div className="input-box">
           <label htmlFor="">Access Key:</label>
-          <input type="password" className="field" name="" id="" required />
+          <input
+            type="password"
+            className="field"
+            name=""
+            id=""
+            placeholder="Enter your unique access key..."
+            required
+          />
         </div>
         <button type="submit">Log In</button>
       </form>
