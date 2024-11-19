@@ -10,60 +10,90 @@ import {
 } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { FaHome, FaTachometerAlt, FaBook, FaUserEdit, FaPlusSquare,FaEdit, FaDollarSign,
+         FaFolder, FaBell, FaHandshake, FaUserGraduate, FaSignOutAlt,FaPlaneDeparture,
+         FaChartLine, FaCalendarAlt, FaComments, FaBookOpen, FaCalendarCheck,
+         FaCheckSquare, FaChalkboardTeacher, FaUserFriends, FaExclamationTriangle,
+         FaChartPie, FaUserTie, FaClipboardList, FaBullhorn, FaFolderOpen, FaChartBar } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
+import "./style.css"; // Import updated CSS
 
 const Sidebar = ({ role }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const links = {
     admin: [
-      { name: "Dashboard", path: "/admin", icon: <FaHome /> },
-      { name: "Teachers", path: "/admin/teachers", icon: <FaUser /> },
-      { name: "Students", path: "/admin/students", icon: <FaUser /> },
-      { name: "Admissions", path: "/admin/admissions", icon: <FaArchive /> },
-      { name: "Fees", path: "/admin/fees", icon: <FaMoneyBill /> },
+      { name: "Dashboard", path: "/admin", icon: <FaTachometerAlt /> },
+      { name: "Teachers", path: "/admin/teachers", icon: <FaChalkboardTeacher /> },
+      { name: "Students", path: "/admin/students", icon: <FaUserGraduate /> },
+      { name: "Admissions", path: "/admin/admissions", icon: <FaFolderOpen /> },
+      { name: "Fees", path: "/admin/fees", icon: <FaDollarSign /> },
+      { name: "Reports", path: "/admin", icon: <FaChartBar /> },
+      { name: "Notice", path: "/admin", icon: <FaBullhorn /> },
+      { name: "Recent Applications", path: "/admin", icon: <FaClipboardList /> },
+      { name: "Upcoming Payment Deadlines", path: "/admin", icon: <FaCalendarAlt /> },
+      { name: "Admission Officer Assignments", path: "/admin", icon: <FaUserTie /> },
+      { name: "Student Enrollment Chart", path: "/admin", icon: <FaChartPie /> },
+      { name: "System Alerts", path: "/admin", icon: <FaExclamationTriangle /> },
       { name: "Behavior Tracking", path: "/admin/behavior", icon: <FaBell /> },
       { name: "Library", path: "/admin/library", icon: <FaBook /> },
-      {
-        name: "Sponsorship",
-        path: "/admin/sponsorship",
-        icon: <FaHandshake />,
-      },
-      { name: "Alumni", path: "/admin/alumni", icon: <FaUser /> },
+      { name: "Sponsorship", path: "/admin/sponsorship", icon: <FaHandshake /> },
+      { name: "Alumni", path: "/admin/alumni", icon: <FaUserFriends /> },
     ],
     teacher: [
-      { name: "Dashboard", path: "/teacher", icon: <FaHome /> },
-      { name: "Students", path: "/teacher/students", icon: <FaUser /> },
-      {
-        name: "Behavior Tracking",
-        path: "/teacher/behavior",
-        icon: <FaBell />,
-      },
+      { name: "Home", path: "/teacher", icon: <FaHome /> },
+      { name: "Students", path: "/teacher/students", icon: <FaUserGraduate /> },
+      { name: "Behavior Tracking", path: "/teacher/behavior", icon: <FaBell /> },
       { name: "Library", path: "/teacher/library", icon: <FaBook /> },
+      { name: "Update Profile", path: "/teacher", icon: <FaUserEdit /> },
+      { name: "Add Result", path: "/teacher", icon: <FaPlusSquare /> },
+      { name: "Edit Result", path: "/teacher", icon: <FaEdit /> },
+      { name: "Resources", path: "/teacher", icon: <FaFolder /> },
+      { name: "Take Attendance", path: "/teacher", icon: <FaCheckSquare /> },
+      { name: "View/Update Attendance", path: "/teacher", icon: <FaCalendarCheck /> },
+      { name: "View Notifications", path: "/teacher", icon: <FaBell /> },
+      { name: "Apply For Leave", path: "/teacher", icon: <FaPlaneDeparture /> },
+      { name: "Logout", path: "/teacher", icon: <FaSignOutAlt /> },
     ],
     student: [
-      { name: "Dashboard", path: "/student", icon: <FaHome /> },
-      { name: "Schedule", path: "/student/schedule", icon: <FaBook /> },
-      { name: "Fees", path: "/student/fees", icon: <FaMoneyBill /> },
+      { name: "Home", path: "/student", icon: <FaHome /> },
+      { name: "Update Profile", path: "/student", icon: <FaUserEdit /> },
+      { name: "View Attendance", path: "/student", icon: <FaCalendarCheck /> },
+      { name: "Courses", path: "/student", icon: <FaBookOpen /> },
+      { name: "Grades", path: "/student", icon: <FaChartLine /> },
+      { name: "View Notifications", path: "/student", icon: <FaBell /> },
+      { name: "Feedback", path: "/student", icon: <FaComments /> },
+      { name: "Schedule", path: "/student/schedule", icon: <FaCalendarAlt /> },
+      { name: "Fees", path: "/student/fees", icon: <FaDollarSign /> },
       { name: "Library", path: "/student/library", icon: <FaBook /> },
+      { name: "Logout", path: "/student", icon: <FaSignOutAlt /> },
     ],
   };
+  
+
+  // Toggle the sidebar collapse state
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   return (
     <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
-      {/* <button className="toggle-btn" onClick={toggleSidebar}>
-        {isCollapsed ? "➤" : "◀"}
-      </button>
-      <h2 className="sidebar-title">
-        {isCollapsed
-          ? "Menu"
-          : `${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard`}
-      </h2> */}
+      <div className="sidebar-header">
+        {/* Logo and Company Name */}
+        <div className="logo">
+          <FontAwesomeIcon className="text-dark" icon={faUserGraduate} size="2x" />
+        </div>
+        {/* Sidebar Collapse Button */}
+        <button className="toggle-btn" onClick={toggleSidebar}>
+          {isCollapsed ? "➤" : "◀"}
+        </button>
+      </div>
+
+      {/* Sidebar Links */}
       <ul className="sidebar-links">
         {links[role].map((link, index) => (
-          <li key={index}>
+          <li key={index} className="text-dark">
             <Link to={link.path} data-tooltip={link.name}>
               {link.icon}
               {!isCollapsed && <span>{link.name}</span>}
