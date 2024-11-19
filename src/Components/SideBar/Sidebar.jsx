@@ -1,13 +1,4 @@
 import React, { useState } from "react";
-import {
-  FaHome,
-  FaUser,
-  FaBook,
-  FaMoneyBill,
-  FaBell,
-  FaHandshake,
-  FaArchive,
-} from "react-icons/fa";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { FaHome, FaTachometerAlt, FaBook, FaUserEdit, FaPlusSquare,FaEdit, FaDollarSign,
@@ -22,6 +13,7 @@ import "./style.css"; // Import updated CSS
 const Sidebar = ({ role }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // Sidebar links based on role
   const links = {
     admin: [
       { name: "Dashboard", path: "/admin", icon: <FaTachometerAlt /> },
@@ -106,7 +98,7 @@ const Sidebar = ({ role }) => {
 };
 
 Sidebar.propTypes = {
-  role: PropTypes.oneOf(["admin", "teacher", "student"]),
+  role: PropTypes.oneOf(["admin", "teacher", "student"]).isRequired,
 };
 
 export default Sidebar;

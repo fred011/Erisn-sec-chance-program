@@ -10,7 +10,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Import the FontAwesome icons
 import { faUser, faUsers, faClipboardList, faFileAlt, faUserGraduate, 
          faClipboardCheck, faCreditCard, faArrowRight, faCalendar,faCheckCircle,
-         faChalkboard, faBell, faBook, faCoins} from "@fortawesome/free-solid-svg-icons";
+         faChalkboard, faBell, faBook, faCoins, faPlaneDeparture, faTimesCircle,
+         faCalendarCheck} from "@fortawesome/free-solid-svg-icons";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -42,6 +43,9 @@ const iconMapping = {
   "user-graduate": faUserGraduate,
   "fees": faCoins,
   "credit-card": faCreditCard,
+  "faPlaneDeparture": faPlaneDeparture,
+  "faTimesCircle": faTimesCircle,
+  "faCalendarCheck": faCalendarCheck
 };
 
 
@@ -193,6 +197,7 @@ const Dashboard = ({ role }) => {
             <Pie data={charts.pie} options={pieChartOptions} />
           </div>
         </div>
+        <br /> <br />
       </div>
     </div>
   );
