@@ -1,0 +1,299 @@
+/* Widgets - Full width and colors */
+.widgets {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .widget {
+    flex: 1;
+    min-width: 200px;
+    background-color: #ecf0f1;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  .widget.blue {
+    background-color: #3498db; /* Blue */
+    color: white;
+  }
+  
+  .widget.green {
+    background-color: #2ecc71; /* Green */
+    color: white;
+  }
+  
+  .widget.yellow {
+    background-color: #f1c40f; /* Yellow */
+    color: white;
+  }
+  
+  .widget.red {
+    background-color: #e74c3c; /* Red */
+    color: white;
+  }
+  
+  .widget h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .widget p {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .widget .icon {
+    font-size: 40px;
+    right: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .widget button {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .widget button:hover {
+    color: #dcdcdc;
+  }
+  
+  /* Chart Heading Full Width */
+  .chart-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #bdc3c7; /* Grey */
+    color: white;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    width: 100%; /* Full width */
+  }
+  
+  .chart-heading span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+
+  .dashboard-links {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 150px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Container for the dashboard links */
+.dashboard-links {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+  
+  /* Form container that will appear below the dashboard links */
+  .form-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Close button */
+  .close-btn {
+    align-self: flex-end;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .close-btn:hover {
+    color: red;
+  }
+  
+  /* Form heading */
+  h3 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: #333;
+  }
+  
+  /* Form labels */
+  label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  /* Form input fields and select dropdown */
+  input[type="text"],
+  input[type="number"],
+  select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Submit buttons */
+  button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  /* Prevent form from overflowing */
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Specific styling for form components */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+/* Container for the charts */
+.charts-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Adjust space between columns */
+    flex-wrap: wrap; /* Allow wrapping if the screen size is too small */
+    width: 100%; /* Make sure container takes up full width */
+  }
+  
+  /* Each chart column */
+  .chart-column {
+    flex: 1 1 48%; /* Each column takes up 48% of the row */
+    box-sizing: border-box;
+    min-width: 300px; /* Minimum width to prevent shrinking too small */
+  }
+  
+  /* Title and close button for the chart */
+  .chart-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .chart-heading span {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  /* Style for the close button */
+  .close-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .close-btn:hover {
+    color: red;
+  }
+  
+  /* Container for each individual chart */
+  .chart-container {
+    width: 100%;
+    align-content: center;
+    height: 300px; /* Adjust the height as necessary for your charts */
+    background-color: #f5f5f5; /* Optional, just to differentiate chart area */
+    border-radius: 8px;
+  }
+
+  /* Apply a light grey background to the admin dashboard */
+.admin-dashboard {
+    background-color: #f4f4f4; /* Light grey background */
+    min-height: 100vh; /* Ensure it takes at least the full height of the screen */
+    padding: 20px; /* Optional: Add some padding to the container */
+  }
+
+  /* Main Content Area */
+.main-content {
+    margin-left: 250px; /* Sidebar width */
+    margin-top: 60px; /* To ensure content doesn't overlap the fixed header */
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar.collapsed + .main-content {
+    margin-left: 80px; /* Adjusted for collapsed sidebar */
+  }
+
+  .admin-dashboard {
+    background-color: #DEDDDD; /* Light grey background */
+    min-height: 100vh; /* Ensure it takes at least the full height of the screen */
+    padding: 20px; /* Optional: Add some padding to the container */
+  }
+  
