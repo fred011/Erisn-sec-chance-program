@@ -9,7 +9,10 @@ import TeacherSignIn from "./Pages/AuthPages/Teacher/TeacherSignIn";
 // import Teacher from "./Pages/Teacher/Teacher";
 // import Student from "./Pages/Student/Student";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+<<<<<<< HEAD
 import Register from "./Pages/AuthPages/Register";
+=======
+>>>>>>> 8a74c9694c4a3d412cc8120ba17c6d6e6c526627
 
 function App() {
   return (
@@ -27,6 +30,12 @@ function App() {
         <Route path="/teacher" element={<Dashboard role="teacher" />} />
         <Route path="/register" element={<Register />} />
         <Route path="/student" element={<Dashboard role="student" />} />
+
+        <Route path="/student" element={<Dashboard role="student" />} />
+        
+        
+        
+>>>>>>> 8a74c9694c4a3d412cc8120ba17c6d6e6c526627
       </Routes>
     </Router>
   );
