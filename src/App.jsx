@@ -5,9 +5,11 @@ import SignInAsPage from "./Pages/AuthPages/SignInAsPage";
 import SignInAsAdmin from "./Pages/AuthPages/Admin/SignInAsAdmin";
 import SignIn from "./Pages/AuthPages/Student/SignIn";
 import TeacherSignIn from "./Pages/AuthPages/Teacher/TeacherSignIn";
-import Admin from "./Pages/Admin/Admin";
-import Teacher from "./Pages/Teacher/Teacher";
-import Student from "./Pages/Student/Student";
+// import Admin from "./Pages/Admin/Admin";
+// import Teacher from "./Pages/Teacher/Teacher";
+// import Student from "./Pages/Student/Student";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import Register from "./Pages/AuthPages/Register";
 
 function App() {
   return (
@@ -18,9 +20,13 @@ function App() {
         <Route path="/signInAsAdmin" element={<SignInAsAdmin />} />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/teacherSignIn" element={<TeacherSignIn />} />
-        <Route path="/admin" element={<Admin />} />
+        {/* <Route path="/admin" element={<Admin />} />
         <Route path="/teacher" element={<Teacher />} />
-        <Route path="/student" element={<Student />} />
+        <Route path="/student" element={<Student />} /> */}
+        <Route path="/admin" element={<Dashboard role="admin" />} />
+        <Route path="/teacher" element={<Dashboard role="teacher" />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/student" element={<Dashboard role="student" />} />
       </Routes>
     </Router>
   );

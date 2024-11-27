@@ -1,4 +1,4 @@
-import React from "react";
+import Navbar from "../../Components/Navbar";
 
 const Student = () => {
   return <div></div>;

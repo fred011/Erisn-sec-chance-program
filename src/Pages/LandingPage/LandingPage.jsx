@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-scroll";
 import "./LandingPage.css";
 import logo from "../../Images/ERISN LOGO.png";
@@ -13,7 +12,7 @@ const LandingPage = () => {
 
   return (
     <div>
-      <header className="header">
+      <header className="top-header">
         <a href="/" className="logo">
           <img src={logo} alt="" />
         </a>

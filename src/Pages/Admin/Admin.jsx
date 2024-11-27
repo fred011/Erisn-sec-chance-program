@@ -1,12 +1,5 @@
-import React from "react";
-import Sidebar from "../../Components/Sidebar";
-
 const Admin = () => {
-  return (
-    <div>
-      <Sidebar role="admin" />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Admin;
