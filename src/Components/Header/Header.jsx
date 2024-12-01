@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRocket } from "@fortawesome/free-solid-svg-icons"; // Example icon, you can choose any
 import "./style.css";
@@ -8,17 +7,6 @@ import "./style.css";
 const Header = ({ userName }) => {
   userName = "Thabo James Humphrey";
   const [searchQuery, setSearchQuery] = useState("");
-=======
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRocket } from '@fortawesome/free-solid-svg-icons'; // Example icon, you can choose any
-import './style.css';
-
-// eslint-disable-next-line react/prop-types
-const Header = ({ userName }) => {
-  userName = 'Thabo James Humphrey';
-  const [searchQuery, setSearchQuery] = useState('');
->>>>>>> 8a74c9694c4a3d412cc8120ba17c6d6e6c526627
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
