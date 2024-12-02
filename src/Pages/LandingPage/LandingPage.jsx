@@ -2,9 +2,33 @@ import { Link } from "react-scroll";
 import "./LandingPage.css";
 import logo from "../../Images/ERISN LOGO.png";
 import { useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
+import { useRef } from "react";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm("service_t1ikomh", "template_yu7c0hs", form.current, {
+        publicKey: "7WqT1OXOpLHZLPDPH",
+      })
+      .then(
+        () => {
+          console.log("Message sent successfully!");
+          alert("Message sent successfully!");
+          e.target.reset();
+        },
+        (error) => {
+          console.log("Failed to send message.", error.text);
+          alert("Failed to send message.");
+        }
+      );
+  };
 
   const handleSignIn = () => {
     navigate("/login");
@@ -105,7 +129,7 @@ const LandingPage = () => {
         <div className="title">Contact Us</div>
 
         <div className="contact-form">
-          <form action="">
+          <form ref={form} onSubmit={sendEmail}>
             <h2>Get In Touch</h2>
             <div className="input-box">
               <label>Full Name*</label>
@@ -113,6 +137,7 @@ const LandingPage = () => {
                 type="text"
                 className="field"
                 placeholder="Enter your name"
+                name="user_name"
                 required
               />
             </div>
@@ -122,20 +147,23 @@ const LandingPage = () => {
                 type="email"
                 className="field"
                 placeholder="Enter your email"
+                name="user_email"
                 required
               />
             </div>
             <div className="input-box">
               <label>Your Query*</label>
               <textarea
-                name=""
                 id=""
                 className="field message"
                 placeholder="Enter your query"
+                name="user_message"
                 required
               ></textarea>
             </div>
-            <button type="submit">Send Query</button>
+            <button type="submit" value="Send">
+              Send Query
+            </button>
           </form>
         </div>
       </section>
