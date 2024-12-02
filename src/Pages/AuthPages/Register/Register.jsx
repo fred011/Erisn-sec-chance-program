@@ -43,7 +43,7 @@ export default function Register() {
 
       axios
         .post(
-          "https://erisn-api.onrender.com/" + values.role + "/register",
+          "https://erisn-api.onrender.com/api/" + values.role + "/register",
           data,
           {
             withCredentials: true,
