@@ -13,8 +13,10 @@ import {
   FormLabel,
 } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const initialValues = {
     email: "",
     password: "",
@@ -47,6 +49,13 @@ export default function Login() {
             } login successful!`
           );
           resetForm(); // Clear the form
+          if (res.data.role === "admin") {
+            navigate("/admin");
+          } else if (res.data.role === "teacher") {
+            navigate("/teacher");
+          } else {
+            navigate("/student");
+          }
         })
         .catch((err) => {
           console.error(
@@ -104,7 +113,7 @@ export default function Login() {
 
       {/* Role Selection */}
       <FormControl component="fieldset">
-        <FormLabel component="legend">Select Role</FormLabel>
+        <FormLabel component="legend">Log In As:</FormLabel>
         <RadioGroup
           name="role"
           value={formik.values.role}
@@ -133,6 +142,9 @@ export default function Login() {
       <Button type="submit" variant="contained">
         Log In
       </Button>
+      <p>
+        Don`t` have an account? <a href="/register">Register Here.</a>
+      </p>
     </Box>
   );
 }

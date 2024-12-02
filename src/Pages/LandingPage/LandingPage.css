@@ -55,13 +55,14 @@ a {
     border: 2px solid gray;
     border-radius: 10px;
     padding: 10px;
-    width: 100px;
+    width: 90px;
     height: 50px;
     background: transparent;
     color: #000;
     font-size: 18px;
     font-weight: 500;
     transition: .5s;
+    margin-left: 10px;
 }
 
 .top-header button:hover {
@@ -69,8 +70,8 @@ a {
     color: #fff;
     cursor: pointer;
     border: none;
-}
 
+}
 .hero {
     position: relative;
     height: 100vh;

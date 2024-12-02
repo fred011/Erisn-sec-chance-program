@@ -7,7 +7,10 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    navigate("/signInAsPage");
+    navigate("/login");
+  };
+  const handleRegister = () => {
+    navigate("/register");
   };
 
   return (
@@ -51,15 +54,20 @@ const LandingPage = () => {
           </Link>
         </nav>
 
-        <button className="login" onClick={handleSignIn}>
-          Sign In
-        </button>
+        <div className="btns">
+          <button className="login" onClick={handleRegister}>
+            Register
+          </button>
+          <button className="login" onClick={handleSignIn}>
+            Log In
+          </button>
+        </div>
       </header>
       <section id="hero" className="hero">
         <div className="hero-content">
           <h1>Welcome to the Erisn Empowerment Program`s</h1>
           <span> Students Management System</span>
-          <button className="start-btn" onClick={handleSignIn}>
+          <button className="start-btn" onClick={handleRegister}>
             Get Started
           </button>
         </div>

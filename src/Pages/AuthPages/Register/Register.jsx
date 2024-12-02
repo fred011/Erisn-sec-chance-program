@@ -53,7 +53,13 @@ export default function Register() {
             } registered successfully!`
           );
           resetForm(); // Clear the form
-          // navigate("/login"); // Navigate to login page
+          if (res.data.role === "admin") {
+            navigate("/admin");
+          } else if (res.data.role === "teacher") {
+            navigate("/teacher");
+          } else {
+            navigate("/student");
+          }
         })
         .catch((err) => {
           console.error(
@@ -136,14 +142,14 @@ export default function Register() {
 
       {/* Role Selection */}
       <FormControl component="fieldset">
-        <FormLabel component="legend">Select Role</FormLabel>
+        <FormLabel component="legend">Register As:</FormLabel>
         <RadioGroup
           name="role"
           value={formik.values.role}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         >
-          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+          {/* <FormControlLabel value="admin" control={<Radio />} label="Admin" /> */}
           <FormControlLabel
             value="teacher"
             control={<Radio />}
@@ -165,6 +171,9 @@ export default function Register() {
       <Button type="submit" variant="contained">
         Register
       </Button>
+      <p>
+        Already have an account? <a href="/login">Log In Here.</a>
+      </p>
     </Box>
   );
 }
