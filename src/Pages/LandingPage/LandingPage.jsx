@@ -19,7 +19,6 @@ const LandingPage = () => {
       })
       .then(
         () => {
-          console.log("Message sent successfully!");
           alert("Message sent successfully!");
           e.target.reset();
         },

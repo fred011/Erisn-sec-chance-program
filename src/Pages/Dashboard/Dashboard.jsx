@@ -7,6 +7,7 @@ import { Bar, Pie } from "react-chartjs-2";
 import "./style.css";
 import dashboardConfig from "./dashboardConfig.json";
 
+// Importing Chart.js components for Bar and Pie charts
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,7 +19,7 @@ import {
   ArcElement,
 } from "chart.js";
 
-// Import the FontAwesome icons
+// Importing FontAwesome Icons for dynamic rendering
 import {
   faUser,
   faUsers,
@@ -39,6 +40,7 @@ import {
   faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Registering ChartJS modules to use in charts
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -49,34 +51,33 @@ ChartJS.register(
   ArcElement
 );
 
-// Mapping of icon string names to actual FontAwesome icons
+// Mapping icons dynamically based on the provided icon names
 const iconMapping = {
-  faUser: faUser,
-  faUsers: faUsers,
-  faClipboardList: faClipboardList,
-  faFileAlt: faFileAlt,
-  faUserGraduate: faUserGraduate,
-  faClipboardCheck: faClipboardCheck,
-  faCreditCard: faCreditCard,
-  faArrowRight: faArrowRight,
-  faCalendar: faCalendar,
-  faCheckCircle: faCheckCircle,
-  faChalkboard: faChalkboard,
-  faBell: faBell,
-  faBook: faBook,
-  fees: faCoins,
-  "credit-card": faCreditCard,
-  faPlaneDeparture: faPlaneDeparture,
-  faTimesCircle: faTimesCircle,
-  faCalendarCheck: faCalendarCheck,
+  faUser,
+  faUsers,
+  faClipboardList,
+  faFileAlt,
+  faUserGraduate,
+  faClipboardCheck,
+  faCreditCard,
+  faArrowRight,
+  faCalendar,
+  faCheckCircle,
+  faChalkboard,
+  faBell,
+  faBook,
+  faCoins,
+  faPlaneDeparture,
+  faTimesCircle,
+  faCalendarCheck,
 };
 
+// Widget component that renders each individual widget on the dashboard
 const Widget = ({ title, value, icon, color }) => {
-  // Use the icon mapping to get the correct FontAwesome icon
-  const iconComponent = iconMapping[icon];
+  const iconComponent = iconMapping[icon]; // Mapping the icon dynamically
   if (!iconComponent) {
     console.error(`Icon ${icon} not found`);
-    return null;
+    return null; // Return null if no icon is found
   }
 
   return (
@@ -88,9 +89,11 @@ const Widget = ({ title, value, icon, color }) => {
   );
 };
 
+// Main Dashboard component
 const Dashboard = ({ role }) => {
-  const [dashboardConfigr, setDashboardConfig] = useState(null);
+  const [dashboardData, setDashboardData] = useState(null);
   const [activeForm, setActiveForm] = useState(null);
+
   const pieChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -101,24 +104,25 @@ const Dashboard = ({ role }) => {
     },
   };
 
+  // Fetching the dashboard configuration data based on the user role
   useEffect(() => {
-    setDashboardConfig(dashboardConfig[role]);
+    setDashboardData(dashboardConfig[role]);
   }, [role]);
 
-  if (!dashboardConfigr) return <div>Loading...</div>;
+  if (!dashboardData) return <div>Loading...</div>; // Loading state while waiting for data
+  if (!dashboardData.forms || !dashboardData.links)
+    return <div>Error loading dashboard data.</div>; // Error handling
 
-  if (!dashboardConfigr.forms || !dashboardConfigr.links)
-    return <div>Error loading dashboard data.</div>;
+  const { forms, links, widgets, charts } = dashboardData; // Destructuring data from the config
 
-  const { forms, links, widgets, charts } = dashboardConfigr;
-
+  // Function to toggle the visibility of forms
   const toggleForm = (form) => {
     setActiveForm(activeForm === form ? null : form);
   };
 
+  // Render the active form based on user interaction
   const renderForm = (form) => {
-    const formConfig = forms.find((f) => f.action === form);
-
+    const formConfig = forms.find((f) => f.action === form); // Find the corresponding form configuration
     if (!formConfig) return null;
 
     return (
@@ -126,10 +130,10 @@ const Dashboard = ({ role }) => {
         <button className="close-btn" onClick={() => toggleForm(form)}>
           X
         </button>
-
         <h3>{formConfig.title}</h3>
         <div>
           {formConfig.fields.map((field, index) => {
+            // Rendering different input types based on the form field configuration
             switch (field.type) {
               case "text":
               case "number":
@@ -178,22 +182,17 @@ const Dashboard = ({ role }) => {
       <div className="main-content admin-dashboard">
         {/* Render Widgets */}
         <div className="widgets">
-          {widgets && widgets.length > 0 ? (
-            widgets.map((widget, index) => (
-              <Widget
-                key={index}
-                title={widget.title}
-                value={widget.value}
-                icon={widget.icon}
-                color={widget.color}
-              />
-            ))
-          ) : (
-            <div>No widgets available for this role</div>
-          )}
+          {widgets.map((widget, index) => (
+            <Widget
+              key={index}
+              title={widget.title}
+              value={widget.value}
+              icon={widget.icon}
+              color={widget.color}
+            />
+          ))}
         </div>
-        <br />
-        {/* Render Dashboard Links dynamically */}
+        {/* Render Links */}
         <div className="dashboard-links">
           {links.map((link, index) => (
             <div
@@ -206,20 +205,19 @@ const Dashboard = ({ role }) => {
             </div>
           ))}
         </div>
-        {activeForm && renderForm(activeForm)}
-        <br />
+        {activeForm && renderForm(activeForm)}{" "}
+        {/* Conditionally render form based on user interaction */}
         {/* Render Charts */}
         <div className="charts-container">
           <div className="chart-column">
-            <h3>{charts.heading} Bar Chart</h3>
+            <h3>{charts.bar.heading} Bar Chart</h3>
             <Bar data={charts.bar} />
           </div>
           <div className="chart-column" style={{ height: "300px" }}>
-            <h3>{charts.heading} Pie Chart</h3>
+            <h3>{charts.pie.heading} Pie Chart</h3>
             <Pie data={charts.pie} options={pieChartOptions} />
           </div>
         </div>
-        <br /> <br />
       </div>
     </div>
   );

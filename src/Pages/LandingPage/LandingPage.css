@@ -121,8 +121,7 @@ a {
 }
 
 .key-features{
-    max-width: 1300px;
-    height: 100vh;
+    flex: 1; /* Allows the contact section to take up available space */
     margin: auto;
 }
 .key-features .title{
@@ -226,14 +225,14 @@ a {
     
 }
 form{
-    max-width: 800px;
+    max-width: 900px;
     width: 100%;
     background: #fff;
     padding: 25px 25px 30px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0, .1);
     color: #333;
-    margin: 25px;
+    margin: 20px;
 }
 
 form h2{
@@ -299,7 +298,13 @@ form button:hover{
     line-height: 1.5; /* Improve text spacing */
 }
 
-@media screen and (min-device-width: 768px) and (max-device-width: 1024px){
+@media screen and (max-width: 768px) {
+    
+    
+}
+@media screens and (min-width: 1024px) and (max-width: 1280px) { }
+ 
+@media screens and (min-width: 768px) and (max-width: 1024px) {
     .top-header a img{
         width: 130px;
     }
@@ -353,7 +358,7 @@ form button:hover{
         font-weight: 700;
     }
     form{
-        max-width: 700px;
+        max-width: 1200px;
         width: 100%;
         margin: 20px;
     }
@@ -385,5 +390,8 @@ form button:hover{
     .footer{
         font-size: 16px;
     }
-    
-}
+ }
+ 
+@media screens and (min-width: 480px) and (max-width: 768px) { }
+ 
+@media screens and (max-width: 480px) { }
