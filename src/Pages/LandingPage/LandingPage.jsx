@@ -38,7 +38,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div>
+    <div className="parent">
       <header className="top-header">
         <a href="/" className="logo">
           <img src={logo} alt="" />
@@ -168,9 +168,7 @@ const LandingPage = () => {
         </div>
       </section>
       <footer className="footer">
-        <div className="copyright">
-          <p>© 2024 Erisn Empowerment Program | All rights reserved.</p>
-        </div>
+        <p>© 2024 Erisn Empowerment Program | All rights reserved.</p>
       </footer>
     </div>
   );
