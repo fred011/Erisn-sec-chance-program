@@ -125,22 +125,22 @@ export default function Admin() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const handleLogout = async () => {
-    axios
-      .post(
-        "https://erisn-sec-chance-program.vercel.app/api/logout",
-        {},
-        { withCredentials: true }
-      )
-      .then((res) => {
-        console.log("Logout successful:", res.data);
-        navigate("/login"); // Redirect to login page after logout
-      })
-      .catch((err) => {
-        console.error("Logout failed:", err.response?.data || err.message);
-        alert("Logout failed. Please try again.");
-      });
-  };
+  // const handleLogout = async () => {
+  //   axios
+  //     .post(
+  //       "https://erisn-sec-chance-program.vercel.app/api/logout",
+  //       {},
+  //       { withCredentials: true }
+  //     )
+  //     .then((res) => {
+  //       console.log("Logout successful:", res.data);
+  //       navigate("/login"); // Redirect to login page after logout
+  //     })
+  //     .catch((err) => {
+  //       console.error("Logout failed:", err.response?.data || err.message);
+  //       alert("Logout failed. Please try again.");
+  //     });
+  // };
 
   const navArr = [
     { link: "/admin", component: "Dashboard", icon: DashboardCustomizeIcon },
@@ -190,7 +190,7 @@ export default function Admin() {
           <Typography variant="h6" noWrap component="div">
             Erisn Student Management System
           </Typography>
-          <button
+          {/* <button
             className="log-out"
             style={{
               fontSize: "16px",
@@ -206,7 +206,7 @@ export default function Admin() {
             onClick={handleLogout}
           >
             Log Out
-          </button>
+          </button> */}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
