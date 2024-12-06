@@ -153,7 +153,7 @@ export default function Register() {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         >
-          {/* <FormControlLabel value="admin" control={<Radio />} label="Admin" /> */}
+          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
           <FormControlLabel
             value="teacher"
             control={<Radio />}
