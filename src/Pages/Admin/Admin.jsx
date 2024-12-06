@@ -126,18 +126,20 @@ export default function Admin() {
     setOpen(false);
   };
   const handleLogout = async () => {
-    try {
-      // Call the backend logout endpoint
-      await axios.post("/api/logout"); // Adjust the URL based on your backend route
-
-      // Remove token from storage
-      localStorage.removeItem("token"); // or sessionStorage.removeItem('token')
-
-      // Redirect to login
-      navigate("/login");
-    } catch (err) {
-      console.error("Logout failed:", err);
-    }
+    axios
+      .post(
+        "https://erisn-sec-chance-program.vercel.app/api/logout",
+        {},
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log("Logout successful:", res.data);
+        navigate("/login"); // Redirect to login page after logout
+      })
+      .catch((err) => {
+        console.error("Logout failed:", err.response?.data || err.message);
+        alert("Logout failed. Please try again.");
+      });
   };
 
   const navArr = [
