@@ -164,7 +164,7 @@ import {
   FormLabel,
 } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate(); // Initialize navigation function
@@ -283,6 +283,12 @@ export default function Login() {
       <Button type="submit" variant="contained">
         Log In
       </Button>
+      <p>
+        Don`t have an account?{" "}
+        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
+          Register
+        </Link>
+      </p>
     </Box>
   );
 }

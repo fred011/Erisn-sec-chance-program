@@ -197,7 +197,7 @@ import {
   FormLabel,
 } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // To navigate between pages after registration
+import { Link, useNavigate } from "react-router-dom"; // To navigate between pages after registration
 
 export default function Register() {
   const navigate = useNavigate(); // Initialize the navigation function
@@ -344,6 +344,12 @@ export default function Register() {
       <Button type="submit" variant="contained">
         Register
       </Button>
+      <p>
+        Already have an account?{" "}
+        <Link to="/login" style={{ textDecoration: "none", color: "blue" }}>
+          Login
+        </Link>
+      </p>
     </Box>
   );
 }
