@@ -50,7 +50,7 @@ export default function Login() {
           );
           resetForm(); // Clear the form
           if (res.data.role === "admin") {
-            navigate("/admin");
+            navigate("admin");
           } else if (res.data.role === "teacher") {
             navigate("/teacher");
           } else {
