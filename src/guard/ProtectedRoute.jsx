@@ -11,12 +11,23 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
     setChecked(true);
   }, []);
 
-  if (checked && !authenticated) return <Navigate to={"/login"} />;
+  // If not authenticated, redirect to login
+  if (checked && !authenticated) return <Navigate to="/login" />;
 
-  if (checked && allowedRoles && !allowedRoles.includes(user.role))
-    return <Navigate to={"/login"} />;
+  // If user role doesn't match allowed roles, redirect
+  if (
+    checked &&
+    user &&
+    allowedRoles.length > 0 &&
+    !allowedRoles.includes(user.role)
+  ) {
+    return <Navigate to="/login" />;
+  }
 
+  // If everything checks out, render the child components
   if (checked) {
     return children;
   }
+
+  return null; // Render nothing until checks are done
 }

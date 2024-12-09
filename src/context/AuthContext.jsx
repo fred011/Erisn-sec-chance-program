@@ -18,17 +18,20 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (credentials) => {
+  const login = (userData) => {
     setAuthenticated(true);
-    setUser(credentials);
+    setUser(userData);
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setAuthenticated(false);
     setUser(null);
   };
+
   return (
-    <AuthContext.Provider value={(authenticated, user, login, logout)}>
+    <AuthContext.Provider value={{ authenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
