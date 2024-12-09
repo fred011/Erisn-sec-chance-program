@@ -248,7 +248,7 @@ export default function Register() {
         .catch((err) => {
           // Handle errors
           // alert(err.response?.data?.error || "Error registering user");
-          setMessage(err.res.data.message);
+          setMessage(err.response.data.message);
           setMessageType("Error", err);
         });
     },
