@@ -29,8 +29,6 @@ import ScheduleStudent from "./Pages/Student/components/schedule/ScheduleStudent
 import AttendanceStudent from "./Pages/Student/components/attendance/AttendanceStudent.jsx";
 import ExaminationsStudent from "./Pages/Student/components/examinations/ExaminationsStudent.jsx";
 import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent.jsx";
-// import ProtectedRoute from "./guard/ProtectedRoute.jsx";
-// import { AuthProvider } from "./context/AuthContext.jsx";
 
 function App() {
   return (
