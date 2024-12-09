@@ -14,11 +14,11 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
+// import { AuthContext } from "../../../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = React.useContext(AuthContext);
+  // const { login } = React.useContext(AuthContext);
 
   const initialValues = {
     email: "",
@@ -46,7 +46,7 @@ export default function Login() {
           if (token && user) {
             localStorage.setItem("token", token);
             localStorage.setItem("user", JSON.stringify(user));
-            login(user); // Update context state
+            // login(user); // Update context state
             resetForm();
             navigate(`/${user.role.toLowerCase()}`);
           }
