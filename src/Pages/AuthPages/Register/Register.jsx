@@ -198,8 +198,6 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom"; // To navigate between pages after registration
-import MessageSnackbar from "../../../basic utils/snackbar/MessageSnackbar";
-import { message } from "antd";
 
 export default function Register() {
   const navigate = useNavigate(); // Initialize the navigation function
@@ -250,12 +248,6 @@ export default function Register() {
         });
     },
   });
-
-  const [message, setMessage] = React.useState("");
-  const [messageType, setMessageType] = React.useState("success");
-  const handleMessageClose = () => {
-    setMessage("");
-  };
 
   return (
     <>
