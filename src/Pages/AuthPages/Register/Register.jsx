@@ -235,21 +235,18 @@ export default function Register() {
         )
         .then((res) => {
           // On successful registration
-          // alert(
-          //   `${
-          //     values.role.charAt(0).toUpperCase() + values.role.slice(1)
-          //   } registered successfully!`
-          // );
-          setMessage(res.data.message);
-          setMessageType("success");
+          alert(
+            `${
+              values.role.charAt(0).toUpperCase() + values.role.slice(1)
+            } registered successfully!`
+          );
+
           resetForm(); // Clear the form
           navigate(`/${values.role}`); // Navigate to the respective role dashboard
         })
         .catch((err) => {
           // Handle errors
-          // alert(err.response?.data?.error || "Error registering user");
-          setMessage(err.response.data.message);
-          setMessageType("Error", err);
+          alert(err.response?.data?.error || "Error registering user");
         });
     },
   });
@@ -262,14 +259,6 @@ export default function Register() {
 
   return (
     <>
-      {message && (
-        <MessageSnackbar
-          message={message}
-          type={messageType}
-          handleClose={handleMessageClose}
-        />
-      )}
-
       <Box
         component="form"
         sx={{
