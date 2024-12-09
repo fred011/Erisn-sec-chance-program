@@ -198,6 +198,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom"; // To navigate between pages after registration
+import MessageSnackbar from "../../../basic utils/snackbar/MessageSnackbar";
+import { message } from "antd";
 
 export default function Register() {
   const navigate = useNavigate(); // Initialize the navigation function
@@ -233,123 +235,143 @@ export default function Register() {
         )
         .then((res) => {
           // On successful registration
-          alert(
-            `${
-              values.role.charAt(0).toUpperCase() + values.role.slice(1)
-            } registered successfully!`
-          );
+          // alert(
+          //   `${
+          //     values.role.charAt(0).toUpperCase() + values.role.slice(1)
+          //   } registered successfully!`
+          // );
+          setMessage(res.data.message);
+          setMessageType("success");
           resetForm(); // Clear the form
           navigate(`/${values.role}`); // Navigate to the respective role dashboard
         })
         .catch((err) => {
           // Handle errors
-          alert(err.response?.data?.error || "Error registering user");
+          // alert(err.response?.data?.error || "Error registering user");
+          setMessage(err.res.data.message);
+          setMessageType("Error", err);
         });
     },
   });
 
+  const [message, setMessage] = React.useState("");
+  const [messageType, setMessageType] = React.useState("success");
+  const handleMessageClose = () => {
+    setMessage("");
+  };
+
   return (
-    <Box
-      component="form"
-      sx={{
-        "& > :not(style)": { m: 1 }, // Add margin to child elements
-        display: "flex",
-        flexDirection: "column",
-        width: "60vw",
-        minWidth: "230px",
-        margin: "auto",
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={formik.handleSubmit} // Attach Formik's submit handler
-    >
-      <h1>Register</h1>
-      {/* Name Input */}
-      <TextField
-        name="name"
-        label="Name"
-        value={formik.values.name}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.touched.name && formik.errors.name && (
-        <p style={{ color: "red" }}>{formik.errors.name}</p> // Show error if name is invalid
+    <>
+      {message && (
+        <MessageSnackbar
+          message={message}
+          type={messageType}
+          handleClose={handleMessageClose}
+        />
       )}
 
-      {/* Email Input */}
-      <TextField
-        name="email"
-        label="Email"
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.touched.email && formik.errors.email && (
-        <p style={{ color: "red" }}>{formik.errors.email}</p>
-      )}
-
-      {/* Password Input */}
-      <TextField
-        type="password"
-        name="password"
-        label="Password"
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.touched.password && formik.errors.password && (
-        <p style={{ color: "red" }}>{formik.errors.password}</p>
-      )}
-
-      {/* Confirm Password Input */}
-      <TextField
-        type="password"
-        name="confirm_password"
-        label="Confirm Password"
-        value={formik.values.confirm_password}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.touched.confirm_password && formik.errors.confirm_password && (
-        <p style={{ color: "red" }}>{formik.errors.confirm_password}</p>
-      )}
-
-      {/* Role Selection */}
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Register As:</FormLabel>
-        <RadioGroup
-          name="role"
-          value={formik.values.role}
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1 }, // Add margin to child elements
+          display: "flex",
+          flexDirection: "column",
+          width: "60vw",
+          minWidth: "230px",
+          margin: "auto",
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={formik.handleSubmit} // Attach Formik's submit handler
+      >
+        <h1>Register</h1>
+        {/* Name Input */}
+        <TextField
+          name="name"
+          label="Name"
+          value={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-        >
-          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-          <FormControlLabel
-            value="teacher"
-            control={<Radio />}
-            label="Teacher"
-          />
-          <FormControlLabel
-            value="student"
-            control={<Radio />}
-            label="Student"
-          />
-        </RadioGroup>
-      </FormControl>
-      {formik.touched.role && formik.errors.role && (
-        <p style={{ color: "red" }}>{formik.errors.role}</p>
-      )}
+        />
+        {formik.touched.name && formik.errors.name && (
+          <p style={{ color: "red" }}>{formik.errors.name}</p> // Show error if name is invalid
+        )}
 
-      {/* Submit Button */}
-      <Button type="submit" variant="contained">
-        Register
-      </Button>
-      <p>
-        Already have an account?{" "}
-        <Link to="/login" style={{ textDecoration: "none", color: "blue" }}>
-          Login
-        </Link>
-      </p>
-    </Box>
+        {/* Email Input */}
+        <TextField
+          name="email"
+          label="Email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.email && formik.errors.email && (
+          <p style={{ color: "red" }}>{formik.errors.email}</p>
+        )}
+
+        {/* Password Input */}
+        <TextField
+          type="password"
+          name="password"
+          label="Password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.password && formik.errors.password && (
+          <p style={{ color: "red" }}>{formik.errors.password}</p>
+        )}
+
+        {/* Confirm Password Input */}
+        <TextField
+          type="password"
+          name="confirm_password"
+          label="Confirm Password"
+          value={formik.values.confirm_password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.confirm_password && formik.errors.confirm_password && (
+          <p style={{ color: "red" }}>{formik.errors.confirm_password}</p>
+        )}
+
+        {/* Role Selection */}
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Register As:</FormLabel>
+          <RadioGroup
+            name="role"
+            value={formik.values.role}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+            <FormControlLabel
+              value="teacher"
+              control={<Radio />}
+              label="Teacher"
+            />
+            <FormControlLabel
+              value="student"
+              control={<Radio />}
+              label="Student"
+            />
+          </RadioGroup>
+        </FormControl>
+        {formik.touched.role && formik.errors.role && (
+          <p style={{ color: "red" }}>{formik.errors.role}</p>
+        )}
+
+        {/* Submit Button */}
+        <Button type="submit" variant="contained">
+          Register
+        </Button>
+        <p>
+          Already have an account?{" "}
+          <Link to="/login" style={{ textDecoration: "none", color: "blue" }}>
+            Login
+          </Link>
+        </p>
+      </Box>
+    </>
   );
 }

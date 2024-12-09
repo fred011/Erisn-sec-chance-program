@@ -16,6 +16,20 @@ import Teachers from "./Pages/Admin/components/teachers/Teachers.jsx";
 import Fees from "./Pages/Admin/components/fees/Fees.jsx";
 // import Dashboard from "./Pages/Dashboard/Dashboard";
 
+/////////
+import Teacher from "./Pages/Teacher/Teacher.jsx";
+import TeacherDetails from "./Pages/Teacher/components/teacher details/TeacherDetails.jsx";
+import ScheduleTeacher from "./Pages/Teacher/components/schedule/ScheduleTeacher.jsx";
+import AttendanceTeacher from "./Pages/Teacher/components/attendance/AttendanceTeacher.jsx";
+import ExaminationsTeacher from "./Pages/Teacher/components/examinations/ExaminationsTeacher.jsx";
+import NoticeTeacher from "./Pages/Teacher/components/notice/NoticeTeacher.jsx";
+import Student from "./Pages/Student/Student.jsx";
+import StudentDetails from "./Pages/Student/components/student details/StudentDetails.jsx";
+import ScheduleStudent from "./Pages/Student/components/schedule/ScheduleStudent.jsx";
+import AttendanceStudent from "./Pages/Student/components/attendance/AttendanceStudent.jsx";
+import ExaminationsStudent from "./Pages/Student/components/examinations/ExaminationsStudent.jsx";
+import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent.jsx";
+
 function App() {
   return (
     <Router>
@@ -44,9 +58,21 @@ function App() {
           <Route path="teachers" element={<Teachers />} />
         </Route>
         {/*Teacher Route */}
-        <Route></Route>
+        <Route path="teacher" element={<Teacher />}>
+          <Route index element={<TeacherDetails />} />
+          <Route path="schedule" element={<ScheduleTeacher />} />
+          <Route path="attendance" element={<AttendanceTeacher />} />
+          <Route path="examinations" element={<ExaminationsTeacher />} />
+          <Route path="notice" element={<NoticeTeacher />} />
+        </Route>
         {/*Student Route */}
-        <Route></Route>
+        <Route path="student" element={<Student />}>
+          <Route index element={<StudentDetails />} />
+          <Route path="schedule" element={<ScheduleStudent />} />
+          <Route path="attendance" element={<AttendanceStudent />} />
+          <Route path="examinations" element={<ExaminationsStudent />} />
+          <Route path="notice" element={<NoticeStudent />} />
+        </Route>
       </Routes>
     </Router>
   );
