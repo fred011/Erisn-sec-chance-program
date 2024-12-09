@@ -165,9 +165,11 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate(); // Initialize navigation function
+  const { login } = React.useContext(AuthContext);
 
   // Define initial form field values
   const initialValues = {
@@ -195,7 +197,15 @@ export default function Login() {
           { withCredentials: true } // Include credentials like cookies
         )
         .then((res) => {
-          console.log(res.headers.get("Authorization"));
+          const token = res.headers.get("Authorization");
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+          const user = res.data.user;
+          if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+            login(user);
+          }
           // On successful login
           alert(
             `${

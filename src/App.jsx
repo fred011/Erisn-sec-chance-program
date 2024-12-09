@@ -29,52 +29,77 @@ import ScheduleStudent from "./Pages/Student/components/schedule/ScheduleStudent
 import AttendanceStudent from "./Pages/Student/components/attendance/AttendanceStudent.jsx";
 import ExaminationsStudent from "./Pages/Student/components/examinations/ExaminationsStudent.jsx";
 import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent.jsx";
+import ProtectedRoute from "./guard/ProtectedRoute.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* <Route path="/admin" element={<Dashboard role="admin" />} />
+          {/* <Route path="/admin" element={<Dashboard role="admin" />} />
         <Route path="/teacher" element={<Dashboard role="teacher" />} />
         <Route path="/student" element={<Dashboard role="student" />} /> */}
 
-        {/*Admin Route */}
-        <Route path="admin" element={<Admin />}>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="attendance" element={<Attendance />} />
-          <Route path="class" element={<Class />} />
-          <Route path="fees" element={<Fees />} />
-          <Route path="examinations" element={<Examinations />} />
-          <Route path="notice" element={<Notice />} />
-          <Route path="schedule" element={<Schedule />} />
-          <Route path="subjects" element={<Subjects />} />
-          <Route path="students" element={<Students />} />
-          <Route path="teachers" element={<Teachers />} />
-        </Route>
-        {/*Teacher Route */}
-        <Route path="teacher" element={<Teacher />}>
-          <Route index element={<TeacherDetails />} />
-          <Route path="schedule" element={<ScheduleTeacher />} />
-          <Route path="attendance" element={<AttendanceTeacher />} />
-          <Route path="examinations" element={<ExaminationsTeacher />} />
-          <Route path="notice" element={<NoticeTeacher />} />
-        </Route>
-        {/*Student Route */}
-        <Route path="student" element={<Student />}>
-          <Route index element={<StudentDetails />} />
-          <Route path="schedule" element={<ScheduleStudent />} />
-          <Route path="attendance" element={<AttendanceStudent />} />
-          <Route path="examinations" element={<ExaminationsStudent />} />
-          <Route path="notice" element={<NoticeStudent />} />
-        </Route>
-      </Routes>
-    </Router>
+          {/*Admin Route */}
+          <Route
+            path="admin"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN"]}>
+                <Admin />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="attendance" element={<Attendance />} />
+            <Route path="class" element={<Class />} />
+            <Route path="fees" element={<Fees />} />
+            <Route path="examinations" element={<Examinations />} />
+            <Route path="notice" element={<Notice />} />
+            <Route path="schedule" element={<Schedule />} />
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="students" element={<Students />} />
+            <Route path="teachers" element={<Teachers />} />
+          </Route>
+          {/*Teacher Route */}
+          <Route
+            path="teacher"
+            element={
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <Teacher />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<TeacherDetails />} />
+            <Route path="schedule" element={<ScheduleTeacher />} />
+            <Route path="attendance" element={<AttendanceTeacher />} />
+            <Route path="examinations" element={<ExaminationsTeacher />} />
+            <Route path="notice" element={<NoticeTeacher />} />
+          </Route>
+          {/*Student Route */}
+          <Route
+            path="student"
+            element={
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
+                <Student />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<StudentDetails />} />
+            <Route path="schedule" element={<ScheduleStudent />} />
+            <Route path="attendance" element={<AttendanceStudent />} />
+            <Route path="examinations" element={<ExaminationsStudent />} />
+            <Route path="notice" element={<NoticeStudent />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
