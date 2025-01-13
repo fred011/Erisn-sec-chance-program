@@ -44,6 +44,15 @@ export default function Login() {
           { withCredentials: true } // Include credentials like cookies
         )
         .then((res) => {
+          const token = res.headers.get("Authorization");
+          if (token) {
+            // Store the token in local storage
+            localStorage.setItem("token", token);
+          }
+          const role = res.data.role;
+          if (role) {
+            localStorage.setItem("role", role);
+          }
           // On successful login
           alert(
             `${
@@ -51,7 +60,7 @@ export default function Login() {
             } login successful!`
           );
           resetForm(); // Clear the form
-          navigate(`/${values.role}`); // Navigate to the respective role dashboard
+          //navigate(`/${values.role}`); // Navigate to the respective role dashboard
         })
         .catch((err) => {
           // Handle errors
