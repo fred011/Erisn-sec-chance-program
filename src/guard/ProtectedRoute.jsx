@@ -8,13 +8,23 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    setChecked(true);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      setChecked(true);
+    } else {
+      setChecked(true);
+    }
   }, []);
 
   if (checked && !authenticated) {
     return <Navigate to="/login" />;
   }
-  if (checked && allowedRoles && !allowedRoles.includes(user.role)) {
+
+  if (
+    checked &&
+    allowedRoles &&
+    !allowedRoles.includes(user?.role?.toUpperCase())
+  ) {
     return <Navigate to="/login" />;
   }
 

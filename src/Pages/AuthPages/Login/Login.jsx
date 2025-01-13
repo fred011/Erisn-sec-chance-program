@@ -1,8 +1,8 @@
-import * as React from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
-import { loginSchema } from "../../../Components/yupSchema/loginSchema"; // Import validation schema
+import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import {
   Button,
   Radio,
@@ -16,57 +16,45 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 
 export default function Login() {
-  const navigate = useNavigate(); // Initialize navigation function
-
+  const navigate = useNavigate();
   const { login } = React.useContext(AuthContext);
 
-  // Define initial form field values
-  const initialValues = {
-    email: "",
-    password: "",
-    role: "", // Will store the selected role
-  };
-
-  // Formik setup for form state management, validation, and submission
   const formik = useFormik({
-    initialValues, // Set initial values
-    validationSchema: loginSchema, // Attach Yup schema for validation
+    initialValues: {
+      email: "",
+      password: "",
+      role: "",
+    },
+    validationSchema: loginSchema,
     onSubmit: (values, { resetForm }) => {
-      // Prepare the data to be sent to the API
       const data = {
         email: values.email,
         password: values.password,
       };
 
-      // API call to log in the user
       axios
-        .post(
-          `https://erisn-api.onrender.com/api/${values.role}/login`, // API endpoint depends on the selected role
-          data,
-          { withCredentials: true } // Include credentials like cookies
-        )
+        .post(`https://erisn-api.onrender.com/api/${values.role}/login`, data, {
+          withCredentials: true,
+        })
         .then((res) => {
-          const token = res.headers.get("Authorization");
+          const token = res.data.token; // Updated to match expected API response
           if (token) {
-            // Store the token in local storage
             localStorage.setItem("token", token);
           }
           const user = res.data.user;
           if (user) {
-            localStorage.setItem("role", JSON.stringify(user));
-            login(user); // Call the login function from the context
+            localStorage.setItem("user", JSON.stringify(user));
+            login(user);
           }
-          // On successful login
           alert(
             `${
               values.role.charAt(0).toUpperCase() + values.role.slice(1)
             } login successful!`
           );
-          resetForm(); // Clear the form
-          navigate(`/${values.role}`); // Navigate to the respective role dashboard
+          resetForm();
+          navigate(`/${values.role}`);
         })
         .catch((err) => {
-          // Handle errors
           alert(err.response?.data?.error || "Error logging in");
         });
     },
@@ -76,7 +64,7 @@ export default function Login() {
     <Box
       component="form"
       sx={{
-        "& > :not(style)": { m: 1 }, // Add margin to child elements
+        "& > :not(style)": { m: 1 },
         display: "flex",
         flexDirection: "column",
         width: "60vw",
@@ -86,11 +74,10 @@ export default function Login() {
       }}
       noValidate
       autoComplete="off"
-      onSubmit={formik.handleSubmit} // Attach Formik's submit handler
+      onSubmit={formik.handleSubmit}
     >
       <h1>Login</h1>
 
-      {/* Email Input */}
       <TextField
         name="email"
         label="Email"
@@ -102,7 +89,6 @@ export default function Login() {
         <p style={{ color: "red" }}>{formik.errors.email}</p>
       )}
 
-      {/* Password Input */}
       <TextField
         type="password"
         name="password"
@@ -115,7 +101,6 @@ export default function Login() {
         <p style={{ color: "red" }}>{formik.errors.password}</p>
       )}
 
-      {/* Role Selection */}
       <FormControl component="fieldset">
         <FormLabel component="legend">Log In As:</FormLabel>
         <RadioGroup
@@ -141,7 +126,6 @@ export default function Login() {
         <p style={{ color: "red" }}>{formik.errors.role}</p>
       )}
 
-      {/* Submit Button */}
       <Button type="submit" variant="contained">
         Log In
       </Button>
