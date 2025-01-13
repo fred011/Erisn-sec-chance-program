@@ -33,6 +33,8 @@ import ExplicitIcon from "@mui/icons-material/Explicit";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import HomeIcon from "@mui/icons-material/Home";
+import { Home } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -143,6 +145,7 @@ export default function Admin() {
   // };
 
   const navArr = [
+    { link: "/", component: "Home", icon: HomeIcon },
     { link: "/admin", component: "Dashboard", icon: DashboardCustomizeIcon },
     { link: "/admin/class", component: "Class", icon: FormatListNumberedIcon },
     { link: "/admin/subjects", component: "Subjects", icon: SubjectIcon },

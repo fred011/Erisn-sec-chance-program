@@ -33,6 +33,7 @@ import ExplicitIcon from "@mui/icons-material/Explicit";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import HomeIcon from "@mui/icons-material/Home";
 
 const drawerWidth = 240;
 
@@ -143,6 +144,11 @@ export default function Teacher() {
   // };
 
   const navArr = [
+    {
+      link: "/",
+      component: "Home",
+      icon: HomeIcon,
+    },
     {
       link: "/teacher",
       component: "Your Details",
