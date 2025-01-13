@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import axios from "axios";
+
 import React, { useEffect, useState } from "react";
-import { baseAPI } from "../../../../environment";
+
 import { Box, Typography } from "@mui/material";
 
 const Dashboard = () => {
