@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -48,14 +49,12 @@ export default function Register() {
           { withCredentials: true } // Include credentials like cookies
         )
         .then((res) => {
-          setMessage(res.data.message); // Set the message
-          setMessageType("success"); // Set the message type
           // On successful registration
-          // alert(
-          //   `${
-          //     values.role.charAt(0).toUpperCase() + values.role.slice(1)
-          //   } registered successfully!`
-          // );
+          alert(
+            `${
+              values.role.charAt(0).toUpperCase() + values.role.slice(1)
+            } registered successfully!`
+          );
 
           resetForm(); // Clear the form
           navigate(`/${values.role}`); // Navigate to the respective role dashboard
@@ -66,23 +65,9 @@ export default function Register() {
         });
     },
   });
-  const [message, setMessage] = React.useState(""); // Initialize the message state
-  const [messageType, setMessageType] = React.useState("success"); // Initialize the message type state
-  const handleMessageClose = () => {
-    // Function to close the message
-    setMessage(""); // Clear the message
-  };
 
   return (
     <>
-      {message && (
-        <MessageSnackbar
-          message={message}
-          type={messageType}
-          handleClose={handleMessageClose}
-        />
-      )}
-
       <Box
         component="form"
         sx={{
