@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../Components/yupSchema/loginSchema";
@@ -9,6 +10,7 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
+  Box,
 } from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
@@ -56,54 +58,89 @@ export default function Login() {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <h1>Login</h1>
-      <TextField
-        name="email"
-        label="Email"
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-      <TextField
-        type="password"
-        name="password"
-        label="Password"
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.password && Boolean(formik.errors.password)}
-        helperText={formik.touched.password && formik.errors.password}
-      />
-      <FormControl>
-        <FormLabel>Log in as:</FormLabel>
-        <RadioGroup
-          name="role"
-          value={formik.values.role}
+    <>
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1 }, // Add margin to child elements
+          display: "flex",
+          flexDirection: "column",
+          width: "60vw",
+          minWidth: "230px",
+          margin: "auto",
+          marginTop: "50px",
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={formik.handleSubmit} // Attach Formik's submit handler
+      >
+        <h1>Login</h1>
+
+        {/* Email Input */}
+        <TextField
+          name="email"
+          label="Email"
+          value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-        >
-          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-          <FormControlLabel
-            value="teacher"
-            control={<Radio />}
-            label="Teacher"
-          />
-          <FormControlLabel
-            value="student"
-            control={<Radio />}
-            label="Student"
-          />
-        </RadioGroup>
-      </FormControl>
-      <Button type="submit" variant="contained">
-        Login
-      </Button>
-      <p>
-        Don’t have an account? <Link to="/register">Register</Link>
-      </p>
-    </form>
+        />
+        {formik.touched.email && formik.errors.email && (
+          <p style={{ color: "red" }}>{formik.errors.email}</p>
+        )}
+
+        {/* Password Input */}
+        <TextField
+          type="password"
+          name="password"
+          label="Password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.password && formik.errors.password && (
+          <p style={{ color: "red" }}>{formik.errors.password}</p>
+        )}
+
+        {/* Role Selection */}
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Log In As:</FormLabel>
+          <RadioGroup
+            name="role"
+            value={formik.values.role}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+            <FormControlLabel
+              value="teacher"
+              control={<Radio />}
+              label="Teacher"
+            />
+            <FormControlLabel
+              value="student"
+              control={<Radio />}
+              label="Student"
+            />
+          </RadioGroup>
+        </FormControl>
+        {formik.touched.role && formik.errors.role && (
+          <p style={{ color: "red" }}>{formik.errors.role}</p>
+        )}
+
+        {/* Submit Button */}
+        <Button type="submit" variant="contained">
+          Log In
+        </Button>
+        <p>
+          Dont have an account?{" "}
+          <Link
+            to="/register"
+            style={{ textDecoration: "none", color: "blue" }}
+          >
+            Register
+          </Link>
+        </p>
+      </Box>
+    </>
   );
 }
