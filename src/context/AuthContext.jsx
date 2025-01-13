@@ -1,36 +1,38 @@
-import React, { createContext, useState, useEffect } from "react";
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react/prop-types */
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("role");
 
-    if (storedUser && token) {
-      setUser(storedUser);
+    if (token) {
       setAuthenticated(true);
+    }
+    if (storedRole) {
+      setRole(storedRole.replace(/"/g, "")); // Remove quotes from the stored role
     }
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
+  const login = (role) => {
     setAuthenticated(true);
+    setRole(role);
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
     setAuthenticated(false);
+    setRole(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, authenticated, login, logout }}>
+    <AuthContext.Provider value={{ authenticated, role, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};

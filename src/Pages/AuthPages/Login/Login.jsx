@@ -1,146 +1,139 @@
-/* eslint-disable no-unused-vars */
-import React, { useContext } from "react";
+import React from "react";
 import { useFormik } from "formik";
-import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import {
-  Button,
+  Box,
   TextField,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
+  Button,
   FormControl,
   FormLabel,
-  Box,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
+import { loginSchema } from "../../../Components/yupSchema/loginSchema";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login } = React.useContext(AuthContext);
+
+  const initialValues = {
+    email: "",
+    password: "",
+    role: "",
+  };
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      role: "",
-    },
+    initialValues,
     validationSchema: loginSchema,
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        const response = await axios.post(
-          `https://erisn-api.onrender.com/api/${values.role}/login`,
-          {
-            email: values.email,
-            password: values.password,
-          },
-          { withCredentials: true }
-        );
+    onSubmit: (values, { resetForm }) => {
+      const data = {
+        email: values.email,
+        password: values.password,
+      };
 
-        const { token, user } = response.data;
-
-        if (token) {
-          localStorage.setItem("token", token);
-          localStorage.setItem("user", JSON.stringify(user));
-          login(user); // Update context with user info
+      axios
+        .post(`https://erisn-api.onrender.com/api/${values.role}/login`, data, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          const token = res.headers.get("Authorization");
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+          localStorage.setItem("role", values.role); // Store the role in localStorage
+          login(values.role); // Pass the role to context
+          alert(
+            `${
+              values.role.charAt(0).toUpperCase() + values.role.slice(1)
+            } login successful!`
+          );
           resetForm();
-          alert(`${values.role} login successful!`);
           navigate(`/${values.role}`);
-        } else {
-          throw new Error("Invalid login response.");
-        }
-      } catch (error) {
-        console.error("Login error:", error);
-        alert(error.response?.data?.error || "Login failed. Please try again.");
-      }
+        })
+        .catch((err) => {
+          alert(err.response?.data?.error || "Error logging in");
+        });
     },
   });
 
   return (
-    <>
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1 }, // Add margin to child elements
-          display: "flex",
-          flexDirection: "column",
-          width: "60vw",
-          minWidth: "230px",
-          margin: "auto",
-          marginTop: "50px",
-        }}
-        noValidate
-        autoComplete="off"
-        onSubmit={formik.handleSubmit} // Attach Formik's submit handler
-      >
-        <h1>Login</h1>
+    <Box
+      component="form"
+      sx={{
+        "& > :not(style)": { m: 1 },
+        display: "flex",
+        flexDirection: "column",
+        width: "60vw",
+        minWidth: "230px",
+        margin: "auto",
+        marginTop: "50px",
+      }}
+      noValidate
+      autoComplete="off"
+      onSubmit={formik.handleSubmit}
+    >
+      <h1>Login</h1>
 
-        {/* Email Input */}
-        <TextField
-          name="email"
-          label="Email"
-          value={formik.values.email}
+      <TextField
+        name="email"
+        label="Email"
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      {formik.touched.email && formik.errors.email && (
+        <p style={{ color: "red" }}>{formik.errors.email}</p>
+      )}
+
+      <TextField
+        type="password"
+        name="password"
+        label="Password"
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      {formik.touched.password && formik.errors.password && (
+        <p style={{ color: "red" }}>{formik.errors.password}</p>
+      )}
+
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Log In As:</FormLabel>
+        <RadioGroup
+          name="role"
+          value={formik.values.role}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-        />
-        {formik.touched.email && formik.errors.email && (
-          <p style={{ color: "red" }}>{formik.errors.email}</p>
-        )}
+        >
+          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+          <FormControlLabel
+            value="teacher"
+            control={<Radio />}
+            label="Teacher"
+          />
+          <FormControlLabel
+            value="student"
+            control={<Radio />}
+            label="Student"
+          />
+        </RadioGroup>
+      </FormControl>
+      {formik.touched.role && formik.errors.role && (
+        <p style={{ color: "red" }}>{formik.errors.role}</p>
+      )}
 
-        {/* Password Input */}
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.password && formik.errors.password && (
-          <p style={{ color: "red" }}>{formik.errors.password}</p>
-        )}
-
-        {/* Role Selection */}
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Log In As:</FormLabel>
-          <RadioGroup
-            name="role"
-            value={formik.values.role}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-            <FormControlLabel
-              value="teacher"
-              control={<Radio />}
-              label="Teacher"
-            />
-            <FormControlLabel
-              value="student"
-              control={<Radio />}
-              label="Student"
-            />
-          </RadioGroup>
-        </FormControl>
-        {formik.touched.role && formik.errors.role && (
-          <p style={{ color: "red" }}>{formik.errors.role}</p>
-        )}
-
-        {/* Submit Button */}
-        <Button type="submit" variant="contained">
-          Log In
-        </Button>
-        <p>
-          Dont have an account?{" "}
-          <Link
-            to="/register"
-            style={{ textDecoration: "none", color: "blue" }}
-          >
-            Register
-          </Link>
-        </p>
-      </Box>
-    </>
+      <Button type="submit" variant="contained">
+        Log In
+      </Button>
+      <p>
+        Don`t have an account?{" "}
+        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
+          Register
+        </Link>
+      </p>
+    </Box>
   );
 }

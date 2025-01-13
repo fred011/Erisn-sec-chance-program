@@ -1,16 +1,29 @@
 /* eslint-disable react/prop-types */
-import { useContext } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 
 export default function ProtectedRoute({ children, allowedRoles }) {
-  const { user, authenticated } = useContext(AuthContext);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [role, setRole] = useState(null);
+  const [checked, setChecked] = useState(false);
 
-  if (!authenticated) {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("role");
+
+    if (token && storedRole) {
+      setAuthenticated(true);
+      setRole(storedRole.replace(/"/g, "")); // Remove quotes from the stored role
+    }
+
+    setChecked(true);
+  }, []);
+
+  if (checked && !authenticated) {
     return <Navigate to="/login" />;
   }
 
-  if (!allowedRoles.includes(user?.role?.toUpperCase())) {
+  if (checked && allowedRoles && !allowedRoles.includes(role)) {
     return <Navigate to="/login" />;
   }
 
