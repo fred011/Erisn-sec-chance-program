@@ -1,36 +1,15 @@
 /* eslint-disable no-unused-vars */
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { Box, Typography } from "@mui/material";
 
 const Dashboard = () => {
-  const [adminName, setAdminName] = useState("");
-
-  useEffect(() => {
-    // Replace with your actual API endpoint
-    const fetchAdminName = async () => {
-      try {
-        const response = await fetch(
-          "https://erisn-api.onrender.com/api/admin/name"
-        );
-        const data = await response.json();
-        setAdminName(data.name);
-      } catch (error) {
-        console.error("Error fetching admin name:", error);
-      }
-    };
-
-    fetchAdminName();
-  }, []);
-
   return (
     <>
-      <h1>Admin Dash</h1>
-
       <Box
         sx={{
-          height: "500px",
+          height: "270px",
           width: "100%",
           background: `url(/images/BackG.jpg)`,
           backgroundSize: "cover",
@@ -39,9 +18,22 @@ const Dashboard = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h3" color="white">
-          Welcome Admin
-        </Typography>
+        <Box
+          sx={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h3" color="lightgrey">
+            Welcome, Admin
+          </Typography>
+
+          <Typography variant="h5" color="grey">
+            To Erisn Africa`s Student Management System
+          </Typography>
+        </Box>
       </Box>
     </>
   );
