@@ -16,7 +16,6 @@ const Class = () => {
   const [editId, setEditId] = useState(null);
   const [classes, setClasses] = useState([]);
   const [edit, setEdit] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleEdit = (id, class_text, class_num) => {
     console.log("Edit", id);
@@ -31,12 +30,12 @@ const Class = () => {
       .delete(`${baseAPI}/class/delete/${id}`)
       .then((res) => {
         console.log("Class delete response", res);
-        setMessage(res.data.message);
+
         alert("Class deleted successfully");
       })
       .catch((err) => {
         console.log("Error in deleting class", err);
-        setMessage(err.response.data.message);
+
         alert("Failed to delete class");
       });
   };
@@ -71,6 +70,7 @@ const Class = () => {
             console.log("Class add response", res);
 
             alert("Class added successfully");
+            fetchAllClasses();
           })
           .catch((err) => {
             console.log("Error in adding class", err);
@@ -95,7 +95,7 @@ const Class = () => {
   };
   useEffect(() => {
     fetchAllClasses();
-  }, [message]);
+  }, []);
   return (
     <>
       <h1>Classes</h1>
@@ -170,25 +170,25 @@ const Class = () => {
         sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
       >
         {classes &&
-          classes.map((cls) => {
+          classes.map((x) => {
             return (
-              <Paper key={cls._id} sx={{ m: 2, p: 2 }}>
+              <Paper key={x._id} sx={{ m: 2, p: 2 }}>
                 <Box component={"div"}>
                   <Typography variant="h4">
-                    Class: {cls.class_text} [{cls.class_num}]
+                    Class: {x.class_text} [{x.class_num}]
                   </Typography>
                 </Box>
                 <Box component={"div"}>
                   <Button
                     onClick={() => {
-                      handleEdit(cls._id, cls.class_text, cls.class_num);
+                      handleEdit(x._id, x.class_text, x.class_num);
                     }}
                   >
                     <EditIcon />
                   </Button>
                   <Button
                     onClick={() => {
-                      handleDelete(cls._id);
+                      handleDelete(x._id);
                     }}
                     sx={{ color: "red" }}
                   >
