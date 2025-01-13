@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -14,9 +13,12 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate(); // Initialize navigation function
+
+  const { login } = React.useContext(AuthContext);
 
   // Define initial form field values
   const initialValues = {
@@ -49,9 +51,10 @@ export default function Login() {
             // Store the token in local storage
             localStorage.setItem("token", token);
           }
-          const role = res.data.role;
-          if (role) {
-            localStorage.setItem("role", role);
+          const user = res.data.user;
+          if (user) {
+            localStorage.setItem("role", JSON.stringify(user));
+            login(user); // Call the login function from the context
           }
           // On successful login
           alert(
@@ -79,6 +82,7 @@ export default function Login() {
         width: "60vw",
         minWidth: "230px",
         margin: "auto",
+        marginTop: "50px",
       }}
       noValidate
       autoComplete="off"

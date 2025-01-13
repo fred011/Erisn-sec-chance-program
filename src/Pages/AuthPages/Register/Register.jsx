@@ -76,6 +76,7 @@ export default function Register() {
           width: "60vw",
           minWidth: "230px",
           margin: "auto",
+          marginTop: "50px",
         }}
         noValidate
         autoComplete="off"
