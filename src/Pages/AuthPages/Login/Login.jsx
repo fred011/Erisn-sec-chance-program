@@ -109,14 +109,14 @@ export default function Login() {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         >
-          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+          <FormControlLabel value="ADMIN" control={<Radio />} label="Admin" />
           <FormControlLabel
-            value="teacher"
+            value="TEACHER"
             control={<Radio />}
             label="Teacher"
           />
           <FormControlLabel
-            value="student"
+            value="STUDENT"
             control={<Radio />}
             label="Student"
           />
