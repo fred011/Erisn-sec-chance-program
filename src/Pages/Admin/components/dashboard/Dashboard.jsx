@@ -10,7 +10,7 @@ const Dashboard = () => {
 
   const fetchAdmin = () => {
     axios
-      .get(`${baseAPI}/admin`)
+      .get(`https://erisn-api.onrender.com/api/admin`)
       .then((res) => {
         console.log(res);
         setAdmin(res.data.admin);

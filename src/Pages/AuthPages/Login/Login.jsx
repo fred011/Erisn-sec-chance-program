@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { useFormik } from "formik";
 import {
@@ -12,12 +13,11 @@ import {
 } from "@mui/material";
 import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
+
 import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = React.useContext(AuthContext);
 
   const initialValues = {
     email: "",
@@ -39,12 +39,6 @@ export default function Login() {
           withCredentials: true,
         })
         .then((res) => {
-          const token = res.headers.get("Authorization");
-          if (token) {
-            localStorage.setItem("token", token);
-          }
-          localStorage.setItem("role", values.role); // Store the role in localStorage
-          login(values.role); // Pass the role to context
           alert(
             `${
               values.role.charAt(0).toUpperCase() + values.role.slice(1)
