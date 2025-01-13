@@ -132,7 +132,7 @@ export default function Login() {
       <p>
         Don`t have an account?{" "}
         <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
-          Register
+          Register here
         </Link>
       </p>
     </Box>
