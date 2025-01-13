@@ -1,36 +1,36 @@
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [authenticated, setAuthenticated] = useState(false);
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
-    const userStr = localStorage.getItem("user");
-    if (token) {
+
+    if (storedUser && token) {
+      setUser(storedUser);
       setAuthenticated(true);
-    }
-    if (userStr) {
-      setUser(JSON.parse(userStr));
     }
   }, []);
 
-  const login = (credentials) => {
+  const login = (userData) => {
+    setUser(userData);
     setAuthenticated(true);
-    setUser(credentials);
   };
+
   const logout = () => {
-    setAuthenticated(false);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
+    setAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ authenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ user, authenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}

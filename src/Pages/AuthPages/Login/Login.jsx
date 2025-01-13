@@ -1,23 +1,22 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import {
   Button,
+  TextField,
   Radio,
   RadioGroup,
   FormControlLabel,
   FormControl,
   FormLabel,
 } from "@mui/material";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = React.useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const formik = useFormik({
     initialValues: {
@@ -26,69 +25,48 @@ export default function Login() {
       role: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values, { resetForm }) => {
-      const data = {
-        email: values.email,
-        password: values.password,
-      };
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const response = await axios.post(
+          `https://erisn-api.onrender.com/api/${values.role}/login`,
+          {
+            email: values.email,
+            password: values.password,
+          },
+          { withCredentials: true }
+        );
 
-      axios
-        .post(`https://erisn-api.onrender.com/api/${values.role}/login`, data, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          const token = res.data.token; // Updated to match expected API response
-          if (token) {
-            localStorage.setItem("token", token);
-          }
-          const user = res.data.user;
-          if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
-            login(user);
-          }
-          alert(
-            `${
-              values.role.charAt(0).toUpperCase() + values.role.slice(1)
-            } login successful!`
-          );
+        const { token, user } = response.data;
+
+        if (token) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(user));
+          login(user); // Update context with user info
           resetForm();
+          alert(`${values.role} login successful!`);
           navigate(`/${values.role}`);
-        })
-        .catch((err) => {
-          alert(err.response?.data?.error || "Error logging in");
-        });
+        } else {
+          throw new Error("Invalid login response.");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        alert(error.response?.data?.error || "Login failed. Please try again.");
+      }
     },
   });
 
   return (
-    <Box
-      component="form"
-      sx={{
-        "& > :not(style)": { m: 1 },
-        display: "flex",
-        flexDirection: "column",
-        width: "60vw",
-        minWidth: "230px",
-        margin: "auto",
-        marginTop: "50px",
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={formik.handleSubmit}
-    >
+    <form onSubmit={formik.handleSubmit}>
       <h1>Login</h1>
-
       <TextField
         name="email"
         label="Email"
         value={formik.values.email}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
       />
-      {formik.touched.email && formik.errors.email && (
-        <p style={{ color: "red" }}>{formik.errors.email}</p>
-      )}
-
       <TextField
         type="password"
         name="password"
@@ -96,13 +74,11 @@ export default function Login() {
         value={formik.values.password}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
+        error={formik.touched.password && Boolean(formik.errors.password)}
+        helperText={formik.touched.password && formik.errors.password}
       />
-      {formik.touched.password && formik.errors.password && (
-        <p style={{ color: "red" }}>{formik.errors.password}</p>
-      )}
-
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Log In As:</FormLabel>
+      <FormControl>
+        <FormLabel>Log in as:</FormLabel>
         <RadioGroup
           name="role"
           value={formik.values.role}
@@ -122,19 +98,12 @@ export default function Login() {
           />
         </RadioGroup>
       </FormControl>
-      {formik.touched.role && formik.errors.role && (
-        <p style={{ color: "red" }}>{formik.errors.role}</p>
-      )}
-
       <Button type="submit" variant="contained">
-        Log In
+        Login
       </Button>
       <p>
-        Don`t have an account?{" "}
-        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
-          Register here
-        </Link>
+        Don’t have an account? <Link to="/register">Register</Link>
       </p>
-    </Box>
+    </form>
   );
 }
