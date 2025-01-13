@@ -9,7 +9,7 @@ const Dashboard = () => {
   const fetchAdmin = () => {
     // fetch admin data
     axios
-      .get(`${baseAPI}/admin/fetch-admin`)
+      .get(`${baseAPI}/admin`)
       .then((res) => {
         console.log(res);
         setAdmin(res.data.admin);
