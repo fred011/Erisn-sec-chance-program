@@ -23,7 +23,7 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   if (
     checked &&
     allowedRoles &&
-    !allowedRoles.includes(user?.role?.toUpperCase())
+    !allowedRoles.includes(user.role.toUpperCase())
   ) {
     return <Navigate to="/login" />;
   }
