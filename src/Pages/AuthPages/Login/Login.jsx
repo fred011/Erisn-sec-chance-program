@@ -195,6 +195,7 @@ export default function Login() {
           { withCredentials: true } // Include credentials like cookies
         )
         .then((res) => {
+          console.log(res.headers.get("Authorization"));
           // On successful login
           alert(
             `${
