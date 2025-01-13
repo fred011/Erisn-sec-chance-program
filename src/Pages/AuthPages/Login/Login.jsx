@@ -60,7 +60,7 @@ export default function Login() {
             } login successful!`
           );
           resetForm(); // Clear the form
-          //navigate(`/${values.role}`); // Navigate to the respective role dashboard
+          navigate(`/${values.role}`); // Navigate to the respective role dashboard
         })
         .catch((err) => {
           // Handle errors
