@@ -11,7 +11,7 @@ export const studentSchema = Yup.object({
   guardian: Yup.string()
     .min(3, "Guardian name must  contain 3 characters")
     .required("Guardian name is required"),
-  guardian_phone: Yup.number()
+  guardian_phone: Yup.string()
     .min(10, "Must contain 10 characters")
     .max(10, "Cannot extend 10 characters")
     .required("Guardian name is required"),
