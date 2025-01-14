@@ -56,11 +56,15 @@ const Class = () => {
         axios
           .patch(`${baseAPI}/class/update/${editId}`, { ...values })
           .then((res) => {
+            console.log("Class update response", res);
             alert("Class updated successfully");
             cancelEdit();
           })
           .catch((err) => {
-            console.log("Error in adding class", err);
+            console.log(
+              "Error in updating class",
+              err.response ? err.response.data : err.message
+            );
             alert("Failed to update class");
           });
       } else {
@@ -68,12 +72,14 @@ const Class = () => {
           .post(`${baseAPI}/class/create`, { ...values })
           .then((res) => {
             console.log("Class add response", res);
-
             alert("Class added successfully");
-            fetchAllClasses();
+            // fetchAllClasses();
           })
           .catch((err) => {
-            console.log("Error in adding class", err);
+            console.log(
+              "Error in adding class",
+              err.response ? err.response.data : err.message
+            );
             alert("Failed to add class");
           });
 
