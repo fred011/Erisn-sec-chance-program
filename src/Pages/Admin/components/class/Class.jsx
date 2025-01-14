@@ -32,6 +32,7 @@ const Class = () => {
         console.log("Class delete response", res);
 
         alert("Class deleted successfully, reload the page to see changes");
+        fetchAllClasses();
       })
       .catch((err) => {
         console.log("Error in deleting class", err);
@@ -53,21 +54,25 @@ const Class = () => {
       console.log(values);
 
       if (edit) {
-        axios
-          .patch(`${baseAPI}/class/update/${editId}`, { ...values })
-          .then((res) => {
-            console.log("Class update response", res);
-            alert("Class updated successfully");
-            fetchAllClasses();
-            cancelEdit();
-          })
-          .catch((err) => {
-            console.log(
-              "Error in updating class",
-              err.response ? err.response.data : err.message
-            );
-            alert("Failed to update class");
-          });
+        axios.patch(`${baseAPI}/class/update/${editId}`, { ...values }),
+          {
+            headers: {
+              "Content-Type": "application/json", // Ensure the correct header is sent
+            },
+          }
+            .then((res) => {
+              console.log("Class update response", res);
+              alert("Class updated successfully");
+              fetchAllClasses();
+              cancelEdit();
+            })
+            .catch((err) => {
+              console.log(
+                "Error in updating class",
+                err.response ? err.response.data : err.message
+              );
+              alert("Failed to update class");
+            });
       } else {
         axios
           .post(`${baseAPI}/class/create`, { ...values })
