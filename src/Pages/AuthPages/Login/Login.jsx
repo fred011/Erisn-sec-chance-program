@@ -10,6 +10,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  FormLabel,
 } from "@mui/material";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -42,8 +43,23 @@ export default function Login() {
   });
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
+    <Box
+      component="form"
+      sx={{
+        "& > :not(style)": { m: 1 },
+        display: "flex",
+        flexDirection: "column",
+        width: "60vw",
+        minWidth: "230px",
+        margin: "auto",
+        marginTop: "50px",
+      }}
+      noValidate
+      autoComplete="off"
+      onSubmit={formik.handleSubmit}
+    >
       <h1>Login</h1>
+
       <TextField
         name="email"
         label="Email"
@@ -54,6 +70,7 @@ export default function Login() {
       {formik.touched.email && formik.errors.email && (
         <p style={{ color: "red" }}>{formik.errors.email}</p>
       )}
+
       <TextField
         type="password"
         name="password"
@@ -65,7 +82,9 @@ export default function Login() {
       {formik.touched.password && formik.errors.password && (
         <p style={{ color: "red" }}>{formik.errors.password}</p>
       )}
-      <FormControl>
+
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Log In As:</FormLabel>
         <RadioGroup
           name="role"
           value={formik.values.role}
@@ -88,9 +107,15 @@ export default function Login() {
       {formik.touched.role && formik.errors.role && (
         <p style={{ color: "red" }}>{formik.errors.role}</p>
       )}
-      <Button type="submit">Log In</Button>
+
+      <Button type="submit" variant="contained">
+        Log In
+      </Button>
       <p>
-        Don`t have an account? <Link to="/register">Register here</Link>
+        Dont have an account?{" "}
+        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
+          Register
+        </Link>
       </p>
     </Box>
   );
