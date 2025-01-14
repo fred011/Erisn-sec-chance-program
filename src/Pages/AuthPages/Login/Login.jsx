@@ -89,7 +89,7 @@ export default function Login() {
       )}
       <Button type="submit">Log In</Button>
       <p>
-        Don`t have an account? <Link to="/register">Register</Link>
+        Don`t have an account? <Link to="/register">Register here</Link>
       </p>
     </Box>
   );
