@@ -55,13 +55,20 @@ const Class = () => {
 
       if (edit) {
         axios
-          .patch(`${baseAPI}/class/update/${editId}`, { ...values })
+          .patch(
+            `${baseAPI}/class/update/${editId}`,
+            { ...values },
+            {
+              headers: {
+                "Content-Type": "application/json", // Ensure the correct header is sent
+              },
+            }
+          )
           .then((res) => {
             console.log("Class update response", res);
             alert("Class updated successfully");
 
             cancelEdit();
-            fetchAllClasses();
           })
           .catch((err) => {
             console.log(
