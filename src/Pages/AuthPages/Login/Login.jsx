@@ -1,49 +1,36 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
+import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import {
   Box,
   TextField,
   Button,
   FormControl,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import { loginSchema } from "../../../Components/yupSchema/loginSchema";
+import { AuthContext } from "../../../AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-
 import axios from "axios";
 
 export default function Login() {
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const initialValues = {
-    email: "",
-    password: "",
-    role: "",
-  };
-
   const formik = useFormik({
-    initialValues,
+    initialValues: { email: "", password: "", role: "" },
     validationSchema: loginSchema,
     onSubmit: (values, { resetForm }) => {
-      const data = {
-        email: values.email,
-        password: values.password,
-      };
+      const data = { email: values.email, password: values.password };
 
       axios
         .post(`https://erisn-api.onrender.com/api/${values.role}/login`, data, {
           withCredentials: true,
         })
         .then((res) => {
-          alert(
-            `${
-              values.role.charAt(0).toUpperCase() + values.role.slice(1)
-            } login successful!`
-          );
+          login({ ...res.data, role: values.role });
           resetForm();
           navigate(`/${values.role}`);
         })
@@ -54,23 +41,8 @@ export default function Login() {
   });
 
   return (
-    <Box
-      component="form"
-      sx={{
-        "& > :not(style)": { m: 1 },
-        display: "flex",
-        flexDirection: "column",
-        width: "60vw",
-        minWidth: "230px",
-        margin: "auto",
-        marginTop: "50px",
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={formik.handleSubmit}
-    >
+    <Box component="form" onSubmit={formik.handleSubmit}>
       <h1>Login</h1>
-
       <TextField
         name="email"
         label="Email"
@@ -81,7 +53,6 @@ export default function Login() {
       {formik.touched.email && formik.errors.email && (
         <p style={{ color: "red" }}>{formik.errors.email}</p>
       )}
-
       <TextField
         type="password"
         name="password"
@@ -93,9 +64,7 @@ export default function Login() {
       {formik.touched.password && formik.errors.password && (
         <p style={{ color: "red" }}>{formik.errors.password}</p>
       )}
-
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Log In As:</FormLabel>
+      <FormControl>
         <RadioGroup
           name="role"
           value={formik.values.role}
@@ -118,15 +87,9 @@ export default function Login() {
       {formik.touched.role && formik.errors.role && (
         <p style={{ color: "red" }}>{formik.errors.role}</p>
       )}
-
-      <Button type="submit" variant="contained">
-        Log In
-      </Button>
+      <Button type="submit">Log In</Button>
       <p>
-        Don`t have an account?{" "}
-        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
-          Register
-        </Link>
+        Don`t have an account? <Link to="/register">Register</Link>
       </p>
     </Box>
   );

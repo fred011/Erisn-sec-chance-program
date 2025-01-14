@@ -28,10 +28,12 @@ import ScheduleStudent from "./Pages/Student/components/schedule/ScheduleStudent
 import AttendanceStudent from "./Pages/Student/components/attendance/AttendanceStudent";
 import ExaminationsStudent from "./Pages/Student/components/examinations/ExaminationsStudent";
 import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent";
+import { AuthProvider } from "./Pages/AuthPages/AuthContext";
+import ProtectedRoute from "./Pages/AuthPages/ProtectedRoute";
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -39,7 +41,14 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Admin Route */}
-          <Route path="admin" element={<Admin />}>
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="attendance" element={<Attendance />} />
@@ -54,7 +63,14 @@ function App() {
           </Route>
 
           {/* Teacher Route */}
-          <Route path="teacher" element={<Teacher />}>
+          <Route
+            path="/teacher/*"
+            element={
+              <ProtectedRoute>
+                <Teacher />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<TeacherDetails />} />
             <Route path="schedule" element={<ScheduleTeacher />} />
             <Route path="attendance" element={<AttendanceTeacher />} />
@@ -63,7 +79,14 @@ function App() {
           </Route>
 
           {/* Student Route */}
-          <Route path="student" element={<Student />}>
+          <Route
+            path="/student/*"
+            element={
+              <ProtectedRoute>
+                <Student />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<StudentDetails />} />
             <Route path="schedule" element={<ScheduleStudent />} />
             <Route path="attendance" element={<AttendanceStudent />} />
@@ -72,7 +95,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
-    </>
+    </AuthProvider>
   );
 }
 
