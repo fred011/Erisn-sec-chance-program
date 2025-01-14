@@ -114,7 +114,9 @@ const Class = () => {
   }, []);
   return (
     <>
-      <h1>Classes</h1>
+      <Typography variant="h3" sx={{ textAlign: "center", fontWeight: "700" }}>
+        Classes
+      </Typography>
       <Box
         component="form"
         sx={{
@@ -167,15 +169,16 @@ const Class = () => {
         {Formik.touched.class_num && Formik.errors.class_num && (
           <p style={{ color: "red" }}>{Formik.errors.class_num}</p>
         )}
-        <Button type="submit" variant="contained">
+        <Button sx={{ width: "120px" }} type="submit" variant="contained">
           Submit
         </Button>
 
         {edit && (
           <Button
+            sx={{ width: "120px" }}
             onClick={() => cancelEdit()}
             type="button"
-            variant="contained"
+            variant="outlined"
           >
             Cancel
           </Button>
