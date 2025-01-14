@@ -11,9 +11,10 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import { AuthContext } from "../../../AuthContext";
+
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../AuthContext";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
