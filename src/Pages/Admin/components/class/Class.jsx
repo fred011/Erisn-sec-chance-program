@@ -31,7 +31,7 @@ const Class = () => {
       .then((res) => {
         console.log("Class delete response", res);
 
-        alert("Class deleted successfully");
+        alert("Class deleted successfully, reload the page to see changes");
       })
       .catch((err) => {
         console.log("Error in deleting class", err);
@@ -58,6 +58,7 @@ const Class = () => {
           .then((res) => {
             console.log("Class update response", res);
             alert("Class updated successfully");
+            fetchAllClasses();
             cancelEdit();
           })
           .catch((err) => {
@@ -73,7 +74,7 @@ const Class = () => {
           .then((res) => {
             console.log("Class add response", res);
             alert("Class added successfully");
-            // fetchAllClasses();
+            fetchAllClasses();
           })
           .catch((err) => {
             console.log(
