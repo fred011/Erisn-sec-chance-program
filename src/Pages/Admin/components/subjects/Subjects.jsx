@@ -51,7 +51,12 @@ const Subject = () => {
     initialValues: { subject_name: "", subject_codename: "" },
     validationSchema: subjectSchema,
     onSubmit: (values) => {
-      console.log(values);
+      console.log("Submitting values:", values);
+      // Check if values.subject_name and values.subject_codename are populated
+      if (!values.subject_name || !values.subject_codename) {
+        alert("Both fields are required.");
+        return;
+      }
 
       if (edit) {
         axios
