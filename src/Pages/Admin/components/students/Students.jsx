@@ -49,20 +49,22 @@ export default function Students() {
   };
 
   const handleDelete = (id) => {
-    console.log("Delete", id);
-    axios
-      .delete(`${baseAPI}/student/delete/${id}`)
-      .then((res) => {
-        console.log("Student delete response", res);
+    if (confirm("Are you sure you want to delete student?")) {
+      console.log("Delete", id);
+      axios
+        .delete(`${baseAPI}/student/delete/${id}`)
+        .then((res) => {
+          console.log("Student delete response", res);
 
-        alert("Student deleted successfully");
-        fetchStudents();
-      })
-      .catch((err) => {
-        console.log("Error in deleting student", err);
+          alert("Student deleted successfully");
+          fetchStudents();
+        })
+        .catch((err) => {
+          console.log("Error in deleting student", err);
 
-        alert("Failed to delete student");
-      });
+          alert("Failed to delete student");
+        });
+    }
   };
   const cancelEdit = () => {
     setEdit(false);
