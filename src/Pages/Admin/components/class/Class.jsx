@@ -69,6 +69,7 @@ const Class = () => {
             alert("Class updated successfully");
 
             cancelEdit();
+            fetchAllClasses();
           })
           .catch((err) => {
             console.log(

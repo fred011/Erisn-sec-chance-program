@@ -74,6 +74,7 @@ const Subject = () => {
             alert("Subject updated successfully");
 
             cancelEdit();
+            fetchAllSubjects();
           })
           .catch((err) => {
             console.log(
