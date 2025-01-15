@@ -23,12 +23,16 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-import { studentSchema } from "../../../../Components/yupSchema/studentSchema";
+import {
+  studentEditSchema,
+  studentSchema,
+} from "../../../../Components/yupSchema/studentSchema";
 import { useState } from "react";
 import { baseAPI } from "../../../../environment";
 
 export default function Students() {
   const [edit, setEdit] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   const [classes, setClasses] = useState([]);
   // Define initial form field values
@@ -47,11 +51,13 @@ export default function Students() {
   const handleDelete = (id) => {};
   const cancelEdit = () => {
     setEdit(false);
+    setEditId(null);
     Formik.resetForm();
   };
 
   const handleEdit = (id) => {
     setEdit(true);
+    setEditId(id);
     const filteredStudent = students.filter((x) => x._id === id);
     console.log("Filtered Student ", filteredStudent);
 
@@ -67,7 +73,7 @@ export default function Students() {
   // Formik setup for form state management, validation, and submission
   const formik = useFormik({
     initialValues, // Set initial values
-    validationSchema: studentSchema, // Attach Yup schema for validation
+    validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
     onSubmit: (values, { resetForm }) => {
       if (edit) {
         const data = {
@@ -86,7 +92,7 @@ export default function Students() {
 
         axios
           .patch(
-            `https://erisn-api.onrender.com/api/student/update`, // API endpoint depends on the selected role
+            `https://erisn-api.onrender.com/api/student/update/${editId}`, // API endpoint depends on the selected role
             data,
             { withCredentials: true } // Include credentials like cookies
           )
