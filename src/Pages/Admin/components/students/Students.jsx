@@ -188,13 +188,13 @@ export default function Students() {
     Formik.resetForm();
   };
 
-  const handleEdit = (id, name, email) => {
+  const handleEdit = (id) => {
     setEdit(true);
     const filteredStudent = students.filter((x) => x._id === id);
     console.log("Filtered Student ", filteredStudent);
 
-    Formik.setFieldValue("name", name);
-    Formik.setFieldValue("email", email);
+    Formik.setFieldValue("name", filteredStudent[0].name);
+    Formik.setFieldValue("email", filteredStudent[0].email);
     Formik.setFieldValue("student_class", filteredStudent[0].student_class._id);
     Formik.setFieldValue("age", filteredStudent[0].age);
     Formik.setFieldValue("gender", filteredStudent[0].gender);
@@ -561,7 +561,10 @@ export default function Students() {
           {students &&
             students.map((student) => {
               return (
-                <Card key={student._id} sx={{ maxWidth: 345 }}>
+                <Card
+                  key={student._id}
+                  sx={{ maxWidth: 345, marginLeft: "5px" }}
+                >
                   <CardActionArea>
                     <CardContent>
                       <Typography
