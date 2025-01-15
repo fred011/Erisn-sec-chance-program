@@ -98,15 +98,15 @@ export default function Students() {
           )
           .then((res) => {
             // On successful registration
-            console.log("Registered Students data : ", res.data.data);
-            alert(`Student registered successfully!`);
+            console.log("updated Students data : ", res.data.data);
+            alert(`Student updated successfully!`);
 
             resetForm(); // Clear the form
             fetchStudents();
           })
           .catch((err) => {
             // Handle errors
-            alert(err.response?.data?.error || "Error registering Student");
+            alert(err.response?.data?.error || "Error updating Student");
           });
       } else {
         // Prepare the data to be sent to the API
@@ -429,10 +429,7 @@ export default function Students() {
           {students &&
             students.map((student) => {
               return (
-                <Card
-                  key={student._id}
-                  sx={{ maxWidth: 345, marginLeft: "10px" }}
-                >
+                <Card key={student._id} sx={{ maxWidth: 345, margin: "10px" }}>
                   <CardActionArea>
                     <CardContent>
                       <Typography
