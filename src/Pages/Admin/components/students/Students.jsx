@@ -48,7 +48,22 @@ export default function Students() {
     confirm_password: "",
   };
 
-  const handleDelete = (id) => {};
+  const handleDelete = (id) => {
+    console.log("Delete", id);
+    axios
+      .delete(`${baseAPI}/student/delete/${id}`)
+      .then((res) => {
+        console.log("Student delete response", res);
+
+        alert("Student deleted successfully");
+        fetchStudents();
+      })
+      .catch((err) => {
+        console.log("Error in deleting student", err);
+
+        alert("Failed to delete student");
+      });
+  };
   const cancelEdit = () => {
     setEdit(false);
     setEditId(null);
