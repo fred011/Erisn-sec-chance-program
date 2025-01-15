@@ -199,10 +199,10 @@ export default function Students() {
         )
         .then((res) => {
           // On successful registration
+          console.log("Registered Students data : ", res);
           alert(`Student registered successfully!`);
 
           resetForm(); // Clear the form
-          // Navigate to the respective role dashboard
         })
         .catch((err) => {
           // Handle errors
