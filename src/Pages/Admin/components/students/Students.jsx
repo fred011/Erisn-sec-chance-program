@@ -234,6 +234,7 @@ export default function Students() {
             alert(`Student registered successfully!`);
 
             resetForm(); // Clear the form
+            fetchStudents();
           })
           .catch((err) => {
             // Handle errors
@@ -264,7 +265,8 @@ export default function Students() {
             console.log("Registered Students data : ", res.data.data);
             alert(`Student registered successfully!`);
 
-            resetForm(); // Clear the form
+            resetForm();
+            fetchStudents();
           })
           .catch((err) => {
             // Handle errors
@@ -516,7 +518,7 @@ export default function Students() {
           }}
         >
           <TextField
-            label="earch"
+            label="search"
             value={params.search ? params.search : ""}
             onChange={(e) => {
               handleSearch(e);
@@ -564,38 +566,38 @@ export default function Students() {
                     <CardContent>
                       <Typography
                         gutterBottom
-                        variant="h4"
+                        variant="h5"
                         component="div"
-                        sx={{ fontWeight: "700" }}
+                        sx={{ fontWeight: "600" }}
                       >
                         Student Details
                       </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        <span style={{ fontWeight: 700 }}>Name :</span>
+                      <Typography gutterBottom variant="h6" component="div">
+                        <span style={{ fontWeight: 600 }}>Name :</span>
                         {student.name}
                       </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        <span style={{ fontWeight: 700 }}>Email :</span>
+                      <Typography gutterBottom variant="h6" component="div">
+                        <span style={{ fontWeight: 600 }}>Email :</span>
                         {student.email}
                       </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        <span style={{ fontWeight: 700 }}>Class :</span>
+                      <Typography gutterBottom variant="h6" component="div">
+                        <span style={{ fontWeight: 600 }}>Class :</span>
                         {student.student_class.class_text}
                       </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        <span style={{ fontWeight: 700 }}>Age :</span>
+                      <Typography gutterBottom variant="h6" component="div">
+                        <span style={{ fontWeight: 600 }}>Age :</span>
                         {student.age}
                       </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        <span style={{ fontWeight: 700 }}>Gender :</span>
+                      <Typography gutterBottom variant="h6" component="div">
+                        <span style={{ fontWeight: 600 }}>Gender :</span>
                         {student.gender}
                       </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        <span style={{ fontWeight: 700 }}>Guardian :</span>
+                      <Typography gutterBottom variant="h6" component="div">
+                        <span style={{ fontWeight: 600 }}>Guardian :</span>
                         {student.guardian}
                       </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        <span style={{ fontWeight: 700 }}>
+                      <Typography gutterBottom variant="h6" component="div">
+                        <span style={{ fontWeight: 600 }}>
                           Guardian Phone :
                         </span>
                         {student.guardian}
