@@ -600,7 +600,7 @@ export default function Students() {
                         <span style={{ fontWeight: 600 }}>
                           Guardian Phone :
                         </span>
-                        {student.guardian}
+                        {student.guardian_phone}
                       </Typography>
 
                       <Typography
