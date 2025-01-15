@@ -25,20 +25,22 @@ const Subject = () => {
     Formik.setFieldValue("subject_codename", subject_codename);
   };
   const handleDelete = (id) => {
-    console.log("Delete", id);
-    axios
-      .delete(`${baseAPI}/subject/delete/${id}`)
-      .then((res) => {
-        console.log("Subject delete response", res);
+    if (confirm("Are you sure you want to delete subject?")) {
+      console.log("Delete", id);
+      axios
+        .delete(`${baseAPI}/subject/delete/${id}`)
+        .then((res) => {
+          console.log("Subject delete response", res);
 
-        alert("Subject deleted successfully, reload the page to see changes");
-        fetchAllSubjects();
-      })
-      .catch((err) => {
-        console.log("Error in deleting subject", err);
+          alert("Subject deleted successfully, reload the page to see changes");
+          fetchAllSubjects();
+        })
+        .catch((err) => {
+          console.log("Error in deleting subject", err);
 
-        alert("Failed to delete subject");
-      });
+          alert("Failed to delete subject");
+        });
+    }
   };
   const cancelEdit = () => {
     setEdit(false);

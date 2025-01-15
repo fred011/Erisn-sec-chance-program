@@ -25,20 +25,22 @@ const Class = () => {
     Formik.setFieldValue("class_num", class_num);
   };
   const handleDelete = (id) => {
-    console.log("Delete", id);
-    axios
-      .delete(`${baseAPI}/class/delete/${id}`)
-      .then((res) => {
-        console.log("Class delete response", res);
+    if (confirm("Are you sure you want to delete class?")) {
+      console.log("Delete", id);
+      axios
+        .delete(`${baseAPI}/class/delete/${id}`)
+        .then((res) => {
+          console.log("Class delete response", res);
 
-        alert("Class deleted successfully, reload the page to see changes");
-        fetchAllClasses();
-      })
-      .catch((err) => {
-        console.log("Error in deleting class", err);
+          alert("Class deleted successfully, reload the page to see changes");
+          fetchAllClasses();
+        })
+        .catch((err) => {
+          console.log("Error in deleting class", err);
 
-        alert("Failed to delete class");
-      });
+          alert("Failed to delete class");
+        });
+    }
   };
   const cancelEdit = () => {
     setEdit(false);
