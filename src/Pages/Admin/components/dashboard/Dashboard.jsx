@@ -66,7 +66,6 @@ import { baseAPI } from "../../../../environment";
 
 const Dashboard = () => {
   const [adminName, setAdminName] = useState("");
-  const [error, setError] = useState("");
 
   const fetchAdminName = async () => {
     axios
