@@ -112,12 +112,12 @@ export default function Login() {
       <Button type="submit" variant="contained">
         Log In
       </Button>
-      <p>
+      {/* <p>
         Dont have an account?{" "}
         <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
           Register
         </Link>
-      </p>
+      </p> */}
     </Box>
   );
 }
