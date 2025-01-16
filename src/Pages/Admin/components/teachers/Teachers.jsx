@@ -435,28 +435,30 @@ export default function Teachers() {
                         Teacher Details
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Name :</span>
+                        <span style={{ fontWeight: 700 }}>Name : </span>
                         {teacher.name}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Email :</span>
+                        <span style={{ fontWeight: 700 }}>Email : </span>
                         {teacher.email}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Qualification :</span>
+                        <span style={{ fontWeight: 700 }}>
+                          Qualification :{" "}
+                        </span>
                         {teacher.qualification}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Age :</span>
+                        <span style={{ fontWeight: 700 }}>Age : </span>
                         {teacher.age}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Gender :</span>
+                        <span style={{ fontWeight: 700 }}>Gender : </span>
                         {teacher.gender}
                       </Typography>
 
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Phone Number :</span>
+                        <span style={{ fontWeight: 700 }}>Phone Number : </span>
                         {teacher.phone_number}
                       </Typography>
 

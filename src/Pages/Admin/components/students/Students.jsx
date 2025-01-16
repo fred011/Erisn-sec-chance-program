@@ -458,32 +458,32 @@ export default function Students() {
                         Student Details
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Name :</span>
+                        <span style={{ fontWeight: 700 }}>Name : </span>
                         {student.name}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Email :</span>
+                        <span style={{ fontWeight: 700 }}>Email : </span>
                         {student.email}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Class :</span>
+                        <span style={{ fontWeight: 700 }}>Class : </span>
                         {student.student_class.class_text}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Age :</span>
+                        <span style={{ fontWeight: 700 }}>Age : </span>
                         {student.age}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Gender :</span>
+                        <span style={{ fontWeight: 700 }}>Gender : </span>
                         {student.gender}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Guardian :</span>
+                        <span style={{ fontWeight: 700 }}>Guardian : </span>
                         {student.guardian}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
                         <span style={{ fontWeight: 700 }}>
-                          Guardian Phone :
+                          Guardian Phone :{" "}
                         </span>
                         {student.guardian_phone}
                       </Typography>
