@@ -320,9 +320,9 @@ export default function Students() {
               name="gender"
               onChange={formik.handleChange}
             >
-              <MenuItem value={"male"}>Male</MenuItem>
-              <MenuItem value={"female"}>Female</MenuItem>
-              <MenuItem value={"other"}>Other</MenuItem>
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
+              <MenuItem value={"Other"}>Other</MenuItem>
             </Select>
           </FormControl>
           {formik.touched.gender && formik.errors.gender && (
