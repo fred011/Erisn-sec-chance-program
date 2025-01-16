@@ -66,10 +66,6 @@ import PropTypes from "prop-types"; // Import PropTypes
 const Dashboard = ({ adminId }) => {
   const [adminName, setAdminName] = useState("");
 
-  Dashboard.propTypes = {
-    adminId: PropTypes.string.isRequired, // adminId must be a string and is required
-  };
-
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
@@ -78,6 +74,7 @@ const Dashboard = ({ adminId }) => {
         );
         if (response.data.success) {
           setAdminName(response.data.admin.name);
+          console.log(response.data.admin.name);
         }
       } catch (error) {
         console.error("Error fetching admin data:", error);
@@ -119,6 +116,9 @@ const Dashboard = ({ adminId }) => {
       </Box>
     </>
   );
+};
+Dashboard.propTypes = {
+  adminId: PropTypes.string.isRequired, // adminId must be a string and is required
 };
 
 export default Dashboard;
