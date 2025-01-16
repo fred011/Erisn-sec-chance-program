@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types"; // Import PropTypes
+import { baseAPI } from "../../../../environment";
 
 // import { useEffect, useState } from "react";
 // import axios from "axios";
@@ -63,26 +64,32 @@ import PropTypes from "prop-types"; // Import PropTypes
 //   );
 // };
 
-const Dashboard = ({ adminId }) => {
+const Dashboard = () => {
   const [adminName, setAdminName] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchAdminData = async () => {
+    const fetchAdminName = async () => {
       try {
-        const response = await axios.get(
-          `https://erisn-api.onrender.com/api/admin/fetch-single/${adminId}`
-        );
-        if (response.data.success) {
-          setAdminName(response.data.admin.name);
-          console.log(response.data.admin.name);
-        }
-      } catch (error) {
-        console.error("Error fetching admin data:", error);
+        console.log("Fetching logged-in admin name...");
+
+        // Replace with your API URL
+        const response = await axios.get(`${baseAPI}/admin/name`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token for authentication
+          },
+        });
+
+        console.log("Admin name fetched successfully:", response.data.name);
+        setAdminName(response.data.name);
+      } catch (err) {
+        console.error("Error fetching admin name:", err);
+        setError("Failed to fetch admin name");
       }
     };
 
-    fetchAdminData();
-  }, [adminId]);
+    fetchAdminName();
+  }, []);
 
   return (
     <>
@@ -106,7 +113,11 @@ const Dashboard = ({ adminId }) => {
           }}
         >
           <Typography variant="h3" color="lightgrey">
-            Welcome, {adminName}
+            {adminName ? (
+              <p>Welcome, {adminName}!</p>
+            ) : (
+              <p>{error || "Loading admin name..."}</p>
+            )}
           </Typography>
 
           <Typography variant="h5" color="grey">
@@ -116,9 +127,6 @@ const Dashboard = ({ adminId }) => {
       </Box>
     </>
   );
-};
-Dashboard.propTypes = {
-  adminId: PropTypes.string.isRequired, // adminId must be a string and is required
 };
 
 export default Dashboard;
