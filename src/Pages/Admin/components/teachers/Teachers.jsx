@@ -80,7 +80,7 @@ export default function Teachers() {
 
     formik.setFieldValue("name", filteredTeacher[0].name);
     formik.setFieldValue("email", filteredTeacher[0].email);
-    formik.setFieldValue("qualification", filteredTeacher[0].qualification._id);
+    formik.setFieldValue("qualification", filteredTeacher[0].qualification);
     formik.setFieldValue("age", filteredTeacher[0].age);
     formik.setFieldValue("gender", filteredTeacher[0].gender);
     formik.setFieldValue("guardian", filteredTeacher[0].guardian);
