@@ -78,9 +78,9 @@ const LandingPage = () => {
         </nav>
 
         <div className="btns">
-          <button className="login" onClick={handleRegister}>
+          {/* <button className="login" onClick={handleRegister}>
             Register
-          </button>
+          </button> */}
           <button className="login" onClick={handleSignIn}>
             Log In
           </button>
