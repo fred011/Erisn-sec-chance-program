@@ -68,26 +68,18 @@ const Dashboard = () => {
   const [adminName, setAdminName] = useState("");
   const [error, setError] = useState("");
 
+  const fetchAdminName = async () => {
+    axios
+      .get(`${baseAPI}/admin/name`)
+      .then((res) => {
+        console.log("Admin name fetched successfully:", res.data.name);
+        setAdminName(res.data.name);
+      })
+      .catch((err) => {
+        console.log("Error fetching admin name:", err);
+      });
+  };
   useEffect(() => {
-    const fetchAdminName = async () => {
-      try {
-        console.log("Fetching logged-in admin name...");
-
-        // Replace with your API URL
-        const response = await axios.get(`${baseAPI}/admin/name`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token for authentication
-          },
-        });
-
-        console.log("Admin name fetched successfully:", response.data.name);
-        setAdminName(response.data.name);
-      } catch (err) {
-        console.error("Error fetching admin name:", err);
-        setError("Failed to fetch admin name");
-      }
-    };
-
     fetchAdminName();
   }, []);
 
