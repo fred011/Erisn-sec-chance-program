@@ -24,7 +24,7 @@ export default function Register() {
     email: "",
     password: "",
     confirm_password: "",
-    //role: "", // Will store the selected role
+    role: "", // Will store the selected role
   };
 
   // Formik setup for form state management, validation, and submission
@@ -37,27 +37,26 @@ export default function Register() {
         name: values.name,
         email: values.email,
         password: values.password,
-        //role: values.role,
+        role: values.role,
       };
 
       // API call to register the user
       axios
         .post(
-          `https://erisn-api.onrender.com/api/admin/register`, // API endpoint depends on the selected role
+          `https://erisn-api.onrender.com/api/${values.role}/register`, // API endpoint depends on the selected role
           data,
           { withCredentials: true } // Include credentials like cookies
         )
         .then((res) => {
           // On successful registration
           alert(
-            // `${
-            //   values.role.charAt(0).toUpperCase() + values.role.slice(1)
-            // } registered successfully!`
-            "Admin Registered successfully!"
+            `${
+              values.role.charAt(0).toUpperCase() + values.role.slice(1)
+            } registered successfully!`
           );
 
           resetForm(); // Clear the form
-          navigate(`/admin`); // Navigate to the respective role dashboard
+          navigate(`/${values.role}`); // Navigate to the respective role dashboard
         })
         .catch((err) => {
           // Handle errors
@@ -135,7 +134,7 @@ export default function Register() {
         )}
 
         {/* Role Selection */}
-        {/* <FormControl component="fieldset">
+        <FormControl component="fieldset">
           <FormLabel component="legend">Register As:</FormLabel>
           <RadioGroup
             name="role"
@@ -144,7 +143,7 @@ export default function Register() {
             onBlur={formik.handleBlur}
           >
             <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-            <FormControlLabel
+            {/* <FormControlLabel
               value="teacher"
               control={<Radio />}
               label="Teacher"
@@ -153,12 +152,12 @@ export default function Register() {
               value="student"
               control={<Radio />}
               label="Student"
-            />
+            /> */}
           </RadioGroup>
         </FormControl>
         {formik.touched.role && formik.errors.role && (
           <p style={{ color: "red" }}>{formik.errors.role}</p>
-        )} */}
+        )}
 
         {/* Submit Button */}
         <Button type="submit" variant="contained">
