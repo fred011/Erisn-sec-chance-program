@@ -130,7 +130,7 @@ export default function Register() {
         )}
 
         {/* Role Selection */}
-        <FormControl component="fieldset">
+        {/* <FormControl component="fieldset">
           <FormLabel component="legend">Register As:</FormLabel>
           <RadioGroup
             name="role"
@@ -138,8 +138,8 @@ export default function Register() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            {/* <FormControlLabel value="admin" control={<Radio />} label="Admin" /> */}
-            {/* <FormControlLabel
+            <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+            <FormControlLabel
               value="teacher"
               control={<Radio />}
               label="Teacher"
@@ -148,12 +148,12 @@ export default function Register() {
               value="student"
               control={<Radio />}
               label="Student"
-            /> */}
+            />
           </RadioGroup>
-        </FormControl>
-        {formik.touched.role && formik.errors.role && (
+        </FormControl> */}
+        {/* {formik.touched.role && formik.errors.role && (
           <p style={{ color: "red" }}>{formik.errors.role}</p>
-        )}
+        )} */}
 
         {/* Submit Button */}
         <Button type="submit" variant="contained">
