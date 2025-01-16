@@ -24,7 +24,7 @@ export default function Register() {
     email: "",
     password: "",
     confirm_password: "",
-    role: "", // Will store the selected role
+    //role: "", // Will store the selected role
   };
 
   // Formik setup for form state management, validation, and submission
@@ -37,26 +37,22 @@ export default function Register() {
         name: values.name,
         email: values.email,
         password: values.password,
-        role: values.role,
+        //role: values.role,
       };
 
       // API call to register the user
       axios
         .post(
-          `https://erisn-api.onrender.com/api/${values.role}/register`, // API endpoint depends on the selected role
+          `https://erisn-api.onrender.com/api/admin/register`, // API endpoint depends on the selected role
           data,
           { withCredentials: true } // Include credentials like cookies
         )
         .then((res) => {
           // On successful registration
-          alert(
-            `${
-              values.role.charAt(0).toUpperCase() + values.role.slice(1)
-            } registered successfully!`
-          );
+          alert(`Admin registered successfully!`);
 
           resetForm(); // Clear the form
-          navigate(`/${values.role}`); // Navigate to the respective role dashboard
+          navigate(`/admin`); // Navigate to the respective role dashboard
         })
         .catch((err) => {
           // Handle errors
@@ -142,7 +138,7 @@ export default function Register() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+            {/* <FormControlLabel value="admin" control={<Radio />} label="Admin" /> */}
             {/* <FormControlLabel
               value="teacher"
               control={<Radio />}
