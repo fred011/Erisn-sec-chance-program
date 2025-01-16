@@ -6,6 +6,7 @@ import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import PropTypes from "prop-types"; // Import PropTypes
 
 // import { useEffect, useState } from "react";
 // import axios from "axios";
@@ -62,14 +63,18 @@ import axios from "axios";
 //   );
 // };
 
-const Dashboard = () => {
+const Dashboard = ({ adminId }) => {
   const [adminName, setAdminName] = useState("");
+
+  Dashboard.propTypes = {
+    adminId: PropTypes.string.isRequired, // adminId must be a string and is required
+  };
 
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
         const response = await axios.get(
-          "https://erisn-api.onrender.com/api/admin/fetch-single"
+          `https://erisn-api.onrender.com/api/admin/fetch-single/${adminId}`
         );
         if (response.data.success) {
           setAdminName(response.data.admin.name);
@@ -80,7 +85,7 @@ const Dashboard = () => {
     };
 
     fetchAdminData();
-  }, []);
+  }, [adminId]);
 
   return (
     <>
