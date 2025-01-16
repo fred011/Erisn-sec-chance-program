@@ -78,7 +78,7 @@ export default function Register() {
         autoComplete="off"
         onSubmit={formik.handleSubmit} // Attach Formik's submit handler
       >
-        <h1>Register</h1>
+        <h1>Admin Registration Form</h1>
         {/* Name Input */}
         <TextField
           name="name"

@@ -32,9 +32,9 @@ const LandingPage = () => {
   const handleSignIn = () => {
     navigate("/login");
   };
-  const handleRegister = () => {
-    navigate("/register");
-  };
+  // const handleRegister = () => {
+  //   navigate("/register");
+  // };
 
   return (
     <div className="parent">
@@ -90,7 +90,7 @@ const LandingPage = () => {
         <div className="hero-content">
           <h1>Welcome to the Erisn Empowerment Program`s</h1>
           <span> Students Management System</span>
-          <button className="start-btn" onClick={handleRegister}>
+          <button className="start-btn" onClick={handleSignIn}>
             Get Started
           </button>
         </div>
