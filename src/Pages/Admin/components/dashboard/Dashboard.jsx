@@ -112,13 +112,15 @@ const Dashboard = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h3" color="lightgrey">
-            {adminName ? (
-              <p>Welcome, {adminName}!</p>
-            ) : (
-              <p>{error || "Loading admin name..."}</p>
-            )}
-          </Typography>
+          {adminName ? (
+            <Typography variant="h3" color="lightgrey">
+              Welcome, {adminName}!
+            </Typography>
+          ) : (
+            <Typography variant="h3" color="lightgrey">
+              Welcome, Admin!
+            </Typography>
+          )}
 
           <Typography variant="h5" color="grey">
             To Erisn Africa`s Student Management System
