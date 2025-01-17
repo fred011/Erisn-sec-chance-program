@@ -222,7 +222,7 @@ export default function Students() {
     <>
       <Box
         component={"div"}
-        sx={{ height: "100%", paddingTop: "60px", paddingBottom: "60px" }}
+        sx={{ height: "100%", paddingTop: "20px", paddingBottom: "20px" }}
       >
         <Typography
           variant="h2"
