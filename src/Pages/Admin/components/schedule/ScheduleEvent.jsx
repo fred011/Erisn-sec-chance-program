@@ -143,7 +143,7 @@ export default function ScheduleEvent({ selectedClass }) {
         autoComplete="off"
         onSubmit={formik.handleSubmit} // Attach Formik's submit handler
       >
-        <Typography variant="h2">Add New Period</Typography>
+        <Typography variant="h3">Add New Period</Typography>
         <FormControl fullWidth>
           <InputLabel id="teachers">Teachers</InputLabel>
           <Select
