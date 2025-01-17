@@ -69,6 +69,12 @@ export default function ScheduleEvent({ selectedClass }) {
       startTime: "13:00",
       endTime: "14:00",
     },
+    {
+      id: 6,
+      label: "Period 6 (14:00 AM - 15:00 AM)",
+      startTime: "14:00",
+      endTime: "15:00",
+    },
   ];
 
   const formik = useFormik({
