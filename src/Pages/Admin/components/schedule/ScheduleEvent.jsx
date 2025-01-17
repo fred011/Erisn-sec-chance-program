@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
 
-const ScheduleForm = () => {
+const ScheduleEvent = () => {
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -159,4 +159,4 @@ const ScheduleForm = () => {
   );
 };
 
-export default ScheduleForm;
+export default ScheduleEvent;
