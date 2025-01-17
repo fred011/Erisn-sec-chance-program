@@ -151,7 +151,7 @@ export default function Admin() {
     { link: "/admin/subjects", component: "Subjects", icon: SubjectIcon },
     { link: "/admin/students", component: "Students", icon: PeopleIcon },
     { link: "/admin/teachers", component: "Teachers", icon: PeopleAltIcon },
-    { link: "/admin/fees", component: "Fees", icon: AttachMoneyIcon },
+    //{ link: "/admin/fees", component: "Fees", icon: AttachMoneyIcon },
     { link: "/admin/schedule", component: "Schedule", icon: EventIcon },
     {
       link: "/admin/attendance",

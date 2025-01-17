@@ -161,24 +161,8 @@ export default function Teachers() {
     },
   });
 
-  const fetchClasses = () => {
-    axios
-      .get(`${baseAPI}/class/all`)
-      .then((res) => {
-        setClasses(res.data.data);
-      })
-      .catch((e) => {
-        console.log("Error in fetching class");
-      });
-  };
-
   const [params, setParams] = useState({});
-  const handleClass = (e) => {
-    setParams((prevParams) => ({
-      ...prevParams,
-      qualification: e.target.value || undefined,
-    }));
-  };
+
   const handleSearch = (e) => {
     setParams((prevParams) => ({
       ...prevParams,
@@ -199,9 +183,6 @@ export default function Teachers() {
       });
   };
 
-  React.useEffect(() => {
-    fetchClasses();
-  }, []);
   React.useEffect(() => {
     fetchTeachers();
   }, [params]);
@@ -387,29 +368,6 @@ export default function Teachers() {
             }}
             // onBlur={formik.handleBlur}
           />
-
-          {/* <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
-            <InputLabel id="qualification">Teacher Class</InputLabel>
-            <Select
-              // value={formik.values.qualification}
-              label="Teacher Class"
-              value={params.qualification ? params.qualification : ""}
-              // name="qualification"
-              onChange={(e) => {
-                handleClass(e);
-              }}
-            >
-              <MenuItem value="">Select Class</MenuItem>
-              {classes &&
-                classes.map((x) => {
-                  return (
-                    <MenuItem key={x._id} value={x._id}>
-                      {x.class_text} ({x.class_num})
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl> */}
         </Box>
         <Box
           component={"div"}

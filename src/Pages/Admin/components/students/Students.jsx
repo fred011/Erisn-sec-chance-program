@@ -21,6 +21,15 @@ import {
   CardMedia,
   CardContent,
 } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import axios from "axios";
 
 import {
@@ -438,7 +447,7 @@ export default function Students() {
             </Select>
           </FormControl>
         </Box>
-        <Box
+        {/* <Box
           component={"div"}
           sx={{
             display: "flex",
@@ -519,7 +528,56 @@ export default function Students() {
                 </Card>
               );
             })}
-        </Box>
+        </Box> */}
+        {/* Table Section */}
+        <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Class</TableCell>
+                <TableCell>Age</TableCell>
+                <TableCell>Gender</TableCell>
+                <TableCell>Guardian</TableCell>
+                <TableCell>Guardian Phone</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {students.map((student) => (
+                <TableRow key={student._id}>
+                  <TableCell>{student.name}</TableCell>
+                  <TableCell>{student.email}</TableCell>
+                  <TableCell>
+                    {student.student_class
+                      ? student.student_class.class_text
+                      : "Not Assigned"}
+                  </TableCell>
+                  <TableCell>{student.age}</TableCell>
+                  <TableCell>{student.gender}</TableCell>
+                  <TableCell>{student.guardian}</TableCell>
+                  <TableCell>{student.guardian_phone}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => handleEdit(student._id)}
+                      startIcon={<EditIcon />}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(student._id)}
+                      startIcon={<DeleteIcon />}
+                      color="error"
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </>
   );
