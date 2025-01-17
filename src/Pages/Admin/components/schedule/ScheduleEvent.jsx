@@ -82,30 +82,46 @@ export default function ScheduleEvent({ selectedClass }) {
     validationSchema: periodSchema,
     onSubmit: (values) => {
       let date = values.date;
-      let startTime = values.period.split(",")[0];
-      let endTime = values.period.split(",")[1];
+      let startTime = values.period.split(",")[0].trim();
+      let endTime = values.period.split(",")[1].trim();
+
+      const formattedStartTime = new Date(
+        values.date.setHours(
+          parseInt(startTime.split(":")[0], 10),
+          parseInt(startTime.split(":")[1], 10)
+        )
+      );
+      const formattedEndTime = new Date(
+        values.date.setHours(
+          parseInt(endTime.split(":")[0], 10),
+          parseInt(endTime.split(":")[1], 10)
+        )
+      );
 
       console.log({
         ...values,
         selectedClass,
-        startTime: new Date(
-          date.setHours(startTime.split(":")[0], startTime.split(":")[1])
-        ),
-        endTime: new Date(
-          date.setHours(endTime.split(":")[0], endTime.split(":")[1])
-        ),
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
       });
 
       console.log("Schedule", { ...values, date, startTime, endTime });
       axios
         .post(`${baseAPI}/schedule/create`, {
-          ...values,
+          teacher: formik.values.teacher,
+          subject: formik.values.subject,
           selectedClass,
           startTime: new Date(
-            date.setHours(startTime.split(":")[0], startTime.split(":")[1])
+            formik.values.date.setHours(
+              formik.values.period.split(",")[0].split(":")[0],
+              formik.values.period.split(",")[0].split(":")[1]
+            )
           ),
           endTime: new Date(
-            date.setHours(endTime.split(":")[0], endTime.split(":")[1])
+            formik.values.date.setHours(
+              formik.values.period.split(",")[1].split(":")[0],
+              formik.values.period.split(",")[1].split(":")[1]
+            )
           ),
         })
         .then((res) => {
