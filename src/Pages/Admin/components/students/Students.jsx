@@ -467,7 +467,9 @@ export default function Students() {
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
                         <span style={{ fontWeight: 700 }}>Class : </span>
-                        {student.student_class.class_text}
+                        {student.student_class
+                          ? student.student_class.class_text
+                          : "Not Assigned"}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="div">
                         <span style={{ fontWeight: 700 }}>Age : </span>
