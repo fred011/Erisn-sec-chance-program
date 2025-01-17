@@ -222,7 +222,7 @@ export default function Students() {
     <>
       <Box
         component={"div"}
-        sx={{ height: "100%", paddingTop: "20px", paddingBottom: "20px" }}
+        sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
       >
         <Typography
           variant="h2"
@@ -240,7 +240,7 @@ export default function Students() {
             width: "60vw",
             minWidth: "230px",
             margin: "auto",
-            marginTop: "50px",
+            marginTop: "10px",
           }}
           noValidate
           autoComplete="off"

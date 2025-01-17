@@ -138,7 +138,7 @@ export default function ScheduleEvent({ selectedClass }) {
           width: "60vw",
           minWidth: "230px",
           margin: "auto",
-          marginTop: "50px",
+          marginTop: "5px",
         }}
         noValidate
         autoComplete="off"

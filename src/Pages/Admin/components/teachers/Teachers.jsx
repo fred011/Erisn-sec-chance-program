@@ -200,7 +200,7 @@ export default function Teachers() {
     <>
       <Box
         component={"div"}
-        sx={{ height: "100%", paddingTop: "60px", paddingBottom: "60px" }}
+        sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
       >
         <Typography
           variant="h2"
@@ -218,7 +218,7 @@ export default function Teachers() {
             width: "60vw",
             minWidth: "230px",
             margin: "auto",
-            marginTop: "50px",
+            marginTop: "10px",
           }}
           noValidate
           autoComplete="off"
