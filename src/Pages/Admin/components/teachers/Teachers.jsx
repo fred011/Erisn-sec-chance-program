@@ -67,10 +67,10 @@ export default function Teachers() {
     }
   };
   const cancelEdit = () => {
-      setEdit(false);
-      setEditId(null);
-      Formik.resetForm();
-    };
+    setEdit(false);
+    setEditId(null);
+    formik.resetForm();
+  };
 
   const handleEdit = (id) => {
     setEdit(true);
