@@ -69,7 +69,6 @@ export default function Students() {
   const cancelEdit = () => {
     setEdit(false);
     setEditId(null);
-    Formik.resetForm();
   };
 
   const handleEdit = (id) => {
