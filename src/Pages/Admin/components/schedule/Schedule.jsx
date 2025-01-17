@@ -12,14 +12,14 @@ export default function Schedule() {
     {
       id: 1,
       title: "Subject: History, Teacher: Harry",
-      start: date.setHours(11, 30),
-      end: date.setHours(14, 30),
+      start: new Date(date.setHours(11, 30)),
+      end: new Date(date.setHours(14, 30)),
     },
     {
       id: 1,
       title: "Subject: English, Teacher: Fred",
-      start: date.setHours(15, 30),
-      end: date.setHours(18, 30),
+      start: new Date(date.setHours(15, 30)),
+      end: new Date(date.setHours(18, 30)),
     },
   ];
 
@@ -27,11 +27,19 @@ export default function Schedule() {
     <>
       <h1>Schedule</h1>
       <Calendar
+        defaultView="week"
+        // view={["week"]}
         localizer={localizer}
         events={myEventsList}
+        step={30}
+        timeslots={1}
+        min={new Date(1970, 1, 1, 10, 0, 0)}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
+        max={new Date(1970, 1, 1, 17, 0, 0)}
+        defaultDate={new Date()}
+        showMultiDayTimes
+        style={{ height: "100%", width: "100%" }}
       />
     </>
   );
