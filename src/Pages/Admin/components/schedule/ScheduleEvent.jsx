@@ -223,7 +223,7 @@ export default function ScheduleEvent({ selectedClass }) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
             <DatePicker
-              label="Basic date picker"
+              label="Date"
               value={dayjs(formik.values.date)}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
