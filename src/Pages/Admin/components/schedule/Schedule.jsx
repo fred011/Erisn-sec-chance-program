@@ -33,10 +33,10 @@ export default function Schedule() {
         events={myEventsList}
         step={30}
         timeslots={1}
-        min={new Date(1970, 1, 1, 10, 0, 0)}
+        min={new Date(1970, 1, 1, 8, 0, 0)}
         startAccessor="start"
         endAccessor="end"
-        max={new Date(1970, 1, 1, 17, 0, 0)}
+        max={new Date(1970, 1, 1, 19, 0, 0)}
         defaultDate={new Date()}
         showMultiDayTimes
         style={{ height: "100%", width: "100%" }}
