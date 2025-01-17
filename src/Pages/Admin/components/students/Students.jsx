@@ -191,8 +191,8 @@ export default function Students() {
     axios
       .get(`${baseAPI}/student/fetch-with-query`, { params })
       .then((res) => {
+        console.log("Response Students", res.data.students); // Inspect the response
         setStudents(res.data.students);
-        console.log("Response Students", res);
       })
       .catch((e) => {
         console.log("Error in fetching class");
