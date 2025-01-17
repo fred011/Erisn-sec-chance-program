@@ -41,7 +41,7 @@ export default function Schedule() {
   return (
     <>
       <h1>Schedule</h1>
-      <FormControl fullWidth sx={{ marginTop: "4px", marginBottom: "4px" }}>
+      <FormControl fullWidth>
         <Typography variant="h5">Class</Typography>
         <Select
           // labelId="classes"
