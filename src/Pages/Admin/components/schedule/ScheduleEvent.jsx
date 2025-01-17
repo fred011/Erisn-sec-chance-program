@@ -172,11 +172,11 @@ export default function ScheduleEvent({ selectedClass }) {
           Add New Period
         </Typography>
         <FormControl fullWidth>
-          <InputLabel id="teachers">Teachers</InputLabel>
+          <InputLabel id="teachers">Teacher</InputLabel>
           <Select
-            // labelId="teachers"
-            // id="teachers"
-            value={formik.values.teachers}
+            labelId="teachers"
+            id="teachers"
+            value={formik.values.teacher}
             label="Teacher"
             name="teacher"
             onChange={formik.handleChange}
