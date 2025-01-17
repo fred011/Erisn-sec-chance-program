@@ -86,7 +86,7 @@ export default function Students() {
       student.student_class ? student.student_class._id : "" // Check if student_class exists
     );
     formik.setFieldValue("age", filteredStudent[0].age);
-    formik.setFieldValue("gender", filteredStudent[0].gender);
+    formik.setFieldValue("gender", filteredStudent[0].gender || "");
     formik.setFieldValue("guardian", filteredStudent[0].guardian);
     formik.setFieldValue("guardian_phone", filteredStudent[0].guardian_phone);
   };
