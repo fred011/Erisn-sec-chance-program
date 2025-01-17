@@ -46,7 +46,7 @@ export default function Schedule() {
 
   return (
     <>
-      <h1 style={{ marginBottom: "4px" }}>Schedule</h1>
+      <h2 style={{ marginBottom: "4px" }}>Schedule</h2>
       <Typography variant="h5" sx={{ fontWeight: "500" }}>
         Class
       </Typography>
