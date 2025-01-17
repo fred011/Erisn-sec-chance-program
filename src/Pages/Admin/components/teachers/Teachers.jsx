@@ -203,7 +203,7 @@ export default function Teachers() {
         sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
       >
         <Typography
-          variant="h2"
+          variant="h3"
           sx={{ textAlign: "center", fontWeight: "500" }}
         >
           Teachers
@@ -218,7 +218,7 @@ export default function Teachers() {
             width: "60vw",
             minWidth: "230px",
             margin: "auto",
-            marginTop: "10px",
+            marginTop: "5px",
           }}
           noValidate
           autoComplete="off"

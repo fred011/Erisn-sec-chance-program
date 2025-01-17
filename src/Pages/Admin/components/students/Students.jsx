@@ -225,7 +225,7 @@ export default function Students() {
         sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
       >
         <Typography
-          variant="h2"
+          variant="h3"
           sx={{ textAlign: "center", fontWeight: "500" }}
         >
           Students
@@ -240,7 +240,7 @@ export default function Students() {
             width: "60vw",
             minWidth: "230px",
             margin: "auto",
-            marginTop: "10px",
+            marginTop: "5px",
           }}
           noValidate
           autoComplete="off"
