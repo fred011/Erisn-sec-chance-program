@@ -52,7 +52,7 @@ const Subject = () => {
   const Formik = useFormik({
     initialValues: { subject_name: "", subject_codename: "" },
     validationSchema: subjectSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       console.log("Submitting values:", values);
       // Check if values.subject_name and values.subject_codename are populated
       if (!values.subject_name || !values.subject_codename) {
@@ -91,6 +91,8 @@ const Subject = () => {
           .then((res) => {
             console.log("Subject add response", res);
             alert("Subject added successfully");
+
+            resetForm();
             fetchAllSubjects();
           })
           .catch((err) => {
@@ -100,8 +102,6 @@ const Subject = () => {
             );
             alert("Failed to add subject");
           });
-
-        Formik.resetForm();
       }
     },
   });

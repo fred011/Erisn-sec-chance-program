@@ -52,7 +52,7 @@ const Class = () => {
   const Formik = useFormik({
     initialValues: { class_text: "", class_num: "" },
     validationSchema: classSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       console.log(values);
 
       if (edit) {
@@ -86,6 +86,7 @@ const Class = () => {
           .then((res) => {
             console.log("Class add response", res);
             alert("Class added successfully");
+            resetForm();
             fetchAllClasses();
           })
           .catch((err) => {
@@ -96,7 +97,7 @@ const Class = () => {
             alert("Failed to add class");
           });
 
-        Formik.resetForm();
+        resetForm();
       }
     },
   });
