@@ -6,8 +6,9 @@ import {
   InputLabel,
   MenuItem,
   Typography,
+  Select,
 } from "@mui/material";
-import { Select } from "antd";
+
 import { useFormik } from "formik";
 import { periodSchema } from "../../../../Components/yupSchema/periodSchema";
 import { useEffect, useState } from "react";

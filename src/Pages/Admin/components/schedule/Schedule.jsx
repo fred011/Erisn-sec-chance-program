@@ -3,9 +3,15 @@ import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Button, FormControl, MenuItem, selectClasses } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import ScheduleEvent from "./ScheduleEvent";
-import { Select, Typography } from "antd";
+
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
 
