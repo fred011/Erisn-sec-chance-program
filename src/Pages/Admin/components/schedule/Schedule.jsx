@@ -64,9 +64,7 @@ export default function Schedule() {
         </Select>
       </FormControl>
 
-      <Button onClick={() => setNewPeriod(true)} variant="contained">
-        Add new Period
-      </Button>
+      <Button onClick={() => setNewPeriod(true)}>Add new Period</Button>
       {newPeriod && <ScheduleEvent selectedClass={selectedClass} />}
 
       <Calendar
