@@ -126,7 +126,9 @@ export default function ScheduleEvent({ selectedClass }) {
         })
         .then((res) => {
           console.log("Response ", res);
+
           alert("Period created successfully");
+          fetchData();
         })
         .catch((e) => {
           console.log("Error ", e);
