@@ -8,14 +8,11 @@ import {
   Typography,
   Select,
 } from "@mui/material";
-
 import { useFormik } from "formik";
 import { periodSchema } from "../../../../Components/yupSchema/periodSchema";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 import { baseAPI } from "../../../../environment";
-
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -29,6 +26,7 @@ export default function ScheduleEvent({ selectedClass }) {
     period: "",
     date: new Date(),
   };
+
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
 
@@ -56,7 +54,7 @@ export default function ScheduleEvent({ selectedClass }) {
       label: "Lunch Break (11:00 AM - 12:00 AM)",
       startTime: "11:00",
       endTime: "12:00",
-    }, // Lunch Break
+    },
     {
       id: 5,
       label: "Period 4 (12:00 AM - 13:00 AM)",
@@ -70,7 +68,7 @@ export default function ScheduleEvent({ selectedClass }) {
       endTime: "14:00",
     },
     {
-      id: 6,
+      id: 7,
       label: "Period 6 (14:00 AM - 15:00 AM)",
       startTime: "14:00",
       endTime: "15:00",
@@ -78,55 +76,47 @@ export default function ScheduleEvent({ selectedClass }) {
   ];
 
   const formik = useFormik({
-    initialValues, // Set initial values
+    initialValues,
     validationSchema: periodSchema,
     onSubmit: (values) => {
-      let date = values.date;
-      let startTime = values.period.split(",")[0].trim();
-      let endTime = values.period.split(",")[1].trim();
+      // Split period into start and end times
+      const [startTimeStr, endTimeStr] = values.period
+        .split(",")
+        .map((time) => time.trim());
 
-      const formattedStartTime = new Date(
+      // Format start and end times with the selected date
+      const startDateTime = new Date(
         values.date.setHours(
-          parseInt(startTime.split(":")[0], 10),
-          parseInt(startTime.split(":")[1], 10)
+          parseInt(startTimeStr.split(":")[0], 10),
+          parseInt(startTimeStr.split(":")[1], 10),
+          0 // Set seconds to 0
         )
-      );
-      const formattedEndTime = new Date(
-        values.date.setHours(
-          parseInt(endTime.split(":")[0], 10),
-          parseInt(endTime.split(":")[1], 10)
-        )
-      );
+      ).toISOString(); // Convert to ISO string
 
-      console.log({
-        ...values,
+      const endDateTime = new Date(
+        values.date.setHours(
+          parseInt(endTimeStr.split(":")[0], 10),
+          parseInt(endTimeStr.split(":")[1], 10),
+          0 // Set seconds to 0
+        )
+      ).toISOString(); // Convert to ISO string
+
+      // Payload to send to the backend
+      const payload = {
+        teacher: values.teacher,
+        subject: values.subject,
         selectedClass,
-        startTime: formattedStartTime,
-        endTime: formattedEndTime,
-      });
+        startTime: startDateTime,
+        endTime: endDateTime,
+      };
 
-      console.log("Schedule", { ...values, date, startTime, endTime });
+      console.log("Formatted Payload: ", payload);
+
+      // Sending data to the backend
       axios
-        .post(`${baseAPI}/schedule/create`, {
-          teacher: formik.values.teacher,
-          subject: formik.values.subject,
-          selectedClass,
-          startTime: new Date(
-            formik.values.date.setHours(
-              formik.values.period.split(",")[0].split(":")[0],
-              formik.values.period.split(",")[0].split(":")[1]
-            )
-          ),
-          endTime: new Date(
-            formik.values.date.setHours(
-              formik.values.period.split(",")[1].split(":")[0],
-              formik.values.period.split(",")[1].split(":")[1]
-            )
-          ),
-        })
+        .post(`${baseAPI}/schedule/create`, payload)
         .then((res) => {
           console.log("Response ", res);
-
           alert("Period created successfully");
           fetchData();
         })
@@ -140,7 +130,9 @@ export default function ScheduleEvent({ selectedClass }) {
   const fetchData = async () => {
     const teacherResponse = await axios.get(
       `${baseAPI}/teacher/fetch-with-query`,
-      { params: {} }
+      {
+        params: {},
+      }
     );
     const subjectResponse = await axios.get(`${baseAPI}/subject/all`, {
       params: {},
@@ -158,7 +150,7 @@ export default function ScheduleEvent({ selectedClass }) {
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1 }, // Add margin to child elements
+          "& > :not(style)": { m: 1 },
           display: "flex",
           flexDirection: "column",
           width: "60vw",
@@ -168,11 +160,12 @@ export default function ScheduleEvent({ selectedClass }) {
         }}
         noValidate
         autoComplete="off"
-        onSubmit={formik.handleSubmit} // Attach Formik's submit handler
+        onSubmit={formik.handleSubmit}
       >
         <Typography variant="h4" sx={{ fontWeight: "500" }}>
           Add New Period
         </Typography>
+
         <FormControl fullWidth>
           <InputLabel id="teachers">Teacher</InputLabel>
           <Select
@@ -184,19 +177,16 @@ export default function ScheduleEvent({ selectedClass }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            {/* <MenuItem value={""}>Select Class</MenuItem> */}
             {teachers &&
-              teachers.map((x) => {
-                return (
-                  <MenuItem key={x._id} value={x._id}>
-                    {x.name}
-                  </MenuItem>
-                );
-              })}
+              teachers.map((x) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         {formik.touched.teacher && formik.errors.teacher && (
-          <p style={{ color: "red" }}>{formik.errors.teacher}</p> // Show error if name is invalid
+          <p style={{ color: "red" }}>{formik.errors.teacher}</p>
         )}
 
         <FormControl fullWidth>
@@ -208,20 +198,18 @@ export default function ScheduleEvent({ selectedClass }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            {/* <MenuItem value={""}>Select Class</MenuItem> */}
             {subjects &&
-              subjects.map((x) => {
-                return (
-                  <MenuItem key={x._id} value={x._id}>
-                    {x.subject_name}
-                  </MenuItem>
-                );
-              })}
+              subjects.map((x) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.subject_name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         {formik.touched.subject && formik.errors.subject && (
-          <p style={{ color: "red" }}>{formik.errors.subject}</p> // Show error if name is invalid
+          <p style={{ color: "red" }}>{formik.errors.subject}</p>
         )}
+
         <FormControl fullWidth>
           <InputLabel id="period">Periods</InputLabel>
           <Select
@@ -233,19 +221,16 @@ export default function ScheduleEvent({ selectedClass }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
-            {/* <MenuItem value={""}>Select Class</MenuItem> */}
             {periods &&
-              periods.map((x) => {
-                return (
-                  <MenuItem key={x._id} value={`${x.startTime}, ${x.endTime}`}>
-                    {x.label}
-                  </MenuItem>
-                );
-              })}
+              periods.map((x) => (
+                <MenuItem key={x.id} value={`${x.startTime}, ${x.endTime}`}>
+                  {x.label}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         {formik.touched.period && formik.errors.period && (
-          <p style={{ color: "red" }}>{formik.errors.period}</p> // Show error if name is invalid
+          <p style={{ color: "red" }}>{formik.errors.period}</p>
         )}
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
