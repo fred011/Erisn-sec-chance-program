@@ -42,7 +42,7 @@ export default function Schedule() {
     <>
       <h1>Schedule</h1>
       <FormControl fullWidth>
-        <Typography variant="h5">Class</Typography>
+        <Typography variant="h4">Class</Typography>
         <Select
           // labelId="classes"
           // id="classes"

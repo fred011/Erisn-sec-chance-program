@@ -143,12 +143,7 @@ export default function ScheduleEvent({ selectedClass }) {
         autoComplete="off"
         onSubmit={formik.handleSubmit} // Attach Formik's submit handler
       >
-        <Typography
-          variant="h2"
-          sx={{ textAlign: "center", fontWeight: "500" }}
-        >
-          Add New Period
-        </Typography>
+        <Typography variant="h2">Add New Period</Typography>
         <FormControl fullWidth>
           <InputLabel id="teachers">Teachers</InputLabel>
           <Select
