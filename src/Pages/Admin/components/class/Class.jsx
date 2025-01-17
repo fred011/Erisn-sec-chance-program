@@ -1,5 +1,17 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { Form, useFormik } from "formik";
 
 import React, { useEffect, useState } from "react";
@@ -188,7 +200,7 @@ const Class = () => {
           </Button>
         )}
       </Box>
-      <Box
+      {/* <Box
         component={"div"}
         sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
       >
@@ -221,7 +233,39 @@ const Class = () => {
               </Paper>
             );
           })}
-      </Box>
+      </Box> */}
+      <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Class Text</TableCell>
+              <TableCell>Class Number</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {classes.map((x) => (
+              <TableRow key={x._id}>
+                <TableCell>{x.class_text}</TableCell>
+                <TableCell>{x.class_num}</TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => handleEdit(x._id, x.class_text, x.class_num)}
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    onClick={() => handleDelete(x._id)}
+                    sx={{ color: "red" }}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

@@ -21,6 +21,16 @@ import {
   CardMedia,
   CardContent,
 } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+} from "@mui/material";
 import axios from "axios";
 
 import {
@@ -369,7 +379,7 @@ export default function Teachers() {
             // onBlur={formik.handleBlur}
           />
         </Box>
-        <Box
+        {/* <Box
           component={"div"}
           sx={{
             display: "flex",
@@ -445,7 +455,66 @@ export default function Teachers() {
                 </Card>
               );
             })}
-        </Box>
+        </Box> */}
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="teacher table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <strong>Name</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Email</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Qualification</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Age</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Gender</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Phone Number</strong>
+                </TableCell>
+                <TableCell align="center">
+                  <strong>Actions</strong>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {teachers &&
+                teachers.map((teacher) => (
+                  <TableRow key={teacher._id}>
+                    <TableCell>{teacher.name}</TableCell>
+                    <TableCell>{teacher.email}</TableCell>
+                    <TableCell>{teacher.qualification}</TableCell>
+                    <TableCell>{teacher.age}</TableCell>
+                    <TableCell>{teacher.gender}</TableCell>
+                    <TableCell>{teacher.phone_number}</TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        onClick={() => {
+                          handleEdit(teacher._id);
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          handleDelete(teacher._id);
+                        }}
+                        sx={{ color: "red" }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </>
   );

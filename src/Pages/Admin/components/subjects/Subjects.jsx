@@ -1,5 +1,17 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { Form, useFormik } from "formik";
 
 import React, { useEffect, useState } from "react";
@@ -192,7 +204,7 @@ const Subject = () => {
           </Button>
         )}
       </Box>
-      <Box
+      {/* <Box
         component={"div"}
         sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
       >
@@ -225,7 +237,53 @@ const Subject = () => {
               </Paper>
             );
           })}
-      </Box>
+      </Box> */}
+      {/* Table for Subjects */}
+      <TableContainer component={Paper} sx={{ marginTop: 3 }}>
+        <Table sx={{ minWidth: 650 }} aria-label="subjects table">
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <strong>Subject Name</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Subject Codename</strong>
+              </TableCell>
+              <TableCell align="center">
+                <strong>Actions</strong>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {subjects &&
+              subjects.map((subject) => (
+                <TableRow key={subject._id}>
+                  <TableCell>{subject.subject_name}</TableCell>
+                  <TableCell>{subject.subject_codename}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                      onClick={() =>
+                        handleEdit(
+                          subject._id,
+                          subject.subject_name,
+                          subject.subject_codename
+                        )
+                      }
+                    >
+                      <EditIcon />
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(subject._id)}
+                      sx={{ color: "red" }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };
