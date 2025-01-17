@@ -104,9 +104,11 @@ export default function ScheduleEvent({ selectedClass }) {
         })
         .then((res) => {
           console.log("Response ", res);
+          alert("Period created successfully");
         })
         .catch((e) => {
           console.log("Error ", e);
+          alert("Failed to create period");
         });
     },
   });
