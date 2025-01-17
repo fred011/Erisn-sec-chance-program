@@ -28,8 +28,8 @@ export default function ScheduleEvent({ selectedClass }) {
     period: "",
     date: new Date(),
   };
-  const [teachers, setTeachers] = useState({});
-  const [subjects, setSubjects] = useState({});
+  const [teachers, setTeachers] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   const periods = [
     {
@@ -123,7 +123,7 @@ export default function ScheduleEvent({ selectedClass }) {
   };
 
   useEffect(() => {
-    fetchData;
+    fetchData();
   }, []);
 
   return (

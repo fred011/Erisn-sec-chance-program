@@ -46,7 +46,7 @@ export default function Schedule() {
         <Select
           // labelId="classes"
           // id="classes"
-          value={selectedClass}
+          value={selectedClass || ""}
           // label="Class"
           onChange={(e) => {
             setSelectedClass(e.target.value);
@@ -64,14 +64,14 @@ export default function Schedule() {
         </Select>
       </FormControl>
 
-      <Button onClick={setNewPeriod(true)} variant="contained">
+      <Button onClick={() => setNewPeriod(true)} variant="contained">
         Add new Period
       </Button>
       {newPeriod && <ScheduleEvent selectedClass={selectedClass} />}
 
       <Calendar
         defaultView="week"
-        view={["week", "day", "agenda"]}
+        // view={["week", "day", "agenda"]}
         localizer={localizer}
         events={myEventsList}
         step={30}
