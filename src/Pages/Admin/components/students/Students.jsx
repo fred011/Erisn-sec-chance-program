@@ -77,10 +77,14 @@ export default function Students() {
     setEditId(id);
     const filteredStudent = students.filter((x) => x._id === id);
     console.log("Filtered Student ", filteredStudent);
+    const student = filteredStudent[0];
 
     formik.setFieldValue("name", filteredStudent[0].name);
     formik.setFieldValue("email", filteredStudent[0].email);
-    formik.setFieldValue("student_class", filteredStudent[0].student_class._id);
+    formik.setFieldValue(
+      "student_class",
+      student.student_class ? student.student_class._id : "" // Check if student_class exists
+    );
     formik.setFieldValue("age", filteredStudent[0].age);
     formik.setFieldValue("gender", filteredStudent[0].gender);
     formik.setFieldValue("guardian", filteredStudent[0].guardian);
