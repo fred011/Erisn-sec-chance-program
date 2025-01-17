@@ -47,7 +47,9 @@ export default function Schedule() {
   return (
     <>
       <h1 style={{ marginBottom: "4px" }}>Schedule</h1>
-      <Typography variant="h4">Class</Typography>
+      <Typography variant="h5" sx={{ fontWeight: "500" }}>
+        Class
+      </Typography>
       <FormControl fullWidth>
         <Select
           // labelId="classes"
