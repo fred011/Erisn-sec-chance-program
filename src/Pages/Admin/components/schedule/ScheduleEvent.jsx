@@ -11,7 +11,7 @@ import {
 
 import { useFormik } from "formik";
 import { periodSchema } from "../../../../Components/yupSchema/periodSchema";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 import { baseAPI } from "../../../../environment";
@@ -121,6 +121,7 @@ export default function ScheduleEvent({
             alert("Period Updated successfully");
             formik.resetForm();
             handleEventClose();
+            fetchWithId(selectedEventId);
           })
           .catch((e) => {
             console.error("Error updating period:", e);
@@ -134,6 +135,7 @@ export default function ScheduleEvent({
             alert("Period created successfully");
             formik.resetForm();
             handleEventClose();
+            fetchWithId(selectedEventId);
           })
           .catch((e) => {
             console.error("Error creating period:", e);
@@ -170,31 +172,38 @@ export default function ScheduleEvent({
     }${dateMinutes}`;
   };
 
-  useEffect(() => {
-    if (selectedEventId) {
-      axios
-        .get(`${baseAPI}/schedule/fetch/${selectedEventId}`)
-        .then((res) => {
-          formik.setFieldValue("teacher", res.data.data.teacher);
-          formik.setFieldValue("subject", res.data.data.subject);
-          let start = new Date(res.data.data.startTime);
-          let end = new Date(res.data.data.endTime);
+  const fetchWithId = useCallback(
+    (selectedEventId) => {
+      if (selectedEventId) {
+        axios
+          .get(`${baseAPI}/schedule/fetch/${selectedEventId}`)
+          .then((res) => {
+            formik.setFieldValue("teacher", res.data.data.teacher);
+            formik.setFieldValue("subject", res.data.data.subject);
+            let start = new Date(res.data.data.startTime);
+            let end = new Date(res.data.data.endTime);
 
-          formik.setFieldValue("date", start);
-          const finalFormattedTime = dateFormat(start) + "," + dateFormat(end);
-          formik.setFieldValue("period", finalFormattedTime);
-          console.log(
-            end.getHours(),
-            (end.getMinutes() < 10 ? "0" : "") + end.getMinutes()
-          );
-          formik.setFieldValue("teacher", res.data.data.teacher);
-          console.log("RESPONSE : ", res);
-        })
-        .catch((e) => {
-          console.log("ERROR Fecthing wit ID", e);
-        });
-    }
-  }, [selectedEventId]);
+            formik.setFieldValue("date", start);
+            const finalFormattedTime =
+              dateFormat(start) + "," + dateFormat(end);
+            formik.setFieldValue("period", finalFormattedTime);
+            console.log(
+              end.getHours(),
+              (end.getMinutes() < 10 ? "0" : "") + end.getMinutes()
+            );
+            formik.setFieldValue("teacher", res.data.data.teacher);
+            console.log("RESPONSE : ", res);
+          })
+          .catch((e) => {
+            console.log("ERROR Fecthing wit ID", e);
+          });
+      }
+    },
+    [formik]
+  );
+  useEffect(() => {
+    fetchWithId(selectedEventId);
+  }, [selectedEventId, fetchWithId]);
 
   return (
     <Box
