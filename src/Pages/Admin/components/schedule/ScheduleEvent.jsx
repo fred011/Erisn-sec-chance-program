@@ -82,15 +82,31 @@ export default function ScheduleEvent({ selectedClass }) {
     onSubmit: (values) => {
       const { date, period } = values;
       const [startTime, endTime] = period.split(",");
+
+      // Ensure the date is properly formatted and valid
+      const selectedDate = dayjs(date);
+
+      if (!selectedDate.isValid()) {
+        alert("Invalid date selected.");
+        return;
+      }
+
+      // Construct startTime and endTime using dayjs
+      const formattedStartTime = selectedDate
+        .hour(parseInt(startTime.split(":")[0], 10))
+        .minute(parseInt(startTime.split(":")[1], 10))
+        .toDate();
+
+      const formattedEndTime = selectedDate
+        .hour(parseInt(endTime.split(":")[0], 10))
+        .minute(parseInt(endTime.split(":")[1], 10))
+        .toDate();
+
       const formattedData = {
         ...values,
         selectedClass,
-        startTime: new Date(
-          date.setHours(startTime.split(":"[0]), startTime.split(":"[1]))
-        ),
-        endTime: new Date(
-          date.setHours(endTime.split(":"[0]), endTime.split(":"[1]))
-        ),
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
       };
 
       console.log("Submitting the following data:", formattedData);
