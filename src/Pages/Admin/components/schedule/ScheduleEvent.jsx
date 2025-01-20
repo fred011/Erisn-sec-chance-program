@@ -93,6 +93,8 @@ export default function ScheduleEvent({
         .then((res) => {
           alert("Event Deleted Successfully");
           console.log("Event Deleted Successfully", res);
+          formik.resetForm();
+          handleCancel();
         })
         .catch((e) => {
           alert("Failed to delete Event");
@@ -323,7 +325,7 @@ export default function ScheduleEvent({
         </Button>
         <Button
           type="button"
-          variant="outline"
+          variant="contained"
           sx={{ background: "red" }}
           onClick={handleDelete}
         >
