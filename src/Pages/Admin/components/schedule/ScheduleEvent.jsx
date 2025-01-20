@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import {
   Box,
@@ -122,7 +121,6 @@ export default function ScheduleEvent({
             alert("Period Updated successfully");
             formik.resetForm();
             handleEventClose();
-            fetchWithId(selectedEventId);
           })
           .catch((e) => {
             console.error("Error updating period:", e);
@@ -136,7 +134,6 @@ export default function ScheduleEvent({
             alert("Period created successfully");
             formik.resetForm();
             handleEventClose();
-            fetchWithId(selectedEventId);
           })
           .catch((e) => {
             console.error("Error creating period:", e);
@@ -173,7 +170,7 @@ export default function ScheduleEvent({
     }${dateMinutes}`;
   };
 
-  const fetchWithId = (selectedEventId, formik) => {
+  useEffect(() => {
     if (selectedEventId) {
       axios
         .get(`${baseAPI}/schedule/fetch/${selectedEventId}`)
@@ -197,9 +194,6 @@ export default function ScheduleEvent({
           console.log("ERROR Fecthing wit ID", e);
         });
     }
-  };
-  useEffect(() => {
-    fetchWithId(selectedEventId);
   }, [selectedEventId, formik]);
 
   return (
