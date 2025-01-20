@@ -32,6 +32,7 @@ export default function Schedule() {
     },
   ];
   const [events, setEvents] = useState(myEventsList);
+
   const handleEventClose = () => {
     setNewPeriod(false);
   };
@@ -50,7 +51,7 @@ export default function Schedule() {
       });
   }, []);
 
-  useEffect(() => {
+  const fetchSchedule = (selectedClass) => {
     if (selectedClass) {
       console.log("Fetching schedules for class:", selectedClass);
 
@@ -82,7 +83,17 @@ export default function Schedule() {
           );
         });
     }
+  };
+
+  useEffect(() => {
+    fetchSchedule(selectedClass);
   }, [selectedClass]);
+
+  // Function to handle adding new period
+  const handleAddNewPeriod = (newEvent) => {
+    setEvents((prevEvents) => [...prevEvents, newEvent]); // Add new event to the state
+    setNewPeriod(false); // Close the new period form
+  };
 
   return (
     <>
@@ -92,15 +103,11 @@ export default function Schedule() {
       </Typography>
       <FormControl fullWidth>
         <Select
-          // labelId="classes"
-          // id="classes"
           value={selectedClass || ""}
-          // label="Class"
           onChange={(e) => {
             setSelectedClass(e.target.value);
           }}
         >
-          {/* <MenuItem value={""}>Select Class</MenuItem> */}
           {classes &&
             classes.map((x) => {
               return (
@@ -117,6 +124,7 @@ export default function Schedule() {
         <ScheduleEvent
           selectedClass={selectedClass}
           handleEventClose={handleEventClose}
+          onAddNewPeriod={handleAddNewPeriod} // Pass the callback function to ScheduleEvent
         />
       )}
 
@@ -133,7 +141,7 @@ export default function Schedule() {
         defaultDate={new Date()}
         showMultiDayTimes
         style={{ height: "100%", width: "100%" }}
-        views={["week", "day", "agenda"]} // Specify the views you want
+        views={["week", "day", "agenda"]}
       />
     </>
   );
