@@ -52,6 +52,8 @@ export default function Schedule() {
 
   useEffect(() => {
     if (selectedClass) {
+      console.log("Fetching schedules for class:", selectedClass);
+
       axios
         .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
         .then((res) => {
