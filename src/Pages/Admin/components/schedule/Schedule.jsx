@@ -60,7 +60,7 @@ export default function Schedule() {
       .catch((err) => {
         console.log("Error in fetching schedule ", err);
       });
-  }, []);
+  }, [selectedClass]);
 
   return (
     <>
@@ -100,7 +100,7 @@ export default function Schedule() {
 
       <Calendar
         defaultView="week"
-        view={["week", "day", "agenda"]}
+        // view={["week", "day", "agenda"]}
         localizer={localizer}
         events={events}
         step={30}
