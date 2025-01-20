@@ -33,6 +33,7 @@ export default function Login() {
         })
         .then((res) => {
           login({ ...res.data, role: values.role });
+          console.log("Logged in successfully");
           alert("Logged in successfully");
           resetForm();
           navigate(`/${values.role}`);
