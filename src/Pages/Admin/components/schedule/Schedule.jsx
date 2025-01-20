@@ -122,7 +122,6 @@ export default function Schedule() {
 
       <Calendar
         defaultView="week"
-        view={["week", "day", "agenda"]}
         localizer={localizer}
         events={events}
         step={30}
@@ -134,6 +133,7 @@ export default function Schedule() {
         defaultDate={new Date()}
         showMultiDayTimes
         style={{ height: "100%", width: "100%" }}
+        views={["week", "day", "agenda"]} // Specify the views you want
       />
     </>
   );
