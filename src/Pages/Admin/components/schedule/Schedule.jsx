@@ -68,7 +68,7 @@ export default function Schedule() {
             const resData = res.data.data.map((x) => {
               return {
                 id: x._id,
-                title: `Sub: ${x.subject} , Teacher:${x.teacher}`,
+                title: `Subject: ${x.subject.subject_name} , Teacher:${x.teacher.name}`,
                 start: new Date(x.startTime),
                 end: new Date(x.endTime),
               };
