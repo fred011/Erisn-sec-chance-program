@@ -58,7 +58,14 @@ export default function Schedule() {
         .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
         .then((res) => {
           console.log("API Response:", res.data);
-          setEvents(res.data.data);
+          const { data, message } = res.data;
+
+          if (data.length === 0) {
+            console.log("No schedules found:", message);
+            setEvents([]); // Clear events if no schedules
+          } else {
+            setEvents(data); // Update with retrieved schedules
+          }
         })
         .catch((err) => {
           console.log(
