@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import {
   Box,
@@ -172,38 +173,34 @@ export default function ScheduleEvent({
     }${dateMinutes}`;
   };
 
-  const fetchWithId = useCallback(
-    (selectedEventId) => {
-      if (selectedEventId) {
-        axios
-          .get(`${baseAPI}/schedule/fetch/${selectedEventId}`)
-          .then((res) => {
-            formik.setFieldValue("teacher", res.data.data.teacher);
-            formik.setFieldValue("subject", res.data.data.subject);
-            let start = new Date(res.data.data.startTime);
-            let end = new Date(res.data.data.endTime);
+  const fetchWithId = (selectedEventId, formik) => {
+    if (selectedEventId) {
+      axios
+        .get(`${baseAPI}/schedule/fetch/${selectedEventId}`)
+        .then((res) => {
+          formik.setFieldValue("teacher", res.data.data.teacher);
+          formik.setFieldValue("subject", res.data.data.subject);
+          let start = new Date(res.data.data.startTime);
+          let end = new Date(res.data.data.endTime);
 
-            formik.setFieldValue("date", start);
-            const finalFormattedTime =
-              dateFormat(start) + "," + dateFormat(end);
-            formik.setFieldValue("period", finalFormattedTime);
-            console.log(
-              end.getHours(),
-              (end.getMinutes() < 10 ? "0" : "") + end.getMinutes()
-            );
-            formik.setFieldValue("teacher", res.data.data.teacher);
-            console.log("RESPONSE : ", res);
-          })
-          .catch((e) => {
-            console.log("ERROR Fecthing wit ID", e);
-          });
-      }
-    },
-    [formik]
-  );
+          formik.setFieldValue("date", start);
+          const finalFormattedTime = dateFormat(start) + "," + dateFormat(end);
+          formik.setFieldValue("period", finalFormattedTime);
+          console.log(
+            end.getHours(),
+            (end.getMinutes() < 10 ? "0" : "") + end.getMinutes()
+          );
+          formik.setFieldValue("teacher", res.data.data.teacher);
+          console.log("RESPONSE : ", res);
+        })
+        .catch((e) => {
+          console.log("ERROR Fecthing wit ID", e);
+        });
+    }
+  };
   useEffect(() => {
     fetchWithId(selectedEventId);
-  }, [selectedEventId, fetchWithId]);
+  }, [selectedEventId, formik]);
 
   return (
     <Box
