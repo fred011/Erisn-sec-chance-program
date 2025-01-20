@@ -153,7 +153,9 @@ export default function ScheduleEvent({
   const dateFormat = (date) => {
     const dateHours = date.getHours();
     const dateMinutes = date.getMinutes();
-    return `${dateHours}:${dateMinutes < 10 ? "0" : ""}${dateMinutes}`;
+    return `${dateHours < 10 ? "0" : ""}${dateHours}:${
+      dateMinutes < 10 ? "0" : ""
+    }${dateMinutes}`;
   };
 
   useEffect(() => {
