@@ -97,6 +97,19 @@ export default function Schedule() {
     fetchSchedule(selectedClass);
   }, [selectedClass]);
 
+  const fetchEvents = async (selectedClass) => {
+    try {
+      const res = await axios.get(
+        `${baseAPI}/schedule/fetch-with-class/${selectedClass}`
+      );
+      setEvents(res.data.events || []);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
+  useEffect(() => {
+    fetchEvents();
+  }, [selectedClass]);
   // Function to handle adding new period
   const handleAddNewPeriod = (newEvent) => {
     setEvents((prevEvents) => [...prevEvents, newEvent]); // Add new event to the state
@@ -135,6 +148,7 @@ export default function Schedule() {
           onAddNewPeriod={handleAddNewPeriod} // Pass the callback function to ScheduleEvent
           edit={edit}
           selectedEventId={selectedEventId}
+          refreshEvents={fetchEvents} // Pass this to refresh the events
         />
       )}
 
