@@ -21,7 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-export default function ScheduleEvent({ selectedClass }) {
+export default function ScheduleEvent({ selectedClass, handleEventClose }) {
   const initialValues = {
     teacher: "",
     subject: "",
@@ -117,6 +117,7 @@ export default function ScheduleEvent({ selectedClass }) {
           console.log("API Response:", res.data);
           alert("Period created successfully");
           formik.resetForm();
+          handleEventClose();
         })
         .catch((e) => {
           console.error("Error creating period:", e);

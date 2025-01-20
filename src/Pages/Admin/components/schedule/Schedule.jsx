@@ -32,6 +32,10 @@ export default function Schedule() {
     },
   ];
 
+  const handleEventClose = () => {
+    setNewPeriod(false);
+  };
+
   useEffect(() => {
     axios
       .get(`${baseAPI}/class/all`)
@@ -75,7 +79,12 @@ export default function Schedule() {
       </FormControl>
 
       <Button onClick={() => setNewPeriod(true)}>Add new Period</Button>
-      {newPeriod && <ScheduleEvent selectedClass={selectedClass} />}
+      {newPeriod && (
+        <ScheduleEvent
+          selectedClass={selectedClass}
+          handleEventClose={handleEventClose}
+        />
+      )}
 
       <Calendar
         defaultView="week"
