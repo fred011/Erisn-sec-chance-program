@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -21,7 +22,7 @@ export default function Schedule() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [newPeriod, setNewPeriod] = useState(false);
-  const [events, setEvents] = useState([]); // Ensure events is an empty array initially
+  // const [events, setEvents] = useState(myEventsList); // Ensure events is an empty array initially
 
   // Default date setup
   const date = new Date();
@@ -34,6 +35,7 @@ export default function Schedule() {
     },
   ];
 
+  const [events, setEvents] = useState(myEventsList);
   useEffect(() => {
     // Fetching classes
     axios
@@ -53,11 +55,11 @@ export default function Schedule() {
 
   useEffect(() => {
     // Fetch events if selectedClass exists
-    if (!selectedClass) return; // Prevent API call if no class is selected
+
     axios
       .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
       .then((res) => {
-        const eventsData = res.data.data || []; // Fallback to empty array if data is undefined
+        const eventsData = res.data.data; // Fallback to empty array if data is undefined
         setEvents(eventsData);
       })
       .catch((err) => {
