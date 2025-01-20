@@ -88,11 +88,17 @@ export default function ScheduleEvent({
 
   const handleDelete = () => {
     if (confirm("Are you sure you want to delete period?")) {
-    axios.delete(`${baseAPI}/schedule/delete/${selectedEventId}`).then(res=>{
-    alert("Event Deleted Successfully")
-    }).catch((e)=>{
-      alert("Failed to delete Event")
-    })
+      axios
+        .delete(`${baseAPI}/schedule/delete/${selectedEventId}`)
+        .then((res) => {
+          alert("Event Deleted Successfully");
+          console.log("Event Deleted Successfully", res);
+        })
+        .catch((e) => {
+          alert("Failed to delete Event");
+          console.log("Failed to delete Event", e);
+        });
+    }
   };
 
   const formik = useFormik({
