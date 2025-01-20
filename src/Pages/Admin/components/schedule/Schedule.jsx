@@ -61,10 +61,9 @@ export default function Schedule() {
 
           if (res.data.data.length === 0) {
             console.log("No schedules found:");
-            alert("No schedules found");
+
             setEvents([]); // Clear events if no schedules
           } else {
-            alert("Events fetched successfully");
             const resData = res.data.data.map((x) => {
               return {
                 id: x._id,
