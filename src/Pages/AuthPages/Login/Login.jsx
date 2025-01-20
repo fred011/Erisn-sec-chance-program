@@ -39,6 +39,7 @@ export default function Login() {
           navigate(`/${values.role}`);
         })
         .catch((err) => {
+          console.log("Failed to login ", err);
           alert(err.response?.data?.error || "Error logging in");
         });
     },
