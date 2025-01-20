@@ -254,27 +254,26 @@ export default function ScheduleEvent({
         margin: "auto",
       }}
     >
-      {edit ? (
-        <Typography
-          variant="h4"
-          sx={{ fontWeight: "500", textAlign: "center" }}
-        >
-          Edit Period
-        </Typography>
-      ) : (
-        <Typography
-          variant="h4"
-          sx={{ fontWeight: "500", textAlign: "center" }}
-        >
-          Add New Period
-        </Typography>
-      )}
-
       <Box
         component="form"
         sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         onSubmit={formik.handleSubmit}
       >
+        {edit ? (
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "500", textAlign: "center" }}
+          >
+            Edit Period
+          </Typography>
+        ) : (
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "500", textAlign: "center" }}
+          >
+            Add New Period
+          </Typography>
+        )}
         <FormControl fullWidth>
           <InputLabel>Teacher</InputLabel>
           <Select
