@@ -100,7 +100,8 @@ export default function Schedule() {
 
   // Function to handle adding new period
   const handleAddNewPeriod = (newEvent) => {
-    setEvents((prevEvents) => [...prevEvents, newEvent]); // Add new event to the state
+    // Add new event to the state
+    setEvents((prevEvents) => [...prevEvents, newEvent]);
     setNewPeriod(false); // Close the new period form
   };
 

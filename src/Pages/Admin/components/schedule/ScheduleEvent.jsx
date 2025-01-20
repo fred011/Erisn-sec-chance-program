@@ -86,7 +86,7 @@ export default function ScheduleEvent({
     handleEventClose();
   };
 
-  const handleDelete = () => {
+  const handleDelete = (setEvents) => {
     if (confirm("Are you sure you want to delete period?")) {
       axios
         .delete(`${baseAPI}/schedule/delete/${selectedEventId}`)
@@ -95,6 +95,9 @@ export default function ScheduleEvent({
           console.log("Event Deleted Successfully", res);
 
           handleCancel();
+          setEvents((prevEvents) =>
+            prevEvents.filter((event) => event.id !== selectedEventId)
+          );
         })
         .catch((e) => {
           alert("Failed to delete Event");
@@ -106,7 +109,7 @@ export default function ScheduleEvent({
   const formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, setEvents) => {
       const { date, period } = values;
       const [startTime, endTime] = period.split(",");
 
@@ -162,6 +165,19 @@ export default function ScheduleEvent({
             alert("Failed to create period");
           });
       }
+      const updatedEvent = {
+        id: selectedEventId,
+        title: `Subject: ${values.subject.subject_name}, Teacher: ${values.teacher.name}`,
+        start: formattedStartTime,
+        end: formattedEndTime,
+      };
+
+      // Update the state directly
+      setEvents((prevEvents) =>
+        prevEvents.map((event) =>
+          event.id === selectedEventId ? updatedEvent : event
+        )
+      );
     },
   });
 
