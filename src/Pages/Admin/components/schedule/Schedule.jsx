@@ -59,15 +59,21 @@ export default function Schedule() {
         .then((res) => {
           console.log("API Response:", res.data);
 
-          const { data, message } = res.data;
-
-          if (data.length === 0) {
-            console.log("No schedules found:", message);
+          if (res.data.data.length === 0) {
+            console.log("No schedules found:");
             alert("No schedules found");
             setEvents([]); // Clear events if no schedules
           } else {
             alert("Events fetched successfully");
-            setEvents(data); // Update with retrieved schedules
+            const resData = res.data.data.map((x) => {
+              return {
+                id: x._id,
+                title: `Sub: ${x.subject} , Teacher:${x.teacher}`,
+                start: new Date(x.startTime),
+                end: new Date(x.endTime),
+              };
+            });
+            setEvents(resData); // Update with retrieved schedules
           }
         })
         .catch((err) => {
