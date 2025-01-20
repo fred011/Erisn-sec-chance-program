@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import {
@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Radio,
   FormLabel,
+  Alert,
 } from "@mui/material";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +21,8 @@ import { AuthContext } from "../AuthContext";
 export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [alertSeverity, setAlertSeverity] = useState("success"); // success | error
 
   const formik = useFormik({
     initialValues: { email: "", password: "", role: "" },
@@ -34,13 +37,15 @@ export default function Login() {
         .then((res) => {
           login({ ...res.data, role: values.role });
           console.log("Logged in successfully");
-          alert("Logged in successfully");
+          setAlertSeverity("success");
+          setAlertMessage("Logged in successfully");
           resetForm();
           navigate(`/${values.role}`);
         })
         .catch((err) => {
           console.log("Failed to login ", err);
-          alert(err.response?.data?.error || "Error logging in");
+          setAlertSeverity("error");
+          setAlertMessage(err.response?.data?.error || "Error logging in");
         });
     },
   });
@@ -62,6 +67,13 @@ export default function Login() {
       onSubmit={formik.handleSubmit}
     >
       <h1>Login</h1>
+
+      {/* Display Alert if there's a message */}
+      {alertMessage && (
+        <Alert severity={alertSeverity} sx={{ marginBottom: 2 }}>
+          {alertMessage}
+        </Alert>
+      )}
 
       <TextField
         name="email"
@@ -114,12 +126,6 @@ export default function Login() {
       <Button type="submit" variant="contained">
         Log In
       </Button>
-      {/* <p>
-        Dont have an account?{" "}
-        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
-          Register
-        </Link>
-      </p> */}
     </Box>
   );
 }
