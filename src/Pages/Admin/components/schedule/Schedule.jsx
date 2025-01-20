@@ -63,7 +63,7 @@ export default function Schedule() {
       .catch((err) => {
         console.log("Error in fetching schedule", err);
       });
-  }, [selectedClass]);
+  }, []);
 
   const handleEventClose = () => {
     setNewPeriod(false);
