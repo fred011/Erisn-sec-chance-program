@@ -108,7 +108,9 @@ export default function Schedule() {
     }
   };
   useEffect(() => {
-    fetchEvents();
+    if (selectedClass) {
+      fetchEvents(selectedClass);
+    }
   }, [selectedClass]);
   // Function to handle adding new period
   const handleAddNewPeriod = (newEvent) => {
