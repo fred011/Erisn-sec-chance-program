@@ -55,8 +55,8 @@ export default function Schedule() {
       axios
         .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
         .then((res) => {
+          console.log("API Response:", res.data);
           setEvents(res.data.data);
-          console.log(res.data.data);
         })
         .catch((err) => {
           console.log(
