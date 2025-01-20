@@ -142,6 +142,7 @@ const Class = () => {
           width: "60vw",
           minWidth: "230px",
           margin: "auto",
+          marginTop: "0",
           background: "#fff",
         }}
         noValidate
