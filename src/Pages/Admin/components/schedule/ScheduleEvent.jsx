@@ -113,21 +113,33 @@ export default function ScheduleEvent({
         startTime: formattedStartTime,
         endTime: formattedEndTime,
       };
-
-      console.log("Submitting the following data:", formattedData);
-
-      axios
-        .post(`${baseAPI}/schedule/create`, formattedData)
-        .then((res) => {
-          console.log("API Response:", res.data);
-          alert("Period created successfully");
-          formik.resetForm();
-          handleEventClose();
-        })
-        .catch((e) => {
-          console.error("Error creating period:", e);
-          alert("Failed to create period");
-        });
+      if (edit) {
+        axios
+          .post(`${baseAPI}/schedule/update/${selectedEventId}`, formattedData)
+          .then((res) => {
+            console.log("API Response:", res.data);
+            alert("Period Updated successfully");
+            formik.resetForm();
+            handleEventClose();
+          })
+          .catch((e) => {
+            console.error("Error updating period:", e);
+            alert("Failed to update period");
+          });
+      } else {
+        axios
+          .post(`${baseAPI}/schedule/create`, formattedData)
+          .then((res) => {
+            console.log("API Response:", res.data);
+            alert("Period created successfully");
+            formik.resetForm();
+            handleEventClose();
+          })
+          .catch((e) => {
+            console.error("Error creating period:", e);
+            alert("Failed to create period");
+          });
+      }
     },
   });
 
