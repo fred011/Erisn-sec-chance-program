@@ -168,6 +168,7 @@ export default function ScheduleEvent({ selectedClass }) {
           <Select
             value={formik.values.teacher}
             name="teacher"
+            label="Teacher"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
@@ -187,6 +188,7 @@ export default function ScheduleEvent({ selectedClass }) {
           <Select
             value={formik.values.subject}
             name="subject"
+            label="Subject"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
@@ -205,6 +207,7 @@ export default function ScheduleEvent({ selectedClass }) {
           <InputLabel>Period</InputLabel>
           <Select
             value={formik.values.period}
+            label="Period"
             name="period"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
