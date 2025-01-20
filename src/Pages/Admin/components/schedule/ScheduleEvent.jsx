@@ -116,6 +116,7 @@ export default function ScheduleEvent({ selectedClass }) {
         .then((res) => {
           console.log("API Response:", res.data);
           alert("Period created successfully");
+          formik.resetForm();
         })
         .catch((e) => {
           console.error("Error creating period:", e);
