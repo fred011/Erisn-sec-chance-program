@@ -1,162 +1,219 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Typography,
+  Select,
+} from "@mui/material";
+
+import { useFormik } from "formik";
+import { periodSchema } from "../../../../Components/yupSchema/periodSchema";
+import { useEffect, useState } from "react";
 import axios from "axios";
+
 import { baseAPI } from "../../../../environment";
 
-const ScheduleEvent = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [subjects, setSubjects] = useState([]);
-  const [classes, setClasses] = useState([]);
-  const [values, setValues] = useState({
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+
+export default function ScheduleEvent({ selectedClass }) {
+  const initialValues = {
     teacher: "",
     subject: "",
-    class: "",
-    startTime: "14:00",
-    endTime: "15:00",
+    period: "",
     date: new Date(),
+  };
+  const [teachers, setTeachers] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+
+  const periods = [
+    {
+      id: 1,
+      label: "Period 1 (08:00 AM - 09:00 AM)",
+      startTime: "08:00",
+      endTime: "09:00",
+    },
+    {
+      id: 2,
+      label: "Period 2 (09:00 AM - 10:00 AM)",
+      startTime: "09:00",
+      endTime: "10:00",
+    },
+    {
+      id: 3,
+      label: "Period 3 (10:00 AM - 11:00 AM)",
+      startTime: "10:00",
+      endTime: "11:00",
+    },
+    {
+      id: 4,
+      label: "Lunch Break (11:00 AM - 12:00 PM)",
+      startTime: "11:00",
+      endTime: "12:00",
+    },
+    {
+      id: 5,
+      label: "Period 4 (12:00 PM - 1:00 PM)",
+      startTime: "12:00",
+      endTime: "13:00",
+    },
+    {
+      id: 6,
+      label: "Period 5 (1:00 PM - 2:00 PM)",
+      startTime: "13:00",
+      endTime: "14:00",
+    },
+    {
+      id: 7,
+      label: "Period 6 (2:00 PM - 3:00 PM)",
+      startTime: "14:00",
+      endTime: "15:00",
+    },
+  ];
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: periodSchema,
+    onSubmit: (values) => {
+      const { date, period } = values;
+      const [startTime, endTime] = period.split(",");
+      const formattedData = {
+        ...values,
+        selectedClass,
+        startTime: new Date(
+          date.setHours(startTime.split(":")[0], startTime.split(":")[1])
+        ),
+        endTime: new Date(
+          date.setHours(endTime.split(":")[0], endTime.split(":")[1])
+        ),
+      };
+
+      console.log("Submitting the following data:", formattedData);
+
+      //   axios
+      //     .post(`${baseAPI}/schedule/create`, formattedData)
+      //     .then((res) => {
+      //       console.log("API Response:", res.data);
+      //       alert("Period created successfully");
+      //     })
+      //     .catch((e) => {
+      //       console.error("Error creating period:", e);
+      //       alert("Failed to create period");
+      //     });
+    },
   });
 
-  // Fetch teachers, subjects, and classes when the component mounts
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const teachersResponse = await axios.get("$baseAPI{/teachers");
-        const subjectsResponse = await axios.get("$baseAPI{/subjects");
-        const classesResponse = await axios.get("$baseAPI{/classes");
-
-        setTeachers(teachersResponse.data);
-        setSubjects(subjectsResponse.data);
-        setClasses(classesResponse.data);
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const {
-      teacher,
-      subject,
-      class: selectedClass,
-      startTime,
-      endTime,
-      date,
-    } = values;
-
-    // Convert start and end time to ISO format
-    const startTimeStr = new Date(
-      date.setHours(
-        parseInt(startTime.split(":")[0], 10),
-        parseInt(startTime.split(":")[1], 10),
-        0
-      )
-    ).toISOString();
-
-    const endTimeStr = new Date(
-      date.setHours(
-        parseInt(endTime.split(":")[0], 10),
-        parseInt(endTime.split(":")[1], 10),
-        0
-      )
-    ).toISOString();
-
-    const payload = {
-      teacher,
-      subject,
-      class: selectedClass,
-      startTime: startTimeStr,
-      endTime: endTimeStr,
-    };
-
+  const fetchData = async () => {
     try {
-      const response = await axios.post(`${baseAPI}/schedules`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("Schedule created successfully", response.data);
+      const teacherResponse = await axios.get(
+        `${baseAPI}/teacher/fetch-with-query`
+      );
+      console.log("Fetched Teachers:", teacherResponse.data);
+      const subjectResponse = await axios.get(`${baseAPI}/subject/all`);
+      console.log("Fetched Subjects:", subjectResponse.data);
+
+      setTeachers(teacherResponse.data.teachers || []);
+      setSubjects(subjectResponse.data.data || []);
     } catch (error) {
-      console.error("Error creating schedule", error.response);
+      console.error("Error fetching data:", error);
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Teacher</label>
-        <select
+    <Box
+      component="form"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        width: "60vw",
+        minWidth: "300px",
+        margin: "auto",
+      }}
+      onSubmit={formik.handleSubmit}
+    >
+      <Typography variant="h4">Add New Period</Typography>
+
+      <FormControl fullWidth>
+        <InputLabel>Teacher</InputLabel>
+        <Select
+          value={formik.values.teacher}
           name="teacher"
-          value={values.teacher}
-          onChange={(e) => setValues({ ...values, teacher: e.target.value })}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         >
-          <option value="">Select Teacher</option>
-          {teachers.map((teacher) => (
-            <option key={teacher._id} value={teacher._id}>
-              {teacher.name}
-            </option>
+          {teachers?.map((x) => (
+            <MenuItem key={x._id} value={x._id}>
+              {x.name}
+            </MenuItem>
           ))}
-        </select>
-      </div>
+        </Select>
+        {formik.touched.teacher && formik.errors.teacher && (
+          <Typography color="error">{formik.errors.teacher}</Typography>
+        )}
+      </FormControl>
 
-      <div>
-        <label>Subject</label>
-        <select
+      <FormControl fullWidth>
+        <InputLabel>Subject</InputLabel>
+        <Select
+          value={formik.values.subject}
           name="subject"
-          value={values.subject}
-          onChange={(e) => setValues({ ...values, subject: e.target.value })}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         >
-          <option value="">Select Subject</option>
-          {subjects.map((subject) => (
-            <option key={subject._id} value={subject._id}>
-              {subject.name}
-            </option>
+          {subjects?.map((x) => (
+            <MenuItem key={x._id} value={x._id}>
+              {x.subject_name}
+            </MenuItem>
           ))}
-        </select>
-      </div>
+        </Select>
+        {formik.touched.subject && formik.errors.subject && (
+          <Typography color="error">{formik.errors.subject}</Typography>
+        )}
+      </FormControl>
 
-      <div>
-        <label>Class</label>
-        <select
-          name="class"
-          value={values.class}
-          onChange={(e) => setValues({ ...values, class: e.target.value })}
+      <FormControl fullWidth>
+        <InputLabel>Period</InputLabel>
+        <Select
+          value={formik.values.period}
+          name="period"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         >
-          <option value="">Select Class</option>
-          {classes.map((cls) => (
-            <option key={cls._id} value={cls._id}>
-              {cls.name}
-            </option>
+          {periods.map((x) => (
+            <MenuItem key={x.id} value={`${x.startTime},${x.endTime}`}>
+              {x.label}
+            </MenuItem>
           ))}
-        </select>
-      </div>
+        </Select>
+        {formik.touched.period && formik.errors.period && (
+          <Typography color="error">{formik.errors.period}</Typography>
+        )}
+      </FormControl>
 
-      <div>
-        <label>Start Time</label>
-        <input
-          type="time"
-          name="startTime"
-          value={values.startTime}
-          onChange={(e) => setValues({ ...values, startTime: e.target.value })}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          label="Date"
+          value={dayjs(formik.values.date)}
+          onChange={(value) => {
+            console.log("Selected Date:", value.toDate());
+            formik.setFieldValue("date", value.toDate());
+          }}
         />
-      </div>
+      </LocalizationProvider>
 
-      <div>
-        <label>End Time</label>
-        <input
-          type="time"
-          name="endTime"
-          value={values.endTime}
-          onChange={(e) => setValues({ ...values, endTime: e.target.value })}
-        />
-      </div>
-
-      <button type="submit">Create Schedule</button>
-    </form>
+      <Button type="submit" variant="contained">
+        Add Event
+      </Button>
+    </Box>
   );
-};
-
-export default ScheduleEvent;
+}
