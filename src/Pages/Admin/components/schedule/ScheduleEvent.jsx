@@ -58,19 +58,19 @@ export default function ScheduleEvent({ selectedClass }) {
     },
     {
       id: 5,
-      label: "Period 4 (12:00 PM - 1:00 PM)",
+      label: "Period 4 (12:00 PM - 13:00 PM)",
       startTime: "12:00",
       endTime: "13:00",
     },
     {
       id: 6,
-      label: "Period 5 (1:00 PM - 2:00 PM)",
+      label: "Period 5 (13:00 PM - 14:00 PM)",
       startTime: "13:00",
       endTime: "14:00",
     },
     {
       id: 7,
-      label: "Period 6 (2:00 PM - 3:00 PM)",
+      label: "Period 6 (14:00 PM - 15:00 PM)",
       startTime: "14:00",
       endTime: "15:00",
     },

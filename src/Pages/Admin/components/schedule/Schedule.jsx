@@ -38,6 +38,8 @@ export default function Schedule() {
       .then((res) => {
         setClasses(res.data.data);
         setSelectedClass(res.data.data[0]._id);
+        console.log("Fetched classes : ", res.data.data);
+        console.log("Selected class : ", res.data.data[0]._id);
       })
       .catch((e) => {
         console.log("Fetch class error", e);
