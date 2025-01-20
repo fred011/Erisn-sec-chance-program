@@ -227,7 +227,7 @@ export default function ScheduleEvent({ selectedClass, handleEventClose }) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Date"
-            value={dayjs(formik.values.date)}
+            value={formik.values.date ? dayjs(formik.values.date) : null}
             onChange={(value) => {
               console.log("Selected Date:", value.toDate());
               formik.setFieldValue("date", value.toDate());
