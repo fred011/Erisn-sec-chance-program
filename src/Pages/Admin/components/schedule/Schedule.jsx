@@ -107,7 +107,7 @@ export default function Schedule() {
         defaultView="week"
         view={["week", "day", "agenda"]}
         localizer={localizer}
-        events={events.length > 0 ? events : myEventsList} // Use default events if no events found
+        events={events} // Use default events if no events found
         step={30}
         timeslots={1}
         min={new Date(1970, 1, 1, 7, 0, 0)}
