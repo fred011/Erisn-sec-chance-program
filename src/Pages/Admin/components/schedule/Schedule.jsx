@@ -55,6 +55,7 @@ export default function Schedule() {
       .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
       .then((res) => {
         setEvents(res.data.data);
+        console.log("Fetch Events Successful :", res.data.data);
       })
       .catch((err) => {
         console.log("Error in fetching schedule ", err);
