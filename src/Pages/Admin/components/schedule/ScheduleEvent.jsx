@@ -30,7 +30,6 @@ export default function ScheduleEvent({ selectedClass }) {
   };
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [schedules, setSchedules] = useState([]);
 
   const periods = [
     {
@@ -101,7 +100,6 @@ export default function ScheduleEvent({ selectedClass }) {
         .then((res) => {
           console.log("API Response:", res.data);
           alert("Period created successfully");
-          fetchSchedules();
         })
         .catch((e) => {
           console.error("Error creating period:", e);
@@ -126,32 +124,8 @@ export default function ScheduleEvent({ selectedClass }) {
     }
   };
 
-  const fetchSchedules = async () => {
-    try {
-      const scheduleResponse = await axios.get(
-        `${baseAPI}/schedule/class/${selectedClass}`
-      );
-      console.log("Fetched Schedules:", scheduleResponse.data);
-      setSchedules(scheduleResponse.data.schedules || []);
-    } catch (error) {
-      console.error("Error fetching schedules:", error);
-    }
-  };
-
-  const deleteSchedule = async (id) => {
-    try {
-      await axios.delete(`${baseAPI}/schedule/${id}`);
-      alert("Schedule deleted successfully");
-      fetchSchedules();
-    } catch (error) {
-      console.error("Error deleting schedule:", error);
-      alert("Failed to delete schedule");
-    }
-  };
-
   useEffect(() => {
     fetchData();
-    fetchSchedules();
   }, [selectedClass]);
 
   return (
@@ -244,39 +218,6 @@ export default function ScheduleEvent({ selectedClass }) {
           Add Event
         </Button>
       </Box>
-
-      <Typography variant="h5" sx={{ mt: 4 }}>
-        Existing Schedules
-      </Typography>
-      {schedules.length > 0 ? (
-        schedules.map((schedule) => (
-          <Box
-            key={schedule._id}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              p: 2,
-              border: "1px solid #ccc",
-              borderRadius: 1,
-              mb: 2,
-            }}
-          >
-            <Typography>
-              {schedule.subject} - {schedule.startTime} to {schedule.endTime}
-            </Typography>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => deleteSchedule(schedule._id)}
-            >
-              Delete
-            </Button>
-          </Box>
-        ))
-      ) : (
-        <Typography>No schedules available</Typography>
-      )}
     </Box>
   );
 }
