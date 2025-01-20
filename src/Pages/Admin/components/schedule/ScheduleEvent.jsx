@@ -86,6 +86,15 @@ export default function ScheduleEvent({
     handleEventClose();
   };
 
+  const handleDelete = () => {
+    if (confirm("Are you sure you want to delete period?")) {
+    axios.delete(`${baseAPI}/schedule/delete/${selectedEventId}`).then(res=>{
+    alert("Event Deleted Successfully")
+    }).catch((e)=>{
+      alert("Failed to delete Event")
+    })
+  };
+
   const formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
@@ -305,6 +314,14 @@ export default function ScheduleEvent({
 
         <Button type="submit" variant="contained">
           Add Event
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          sx={{ background: "red" }}
+          onClick={handleDelete}
+        >
+          Delete
         </Button>
         <Button type="button" variant="outline" onClick={handleCancel}>
           Cancel
