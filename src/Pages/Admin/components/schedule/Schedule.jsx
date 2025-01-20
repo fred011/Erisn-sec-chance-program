@@ -35,6 +35,7 @@ export default function Schedule() {
 
   const handleEventClose = () => {
     setNewPeriod(false);
+    setEdit(false);
   };
 
   const [edit, setEdit] = useState(false);
