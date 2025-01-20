@@ -93,7 +93,7 @@ export default function ScheduleEvent({
         .then((res) => {
           alert("Event Deleted Successfully");
           console.log("Event Deleted Successfully", res);
-          formik.resetForm();
+
           handleCancel();
         })
         .catch((e) => {
