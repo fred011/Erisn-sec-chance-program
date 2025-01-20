@@ -51,15 +51,17 @@ export default function Schedule() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
-      .then((res) => {
-        setEvents(res.data.data);
-        console.log("Fetch Events Successful ");
-      })
-      .catch((err) => {
-        console.log("Error in fetching schedule ", err);
-      });
+    if (selectedClass) {
+      axios
+        .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
+        .then((res) => {
+          console.log(res.data.data);
+          setEvents(res.data.data);
+        })
+        .catch((err) => {
+          console.log("Error in fetching schedule ", err);
+        });
+    }
   }, [selectedClass]);
 
   return (
