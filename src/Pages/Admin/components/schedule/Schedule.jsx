@@ -59,7 +59,10 @@ export default function Schedule() {
           setEvents(res.data.data);
         })
         .catch((err) => {
-          console.log("Error in fetching schedule ", err);
+          console.log(
+            "Error in fetching schedule: ",
+            err.response?.data || err
+          );
         });
     }
   }, [selectedClass]);
