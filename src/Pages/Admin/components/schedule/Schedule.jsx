@@ -37,6 +37,13 @@ export default function Schedule() {
     setNewPeriod(false);
   };
 
+  const [edit, setEdit] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const handleSelectEvent = (event) => {
+    setEdit(true);
+    setSelectedEventId(event.id);
+  };
+
   useEffect(() => {
     axios
       .get(`${baseAPI}/class/all`)
@@ -120,11 +127,13 @@ export default function Schedule() {
       </FormControl>
 
       <Button onClick={() => setNewPeriod(true)}>Add new Period</Button>
-      {newPeriod && (
+      {(newPeriod || edit) && (
         <ScheduleEvent
           selectedClass={selectedClass}
           handleEventClose={handleEventClose}
           onAddNewPeriod={handleAddNewPeriod} // Pass the callback function to ScheduleEvent
+          edit={edit}
+          selectedEventId={selectedEventId}
         />
       )}
 
@@ -137,6 +146,7 @@ export default function Schedule() {
         min={new Date(1970, 1, 1, 7, 0, 0)}
         startAccessor="start"
         endAccessor="end"
+        onSelectEvent={handleSelectEvent}
         max={new Date(1970, 1, 1, 17, 0, 0)}
         defaultDate={new Date()}
         showMultiDayTimes

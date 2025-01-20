@@ -21,7 +21,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-export default function ScheduleEvent({ selectedClass, handleEventClose }) {
+export default function ScheduleEvent({
+  selectedClass,
+  handleEventClose,
+  edit,
+  selectedEventId,
+}) {
   const initialValues = {
     teacher: "",
     subject: "",
@@ -145,6 +150,37 @@ export default function ScheduleEvent({ selectedClass, handleEventClose }) {
   useEffect(() => {
     fetchData();
   }, [selectedClass]);
+  const dateFormat = (date) => {
+    const dateHours = date.getHours();
+    const dateMinutes = date.getMinutes();
+    return `${dateHours}:${dateMinutes < 10 ? "0" : ""}${dateMinutes}`;
+  };
+
+  useEffect(() => {
+    if (selectedEventId) {
+      axios
+        .get(`${baseAPI}/schedule/fetch/${selectedEventId}`)
+        .then((res) => {
+          formik.setFieldValue("teacher", res.data.data.teacher);
+          formik.setFieldValue("subject", res.data.data.subject);
+          let start = new Date(res.data.data.startTime);
+          let end = new Date(res.data.data.endTime);
+
+          formik.setFieldValue("date", start);
+          const finalFormattedTime = dateFormat(start) + "," + dateFormat(end);
+          formik.setFieldValue("period", finalFormattedTime);
+          console.log(
+            end.getHours(),
+            (end.getMinutes() < 10 ? "0" : "") + end.getMinutes()
+          );
+          formik.setFieldValue("teacher", res.data.data.teacher);
+          console.log("RESPONSE : ", res);
+        })
+        .catch((e) => {
+          console.log("ERROR Fecthing wit ID", e);
+        });
+    }
+  }, [selectedEventId]);
 
   return (
     <Box
@@ -157,7 +193,11 @@ export default function ScheduleEvent({ selectedClass, handleEventClose }) {
         margin: "auto",
       }}
     >
-      <Typography variant="h4">Add New Period</Typography>
+      {edit ? (
+        <Typography variant="h4">Edit Period</Typography>
+      ) : (
+        <Typography variant="h4">Add New Period</Typography>
+      )}
 
       <Box
         component="form"
