@@ -31,7 +31,7 @@ export default function Schedule() {
       end: new Date(date.setHours(11, 30)),
     },
   ];
-
+  const [events, setEvents] = useState(myEventsList);
   const handleEventClose = () => {
     setNewPeriod(false);
   };
@@ -49,6 +49,17 @@ export default function Schedule() {
         console.log("Fetch class error", e);
       });
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
+      .then((res) => {
+        setEvents(res.data.data);
+      })
+      .catch((err) => {
+        console.log("Error in fetching schedule ", err);
+      });
+  });
 
   return (
     <>
@@ -88,9 +99,9 @@ export default function Schedule() {
 
       <Calendar
         defaultView="week"
-        // view={["week", "day", "agenda"]}
+        view={["week", "day", "agenda"]}
         localizer={localizer}
-        events={myEventsList}
+        events={events}
         step={30}
         timeslots={1}
         min={new Date(1970, 1, 1, 7, 0, 0)}
