@@ -40,10 +40,11 @@ export default function Schedule() {
     axios
       .get(`${baseAPI}/class/all`)
       .then((res) => {
-        setClasses(res.data.data);
-        setSelectedClass(res.data.data[0]._id);
-        console.log("Fetched classes : ", res.data.data);
-        console.log("Selected class : ", res.data.data[0]._id);
+        const classesData = res.data.data || []; // Fallback to empty array if data is undefined
+        setClasses(classesData);
+        setSelectedClass(classesData.length > 0 ? classesData[0]._id : null); // Ensure there's a valid selectedClass
+        console.log("Fetched classes : ", classesData);
+        console.log("Selected class : ", classesData[0]._id);
       })
       .catch((e) => {
         console.log("Fetch class error", e);
@@ -51,16 +52,18 @@ export default function Schedule() {
   }, []);
 
   useEffect(() => {
+    if (!selectedClass) return; // Prevent API call if no class is selected
     axios
       .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
       .then((res) => {
-        setEvents(res.data.data);
-        console.log("Fetch Events Successful :", res.data.data);
+        const eventsData = res.data.data || []; // Fallback to empty array if data is undefined
+        setEvents(eventsData);
+        console.log("Fetch Events Successful :", eventsData);
       })
       .catch((err) => {
         console.log("Error in fetching schedule ", err);
       });
-  });
+  }, [selectedClass]);
 
   return (
     <>
