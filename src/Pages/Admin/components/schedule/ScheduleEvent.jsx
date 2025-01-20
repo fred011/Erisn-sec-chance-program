@@ -27,7 +27,6 @@ export default function ScheduleEvent({
   handleEventClose,
   edit,
   selectedEventId,
-  refreshEvents,
 }) {
   const initialValues = {
     teacher: "",
@@ -123,7 +122,6 @@ export default function ScheduleEvent({
             alert("Period Updated successfully");
             formik.resetForm();
             handleEventClose();
-            refreshEvents();
           })
           .catch((e) => {
             console.error("Error updating period:", e);
@@ -137,7 +135,6 @@ export default function ScheduleEvent({
             alert("Period created successfully");
             formik.resetForm();
             handleEventClose();
-            refreshEvents();
           })
           .catch((e) => {
             console.error("Error creating period:", e);
