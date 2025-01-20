@@ -171,29 +171,38 @@ export default function ScheduleEvent({
   };
 
   useEffect(() => {
-    if (selectedEventId) {
-      axios
-        .get(`${baseAPI}/schedule/fetch/${selectedEventId}`)
-        .then((res) => {
-          formik.setFieldValue("teacher", res.data.data.teacher);
-          formik.setFieldValue("subject", res.data.data.subject);
-          let start = new Date(res.data.data.startTime);
-          let end = new Date(res.data.data.endTime);
+    const fetchEventData = async () => {
+      if (selectedEventId) {
+        try {
+          const res = await axios.get(
+            `${baseAPI}/schedule/fetch/${selectedEventId}`
+          );
+          const eventData = res.data.data;
+
+          formik.setFieldValue("teacher", eventData.teacher);
+          formik.setFieldValue("subject", eventData.subject);
+
+          const start = new Date(eventData.startTime);
+          const end = new Date(eventData.endTime);
 
           formik.setFieldValue("date", start);
+
           const finalFormattedTime = dateFormat(start) + "," + dateFormat(end);
           formik.setFieldValue("period", finalFormattedTime);
+
           console.log(
             end.getHours(),
             (end.getMinutes() < 10 ? "0" : "") + end.getMinutes()
           );
-          formik.setFieldValue("teacher", res.data.data.teacher);
-          console.log("RESPONSE : ", res);
-        })
-        .catch((e) => {
-          console.log("ERROR Fecthing wit ID", e);
-        });
-    }
+
+          console.log("RESPONSE:", res);
+        } catch (e) {
+          console.error("ERROR Fetching with ID:", e);
+        }
+      }
+    };
+
+    fetchEventData();
   }, [selectedEventId, formik]);
 
   return (
