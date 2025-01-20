@@ -81,10 +81,10 @@ export default function ScheduleEvent({
       endTime: "15:00",
     },
   ];
-  // const handleCancel = () => {
-  //   formik.resetForm();
-  //   handleEventClose();
-  // };
+  const handleCancel = () => {
+    formik.resetForm();
+    handleEventClose();
+  };
 
   const formik = useFormik({
     initialValues,
@@ -306,7 +306,7 @@ export default function ScheduleEvent({
         <Button type="submit" variant="contained">
           Add Event
         </Button>
-        <Button type="button" variant="outline" onClick={handleCancel()}>
+        <Button type="button" variant="outline" onClick={handleCancel}>
           Cancel
         </Button>
       </Box>
