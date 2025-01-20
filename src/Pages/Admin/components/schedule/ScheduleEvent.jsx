@@ -81,10 +81,10 @@ export default function ScheduleEvent({
       endTime: "15:00",
     },
   ];
-  const handleCancel = () => {
-    formik.resetForm();
-    handleEventClose();
-  };
+  // const handleCancel = () => {
+  //   formik.resetForm();
+  //   handleEventClose();
+  // };
 
   const formik = useFormik({
     initialValues,
