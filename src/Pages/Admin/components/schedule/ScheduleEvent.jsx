@@ -255,9 +255,19 @@ export default function ScheduleEvent({
       }}
     >
       {edit ? (
-        <Typography variant="h4">Edit Period</Typography>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "500", textAlign: "center" }}
+        >
+          Edit Period
+        </Typography>
       ) : (
-        <Typography variant="h4">Add New Period</Typography>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "500", textAlign: "center" }}
+        >
+          Add New Period
+        </Typography>
       )}
 
       <Box
