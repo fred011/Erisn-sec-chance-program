@@ -20,8 +20,10 @@ const localizer = momentLocalizer(moment);
 export default function Schedule() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
-
   const [newPeriod, setNewPeriod] = useState(false);
+  const [events, setEvents] = useState([]); // Ensure events is an empty array initially
+
+  // Default date setup
   const date = new Date();
   const myEventsList = [
     {
@@ -31,20 +33,18 @@ export default function Schedule() {
       end: new Date(date.setHours(11, 30)),
     },
   ];
-  const [events, setEvents] = useState(myEventsList);
-  const handleEventClose = () => {
-    setNewPeriod(false);
-  };
 
   useEffect(() => {
+    // Fetching classes
     axios
       .get(`${baseAPI}/class/all`)
       .then((res) => {
         const classesData = res.data.data || []; // Fallback to empty array if data is undefined
         setClasses(classesData);
-        setSelectedClass(classesData.length > 0 ? classesData[0]._id : null); // Ensure there's a valid selectedClass
-        console.log("Fetched classes : ", classesData);
-        console.log("Selected class : ", classesData[0]._id);
+        // Set selectedClass to the first class if available
+        if (classesData.length > 0) {
+          setSelectedClass(classesData[0]._id);
+        }
       })
       .catch((e) => {
         console.log("Fetch class error", e);
@@ -52,18 +52,22 @@ export default function Schedule() {
   }, []);
 
   useEffect(() => {
+    // Fetch events if selectedClass exists
     if (!selectedClass) return; // Prevent API call if no class is selected
     axios
       .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
       .then((res) => {
         const eventsData = res.data.data || []; // Fallback to empty array if data is undefined
         setEvents(eventsData);
-        console.log("Fetch Events Successful :", eventsData);
       })
       .catch((err) => {
-        console.log("Error in fetching schedule ", err);
+        console.log("Error in fetching schedule", err);
       });
   }, [selectedClass]);
+
+  const handleEventClose = () => {
+    setNewPeriod(false);
+  };
 
   return (
     <>
@@ -73,15 +77,11 @@ export default function Schedule() {
       </Typography>
       <FormControl fullWidth>
         <Select
-          // labelId="classes"
-          // id="classes"
           value={selectedClass || ""}
-          // label="Class"
           onChange={(e) => {
             setSelectedClass(e.target.value);
           }}
         >
-          {/* <MenuItem value={""}>Select Class</MenuItem> */}
           {classes &&
             classes.map((x) => {
               return (
@@ -105,7 +105,7 @@ export default function Schedule() {
         defaultView="week"
         view={["week", "day", "agenda"]}
         localizer={localizer}
-        events={events}
+        events={events.length > 0 ? events : myEventsList} // Use default events if no events found
         step={30}
         timeslots={1}
         min={new Date(1970, 1, 1, 7, 0, 0)}
