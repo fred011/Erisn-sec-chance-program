@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -21,10 +20,8 @@ const localizer = momentLocalizer(moment);
 export default function Schedule() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
-  const [newPeriod, setNewPeriod] = useState(false);
-  // const [events, setEvents] = useState(myEventsList); // Ensure events is an empty array initially
 
-  // Default date setup
+  const [newPeriod, setNewPeriod] = useState(false);
   const date = new Date();
   const myEventsList = [
     {
@@ -34,19 +31,19 @@ export default function Schedule() {
       end: new Date(date.setHours(11, 30)),
     },
   ];
-
   const [events, setEvents] = useState(myEventsList);
+  const handleEventClose = () => {
+    setNewPeriod(false);
+  };
+
   useEffect(() => {
-    // Fetching classes
     axios
       .get(`${baseAPI}/class/all`)
       .then((res) => {
-        const classesData = res.data.data || []; // Fallback to empty array if data is undefined
-        setClasses(classesData);
-        // Set selectedClass to the first class if available
-        if (classesData.length > 0) {
-          setSelectedClass(classesData[0]._id);
-        }
+        setClasses(res.data.data);
+        setSelectedClass(res.data.data[0]._id);
+        console.log("Fetched classes : ", res.data.data);
+        console.log("Selected class : ", res.data.data[0]._id);
       })
       .catch((e) => {
         console.log("Fetch class error", e);
@@ -54,22 +51,16 @@ export default function Schedule() {
   }, []);
 
   useEffect(() => {
-    // Fetch events if selectedClass exists
-
     axios
       .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
       .then((res) => {
-        const eventsData = res.data.data; // Fallback to empty array if data is undefined
-        setEvents(eventsData);
+        setEvents(res.data.data);
+        console.log("Fetch Events Successful ");
       })
       .catch((err) => {
-        console.log("Error in fetching schedule", err);
+        console.log("Error in fetching schedule ", err);
       });
   }, []);
-
-  const handleEventClose = () => {
-    setNewPeriod(false);
-  };
 
   return (
     <>
@@ -79,11 +70,15 @@ export default function Schedule() {
       </Typography>
       <FormControl fullWidth>
         <Select
+          // labelId="classes"
+          // id="classes"
           value={selectedClass || ""}
+          // label="Class"
           onChange={(e) => {
             setSelectedClass(e.target.value);
           }}
         >
+          {/* <MenuItem value={""}>Select Class</MenuItem> */}
           {classes &&
             classes.map((x) => {
               return (
@@ -107,7 +102,7 @@ export default function Schedule() {
         defaultView="week"
         view={["week", "day", "agenda"]}
         localizer={localizer}
-        events={events} // Use default events if no events found
+        events={events}
         step={30}
         timeslots={1}
         min={new Date(1970, 1, 1, 7, 0, 0)}
