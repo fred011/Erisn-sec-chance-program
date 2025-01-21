@@ -4,7 +4,7 @@ import LandingPage from "./Pages/LandingPage/LandingPage";
 import Login from "./Pages/AuthPages/Login/Login";
 import Register from "./Pages/AuthPages/Register/Register";
 import Admin from "./Pages/Admin/Admin";
-import Attendance from "./Pages/Admin/components/attendence/Attendance";
+// import Attendance from "./Pages/Admin/components/attendence/Attendance";
 import Class from "./Pages/Admin/components/class/Class";
 import Dashboard from "./Pages/Admin/components/dashboard/Dashboard";
 import Examinations from "./Pages/Admin/components/examinations/Examinations";
@@ -30,6 +30,7 @@ import ExaminationsStudent from "./Pages/Student/components/examinations/Examina
 import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent";
 import { AuthProvider } from "./Pages/AuthPages/AuthContext";
 import ProtectedRoute from "./Pages/AuthPages/ProtectedRoute";
+import AttendanceStudentList from "./Pages/Admin/components/attendence/AttendanceStudentList";
 
 function App() {
   return (
@@ -51,7 +52,7 @@ function App() {
           >
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="attendance" element={<Attendance />} />
+            <Route path="attendance" element={<AttendanceStudentList />} />
             <Route path="class" element={<Class />} />
             <Route path="fees" element={<Fees />} />
             <Route path="examinations" element={<Examinations />} />
