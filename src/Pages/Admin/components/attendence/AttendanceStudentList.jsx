@@ -15,7 +15,11 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Paper,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Grid from "@mui/material/Grid2";
+
 import {
   Table,
   TableBody,
@@ -23,7 +27,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
 import axios from "axios";
 
@@ -33,6 +36,17 @@ import {
 } from "../../../../Components/yupSchema/studentSchema";
 import { useState } from "react";
 import { baseAPI } from "../../../../environment";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027",
+  }),
+}));
 
 export default function AttendanceStudentList() {
   const [edit, setEdit] = useState(false);
@@ -76,98 +90,98 @@ export default function AttendanceStudentList() {
     formik.resetForm();
   };
 
-  const handleEdit = (id) => {
-    setEdit(true);
-    setEditId(id);
-    const filteredStudent = students.filter((x) => x._id === id);
-    console.log("Filtered Student ", filteredStudent);
-    const student = filteredStudent[0];
+  // const handleEdit = (id) => {
+  //   setEdit(true);
+  //   setEditId(id);
+  //   const filteredStudent = students.filter((x) => x._id === id);
+  //   console.log("Filtered Student ", filteredStudent);
+  //   const student = filteredStudent[0];
 
-    formik.setFieldValue("name", filteredStudent[0].name);
-    formik.setFieldValue("email", filteredStudent[0].email);
-    formik.setFieldValue(
-      "student_class",
-      student.student_class ? student.student_class._id : "" // Check if student_class exists
-    );
-    formik.setFieldValue("age", filteredStudent[0].age);
-    formik.setFieldValue("gender", filteredStudent[0].gender || "");
-    formik.setFieldValue("guardian", filteredStudent[0].guardian);
-    formik.setFieldValue("guardian_phone", filteredStudent[0].guardian_phone);
-  };
+  //   formik.setFieldValue("name", filteredStudent[0].name);
+  //   formik.setFieldValue("email", filteredStudent[0].email);
+  //   formik.setFieldValue(
+  //     "student_class",
+  //     student.student_class ? student.student_class._id : "" // Check if student_class exists
+  //   );
+  //   formik.setFieldValue("age", filteredStudent[0].age);
+  //   formik.setFieldValue("gender", filteredStudent[0].gender || "");
+  //   formik.setFieldValue("guardian", filteredStudent[0].guardian);
+  //   formik.setFieldValue("guardian_phone", filteredStudent[0].guardian_phone);
+  // };
 
   // Formik setup for form state management, validation, and submission
-  const formik = useFormik({
-    initialValues, // Set initial values
-    validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
-    onSubmit: (values, { resetForm }) => {
-      if (edit) {
-        const data = {
-          name: values.name,
-          email: values.email,
-          student_class: values.student_class,
-          age: values.age,
-          gender: values.gender,
-          guardian: values.guardian,
-          guardian_phone: values.guardian_phone,
-        };
+  // const formik = useFormik({
+  //   initialValues, // Set initial values
+  //   validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
+  //   onSubmit: (values, { resetForm }) => {
+  //     if (edit) {
+  //       const data = {
+  //         name: values.name,
+  //         email: values.email,
+  //         student_class: values.student_class,
+  //         age: values.age,
+  //         gender: values.gender,
+  //         guardian: values.guardian,
+  //         guardian_phone: values.guardian_phone,
+  //       };
 
-        if (values.password) {
-          const data = { password: values.password };
-        }
+  //       if (values.password) {
+  //         const data = { password: values.password };
+  //       }
 
-        axios
-          .patch(
-            `https://erisn-api.onrender.com/api/student/update/${editId}`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
-          .then((res) => {
-            // On successful registration
-            console.log("updated Students data : ", res.data.data);
-            alert(`Student updated successfully!`);
+  //       axios
+  //         .patch(
+  //           `https://erisn-api.onrender.com/api/student/update/${editId}`, // API endpoint depends on the selected role
+  //           data,
+  //           { withCredentials: true } // Include credentials like cookies
+  //         )
+  //         .then((res) => {
+  //           // On successful registration
+  //           console.log("updated Students data : ", res.data.data);
+  //           alert(`Student updated successfully!`);
 
-            resetForm(); // Clear the form
-            fetchStudents();
-          })
-          .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error updating Student");
-          });
-      } else {
-        // Prepare the data to be sent to the API
-        const data = {
-          name: values.name,
-          email: values.email,
-          student_class: values.student_class,
-          age: values.age,
-          gender: values.gender,
-          guardian: values.guardian,
-          guardian_phone: values.guardian_phone,
-          password: values.password,
-        };
+  //           resetForm(); // Clear the form
+  //           fetchStudents();
+  //         })
+  //         .catch((err) => {
+  //           // Handle errors
+  //           alert(err.response?.data?.error || "Error updating Student");
+  //         });
+  //     } else {
+  //       // Prepare the data to be sent to the API
+  //       const data = {
+  //         name: values.name,
+  //         email: values.email,
+  //         student_class: values.student_class,
+  //         age: values.age,
+  //         gender: values.gender,
+  //         guardian: values.guardian,
+  //         guardian_phone: values.guardian_phone,
+  //         password: values.password,
+  //       };
 
-        // API call to register the user
-        axios
-          .post(
-            `https://erisn-api.onrender.com/api/student/register`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
-          .then((res) => {
-            // On successful registration
-            console.log("Registered Students data : ", res.data.data);
-            alert(`Student registered successfully!`);
+  //       // API call to register the user
+  //       axios
+  //         .post(
+  //           `https://erisn-api.onrender.com/api/student/register`, // API endpoint depends on the selected role
+  //           data,
+  //           { withCredentials: true } // Include credentials like cookies
+  //         )
+  //         .then((res) => {
+  //           // On successful registration
+  //           console.log("Registered Students data : ", res.data.data);
+  //           alert(`Student registered successfully!`);
 
-            resetForm();
-            fetchStudents();
-          })
-          .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error registering Student");
-          });
-      }
-    },
-  });
+  //           resetForm();
+  //           fetchStudents();
+  //         })
+  //         .catch((err) => {
+  //           // Handle errors
+  //           alert(err.response?.data?.error || "Error registering Student");
+  //         });
+  //     }
+  //   },
+  // });
 
   const fetchClasses = () => {
     axios
@@ -225,80 +239,88 @@ export default function AttendanceStudentList() {
         >
           Students Attendance
         </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={6} md={4}>
+            <Item>
+              <Box
+                component={"div"}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: "40px",
+                }}
+              >
+                <TextField
+                  label="search"
+                  value={params.search ? params.search : ""}
+                  onChange={(e) => {
+                    handleSearch(e);
+                  }}
+                  // onBlur={formik.handleBlur}
+                />
 
-        <Box
-          component={"div"}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "40px",
-          }}
-        >
-          <TextField
-            label="search"
-            value={params.search ? params.search : ""}
-            onChange={(e) => {
-              handleSearch(e);
-            }}
-            // onBlur={formik.handleBlur}
-          />
-
-          <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
-            <InputLabel id="student_class">Student Class</InputLabel>
-            <Select
-              // value={formik.values.student_class}
-              label="Student Class"
-              value={params.student_class ? params.student_class : ""}
-              // name="student_class"
-              onChange={(e) => {
-                handleClass(e);
-              }}
-            >
-              <MenuItem value="">Select Class</MenuItem>
-              {classes &&
-                classes.map((x) => {
-                  return (
-                    <MenuItem key={x._id} value={x._id}>
-                      {x.class_text} ({x.class_num})
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
-        </Box>
-
-        {/* Table Section */}
-        <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Gender</TableCell>
-                <TableCell>Guardian Phone</TableCell>
-                <TableCell>Class</TableCell>
-                <TableCell>Percentage</TableCell>
-                <TableCell>View</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {students.map((student) => (
-                <TableRow key={student._id}>
-                  <TableCell>{student.name}</TableCell>
-                  <TableCell>{student.gender}</TableCell>
-                  <TableCell>{student.guardian_phone}</TableCell>
-                  <TableCell>
-                    {student.student_class
-                      ? student.student_class.class_text
-                      : "Not Assigned"}
-                  </TableCell>
-                  <TableCell>"Percentage"</TableCell>
-                  <TableCell>"View"</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
+                  <InputLabel id="student_class">Student Class</InputLabel>
+                  <Select
+                    // value={formik.values.student_class}
+                    label="Student Class"
+                    value={params.student_class ? params.student_class : ""}
+                    // name="student_class"
+                    onChange={(e) => {
+                      handleClass(e);
+                    }}
+                  >
+                    <MenuItem value="">Select Class</MenuItem>
+                    {classes &&
+                      classes.map((x) => {
+                        return (
+                          <MenuItem key={x._id} value={x._id}>
+                            {x.class_text} ({x.class_num})
+                          </MenuItem>
+                        );
+                      })}
+                  </Select>
+                </FormControl>
+              </Box>
+            </Item>
+          </Grid>
+          <Grid item xs={6} md={8}>
+            <Item>
+              {/* Table Section */}
+              <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Gender</TableCell>
+                      <TableCell>Guardian Phone</TableCell>
+                      <TableCell>Class</TableCell>
+                      <TableCell>Percentage</TableCell>
+                      <TableCell>View</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {students.map((student) => (
+                      <TableRow key={student._id}>
+                        <TableCell>{student.name}</TableCell>
+                        <TableCell>{student.gender}</TableCell>
+                        <TableCell>{student.guardian_phone}</TableCell>
+                        <TableCell>
+                          {student.student_class
+                            ? student.student_class.class_text
+                            : "Not Assigned"}
+                        </TableCell>
+                        <TableCell>"Percentage"</TableCell>
+                        <TableCell>"View"</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Item>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );
