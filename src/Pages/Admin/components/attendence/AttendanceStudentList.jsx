@@ -55,130 +55,81 @@ export default function AttendanceStudentList() {
   const [editId, setEditId] = useState(null);
 
   const [classes, setClasses] = useState([]);
-  // Define initial form field values
-  // const initialValues = {
-  //   name: "",
-  //   email: "",
-  //   student_class: "",
-  //   age: "",
-  //   gender: "",
-  //   guardian: "",
-  //   guardian_phone: "",
-  //   password: "",
-  //   confirm_password: "",
-  // };
-
-  // const handleDelete = (id) => {
-  //   if (confirm("Are you sure you want to delete student?")) {
-  //     console.log("Delete", id);
-  //     axios
-  //       .delete(`${baseAPI}/student/delete/${id}`)
-  //       .then((res) => {
-  //         console.log("Student delete response", res);
-
-  //         alert("Student deleted successfully");
-  //         fetchStudents();
-  //       })
-  //       .catch((err) => {
-  //         console.log("Error in deleting student", err);
-
-  //         alert("Failed to delete student");
-  //       });
-  //   }
-  // };
-
-  // const handleEdit = (id) => {
-  //   setEdit(true);
-  //   setEditId(id);
-  //   const filteredStudent = students.filter((x) => x._id === id);
-  //   console.log("Filtered Student ", filteredStudent);
-  //   const student = filteredStudent[0];
-
-  //   formik.setFieldValue("name", filteredStudent[0].name);
-  //   formik.setFieldValue("email", filteredStudent[0].email);
-  //   formik.setFieldValue(
-  //     "student_class",
-  //     student.student_class ? student.student_class._id : "" // Check if student_class exists
-  //   );
-  //   formik.setFieldValue("age", filteredStudent[0].age);
-  //   formik.setFieldValue("gender", filteredStudent[0].gender || "");
-  //   formik.setFieldValue("guardian", filteredStudent[0].guardian);
-  //   formik.setFieldValue("guardian_phone", filteredStudent[0].guardian_phone);
-  // };
-
-  // const formik = useFormik({
-  //   initialValues, // Set initial values
-  //   validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
-  //   onSubmit: (values, { resetForm }) => {
-  //     if (edit) {
-  //       const data = {
-  //         name: values.name,
-  //         email: values.email,
-  //         student_class: values.student_class,
-  //         age: values.age,
-  //         gender: values.gender,
-  //         guardian: values.guardian,
-  //         guardian_phone: values.guardian_phone,
-  //       };
-
-  //       if (values.password) {
-  //         const data = { password: values.password };
-  //       }
-
-  //       axios
-  //         .patch(
-  //           `https://erisn-api.onrender.com/api/student/update/${editId}`, // API endpoint depends on the selected role
-  //           data,
-  //           { withCredentials: true } // Include credentials like cookies
-  //         )
-  //         .then((res) => {
-  //           // On successful registration
-  //           console.log("updated Students data : ", res.data.data);
-  //           alert(`Student updated successfully!`);
-
-  //           resetForm(); // Clear the form
-  //           fetchStudents();
-  //         })
-  //         .catch((err) => {
-  //           // Handle errors
-  //           alert(err.response?.data?.error || "Error updating Student");
-  //         });
-  //     } else {
-  //       // Prepare the data to be sent to the API
-  //       const data = {
-  //         name: values.name,
-  //         email: values.email,
-  //         student_class: values.student_class,
-  //         age: values.age,
-  //         gender: values.gender,
-  //         guardian: values.guardian,
-  //         guardian_phone: values.guardian_phone,
-  //         password: values.password,
-  //       };
-
-  //       // API call to register the user
-  //       axios
-  //         .post(
-  //           `https://erisn-api.onrender.com/api/student/register`, // API endpoint depends on the selected role
-  //           data,
-  //           { withCredentials: true } // Include credentials like cookies
-  //         )
-  //         .then((res) => {
-  //           // On successful registration
-  //           console.log("Registered Students data : ", res.data.data);
-  //           alert(`Student registered successfully!`);
-
-  //           resetForm();
-  //           fetchStudents();
-  //         })
-  //         .catch((err) => {
-  //           // Handle errors
-  //           alert(err.response?.data?.error || "Error registering Student");
-  //         });
-  //     }
-  //   },
-  // });
+  const [students, setStudents] = useState([]);
   const [attendanceData, setAttendanceData] = useState({});
+  const [params, setParams] = useState({});
+  const [selectedClass, setSelectedClass] = useState(null);
+
+  const initialValues = {
+    name: "",
+    email: "",
+    student_class: "",
+    age: "",
+    gender: "",
+    guardian: "",
+    guardian_phone: "",
+    password: "",
+    confirm_password: "",
+  };
+
+  const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete student?")) {
+      axios
+        .delete(`${baseAPI}/student/delete/${id}`)
+        .then((res) => {
+          alert("Student deleted successfully");
+          fetchStudents();
+        })
+        .catch((err) => {
+          console.error(
+            "Error in deleting student",
+            err.response || err.message
+          );
+          alert("Failed to delete student");
+        });
+    }
+  };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: edit ? studentEditSchema : studentSchema,
+    onSubmit: (values, { resetForm }) => {
+      const data = {
+        name: values.name,
+        email: values.email,
+        student_class: values.student_class,
+        age: values.age,
+        gender: values.gender,
+        guardian: values.guardian,
+        guardian_phone: values.guardian_phone,
+        ...(values.password && { password: values.password }),
+      };
+
+      const endpoint = edit
+        ? `${baseAPI}/student/update/${editId}`
+        : `${baseAPI}/student/register`;
+
+      const apiCall = edit ? axios.patch : axios.post;
+
+      apiCall(endpoint, data, { withCredentials: true })
+        .then((res) => {
+          alert(`Student ${edit ? "updated" : "registered"} successfully!`);
+          resetForm();
+          fetchStudents();
+        })
+        .catch((err) => {
+          console.error(
+            `Error ${edit ? "updating" : "registering"} student`,
+            err.response || err.message
+          );
+          alert(
+            err.response?.data?.error ||
+              `Error ${edit ? "updating" : "registering"} student`
+          );
+        });
+    },
+  });
+
   const fetchAttendanceForStudents = async (studentsList) => {
     const attendancePromises = studentsList.map((student) =>
       fetchAttendanceForStudent(student._id)
@@ -203,7 +154,10 @@ export default function AttendanceStudentList() {
         totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
       return { studentId, attendancePercentage };
     } catch (error) {
-      console.log(`Error fetching attendance for student ${studentId}:`, error);
+      console.error(
+        `Error fetching attendance for student ${studentId}`,
+        error.response || error.message
+      );
       return { studentId, attendancePercentage: 0 };
     }
   };
@@ -215,12 +169,22 @@ export default function AttendanceStudentList() {
         setClasses(res.data.data);
       })
       .catch((e) => {
-        console.log("Error in fetching classes");
+        console.error("Error in fetching classes", e.response || e.message);
       });
   };
 
-  const [params, setParams] = useState({});
-  const [selectedClass, setSelectedClass] = useState(null);
+  const fetchStudents = () => {
+    axios
+      .get(`${baseAPI}/student/fetch-with-query`, { params })
+      .then((res) => {
+        setStudents(res.data.students);
+        fetchAttendanceForStudents(res.data.students);
+      })
+      .catch((e) => {
+        console.error("Error in fetching students", e.response || e.message);
+      });
+  };
+
   const handleClass = (e) => {
     setSelectedClass(e.target.value);
     setParams((prevParams) => ({
@@ -228,6 +192,7 @@ export default function AttendanceStudentList() {
       student_class: e.target.value || undefined,
     }));
   };
+
   const handleSearch = (e) => {
     setParams((prevParams) => ({
       ...prevParams,
@@ -235,26 +200,14 @@ export default function AttendanceStudentList() {
     }));
   };
 
-  const [students, setStudents] = useState([]);
-  const fetchStudents = () => {
-    axios
-      .get(`${baseAPI}/student/fetch-with-query`, { params })
-      .then((res) => {
-        console.log("Response Students", res.data.students); // Inspect the response
-        setStudents(res.data.students);
-        fetchAttendanceForStudents(res.data.students);
-      })
-      .catch((e) => {
-        console.log("Error in fetching student");
-      });
-  };
-
   React.useEffect(() => {
     fetchClasses();
   }, []);
+
   React.useEffect(() => {
     fetchStudents();
   }, [params]);
+
   return (
     <>
       <Box
@@ -280,34 +233,24 @@ export default function AttendanceStudentList() {
                 }}
               >
                 <TextField
-                  label="search"
-                  value={params.search ? params.search : ""}
-                  onChange={(e) => {
-                    handleSearch(e);
-                  }}
-                  // onBlur={formik.handleBlur}
+                  label="Search"
+                  value={params.search || ""}
+                  onChange={handleSearch}
                 />
 
                 <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
                   <InputLabel id="student_class">Student Class</InputLabel>
                   <Select
-                    // value={formik.values.student_class}
                     label="Student Class"
-                    value={params.student_class ? params.student_class : ""}
-                    // name="student_class"
-                    onChange={(e) => {
-                      handleClass(e);
-                    }}
+                    value={params.student_class || ""}
+                    onChange={handleClass}
                   >
                     <MenuItem value="">Select Class</MenuItem>
-                    {classes &&
-                      classes.map((x) => {
-                        return (
-                          <MenuItem key={x._id} value={x._id}>
-                            {x.class_text} ({x.class_num})
-                          </MenuItem>
-                        );
-                      })}
+                    {classes.map((x) => (
+                      <MenuItem key={x._id} value={x._id}>
+                        {x.class_text} ({x.class_num})
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
@@ -316,7 +259,6 @@ export default function AttendanceStudentList() {
           </Grid>
           <Grid item xs={6} md={8}>
             <Item>
-              {/* Table Section */}
               <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
                 <Table>
                   <TableHead>
