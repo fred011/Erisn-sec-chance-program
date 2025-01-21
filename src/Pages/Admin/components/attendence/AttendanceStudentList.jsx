@@ -36,6 +36,7 @@ import {
 } from "../../../../Components/yupSchema/studentSchema";
 import { useState } from "react";
 import { baseAPI } from "../../../../environment";
+import Attendee from "./Attendee";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -218,7 +219,9 @@ export default function AttendanceStudentList() {
   };
 
   const [params, setParams] = useState({});
+  const [selectedClass, setSelectedClass] = useState(null);
   const handleClass = (e) => {
+    setSelectedClass(e.target.value);
     setParams((prevParams) => ({
       ...prevParams,
       student_class: e.target.value || undefined,
@@ -307,6 +310,7 @@ export default function AttendanceStudentList() {
                   </Select>
                 </FormControl>
               </Box>
+              <Box>{selectedClass && <Attendee classId={selectedClass} />}</Box>
             </Item>
           </Grid>
           <Grid item xs={6} md={8}>
