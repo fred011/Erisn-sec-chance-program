@@ -38,16 +38,16 @@ export default function Attendee({ classId }) {
 
       <Box>
         <FormControl fullWidth>
-          <InputLabel>Teacher</InputLabel>
+          <InputLabel>Select Teachers</InputLabel>
           <Select
             value={selectedTeacher}
             name="teacher"
-            label="Teacher"
+            label="Select Teachers"
             onChange={(e) => {
               setSelectedTeacher(e.target.value);
             }}
           >
-            <MenuItem>Select Attende</MenuItem>
+            <MenuItem>Select Teacher</MenuItem>
             {teachers &&
               teachers.map((x) => {
                 return (
