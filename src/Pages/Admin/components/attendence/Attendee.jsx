@@ -6,5 +6,9 @@ export default function Attendee({ classId }) {
   useEffect(() => {
     console.log("CLASS ID:", classId);
   }, []);
-  return <h1>Attendee</h1>;
+  return (
+    <>
+      <h1>Attendee</h1>
+    </>
+  );
 }
