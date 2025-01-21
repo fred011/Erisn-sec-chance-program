@@ -215,7 +215,7 @@ export default function AttendanceStudentList() {
         setClasses(res.data.data);
       })
       .catch((e) => {
-        console.log("Error in fetching class");
+        console.log("Error in fetching classes");
       });
   };
 
