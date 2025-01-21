@@ -208,7 +208,7 @@ export default function Students() {
         setStudents(res.data.students);
       })
       .catch((e) => {
-        console.log("Error in fetching class");
+        console.log("Error in fetching students");
       });
   };
 

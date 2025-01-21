@@ -106,78 +106,78 @@ export default function AttendanceStudentList() {
   //   formik.setFieldValue("guardian_phone", filteredStudent[0].guardian_phone);
   // };
 
-  const formik = useFormik({
-    initialValues, // Set initial values
-    validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
-    onSubmit: (values, { resetForm }) => {
-      if (edit) {
-        const data = {
-          name: values.name,
-          email: values.email,
-          student_class: values.student_class,
-          age: values.age,
-          gender: values.gender,
-          guardian: values.guardian,
-          guardian_phone: values.guardian_phone,
-        };
+  // const formik = useFormik({
+  //   initialValues, // Set initial values
+  //   validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
+  //   onSubmit: (values, { resetForm }) => {
+  //     if (edit) {
+  //       const data = {
+  //         name: values.name,
+  //         email: values.email,
+  //         student_class: values.student_class,
+  //         age: values.age,
+  //         gender: values.gender,
+  //         guardian: values.guardian,
+  //         guardian_phone: values.guardian_phone,
+  //       };
 
-        if (values.password) {
-          const data = { password: values.password };
-        }
+  //       if (values.password) {
+  //         const data = { password: values.password };
+  //       }
 
-        axios
-          .patch(
-            `https://erisn-api.onrender.com/api/student/update/${editId}`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
-          .then((res) => {
-            // On successful registration
-            console.log("updated Students data : ", res.data.data);
-            alert(`Student updated successfully!`);
+  //       axios
+  //         .patch(
+  //           `https://erisn-api.onrender.com/api/student/update/${editId}`, // API endpoint depends on the selected role
+  //           data,
+  //           { withCredentials: true } // Include credentials like cookies
+  //         )
+  //         .then((res) => {
+  //           // On successful registration
+  //           console.log("updated Students data : ", res.data.data);
+  //           alert(`Student updated successfully!`);
 
-            resetForm(); // Clear the form
-            fetchStudents();
-          })
-          .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error updating Student");
-          });
-      } else {
-        // Prepare the data to be sent to the API
-        const data = {
-          name: values.name,
-          email: values.email,
-          student_class: values.student_class,
-          age: values.age,
-          gender: values.gender,
-          guardian: values.guardian,
-          guardian_phone: values.guardian_phone,
-          password: values.password,
-        };
+  //           resetForm(); // Clear the form
+  //           fetchStudents();
+  //         })
+  //         .catch((err) => {
+  //           // Handle errors
+  //           alert(err.response?.data?.error || "Error updating Student");
+  //         });
+  //     } else {
+  //       // Prepare the data to be sent to the API
+  //       const data = {
+  //         name: values.name,
+  //         email: values.email,
+  //         student_class: values.student_class,
+  //         age: values.age,
+  //         gender: values.gender,
+  //         guardian: values.guardian,
+  //         guardian_phone: values.guardian_phone,
+  //         password: values.password,
+  //       };
 
-        // API call to register the user
-        axios
-          .post(
-            `https://erisn-api.onrender.com/api/student/register`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
-          .then((res) => {
-            // On successful registration
-            console.log("Registered Students data : ", res.data.data);
-            alert(`Student registered successfully!`);
+  //       // API call to register the user
+  //       axios
+  //         .post(
+  //           `https://erisn-api.onrender.com/api/student/register`, // API endpoint depends on the selected role
+  //           data,
+  //           { withCredentials: true } // Include credentials like cookies
+  //         )
+  //         .then((res) => {
+  //           // On successful registration
+  //           console.log("Registered Students data : ", res.data.data);
+  //           alert(`Student registered successfully!`);
 
-            resetForm();
-            fetchStudents();
-          })
-          .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error registering Student");
-          });
-      }
-    },
-  });
+  //           resetForm();
+  //           fetchStudents();
+  //         })
+  //         .catch((err) => {
+  //           // Handle errors
+  //           alert(err.response?.data?.error || "Error registering Student");
+  //         });
+  //     }
+  //   },
+  // });
   const [attendanceData, setAttendanceData] = useState({});
   const fetchAttendanceForStudents = async (studentsList) => {
     const attendancePromises = studentsList.map((student) =>
@@ -245,7 +245,7 @@ export default function AttendanceStudentList() {
         fetchAttendanceForStudents(res.data.students);
       })
       .catch((e) => {
-        console.log("Error in fetching class");
+        console.log("Error in fetching student");
       });
   };
 
