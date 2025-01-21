@@ -287,7 +287,11 @@ export default function AttendanceStudentList() {
                   <TableCell>{student.name}</TableCell>
                   <TableCell>{student.gender}</TableCell>
                   <TableCell>{student.guardian_phone}</TableCell>
-                  <TableCell>{student.class.class_text}</TableCell>
+                  <TableCell>
+                    {student.student_class
+                      ? student.student_class.class_text
+                      : "Not Assigned"}
+                  </TableCell>
                   <TableCell>"Percentage"</TableCell>
                   <TableCell>"View"</TableCell>
                 </TableRow>
