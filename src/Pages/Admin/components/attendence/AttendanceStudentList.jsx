@@ -84,11 +84,6 @@ export default function AttendanceStudentList() {
         });
     }
   };
-  const cancelEdit = () => {
-    setEdit(false);
-    setEditId(null);
-    formik.resetForm();
-  };
 
   // const handleEdit = (id) => {
   //   setEdit(true);
@@ -182,6 +177,35 @@ export default function AttendanceStudentList() {
   //     }
   //   },
   // });
+  const [attendanceData, setAttendanceData] = useState({});
+  const fetchAttendanceForStudents = async (studentsList) => {
+    const attendancePromises = studentsList.map((student) =>
+      fetchAttendanceForStudent(student._id)
+    );
+    const results = await Promise.all(attendancePromises);
+    const updatedAttendanceData = {};
+    results.forEach(({ studentId, attendancePercentage }) => {
+      updatedAttendanceData[studentId] = attendancePercentage;
+    });
+    setAttendanceData(updatedAttendanceData);
+  };
+
+  const fetchAttendanceForStudent = async (studentId) => {
+    try {
+      const response = await axios.get(`${baseAPI}/attendance/${studentId}`);
+      const attendanceRecords = response.data;
+      const totalClasses = attendanceRecords.length;
+      const presentCount = attendanceRecords.filter(
+        (record) => record.status === "Present"
+      ).length;
+      const attendancePercentage =
+        totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
+      return { studentId, attendancePercentage };
+    } catch (error) {
+      console.log(`Error fetching attendance for student ${studentId}:`, error);
+      return { studentId, attendancePercentage: 0 };
+    }
+  };
 
   const fetchClasses = () => {
     axios
@@ -311,7 +335,11 @@ export default function AttendanceStudentList() {
                             ? student.student_class.class_text
                             : "Not Assigned"}
                         </TableCell>
-                        <TableCell>"Percentage"</TableCell>
+                        <TableCell>
+                          {attendanceData[student._id] !== undefined
+                            ? `${attendanceData[student._id].toFixed(2)}%`
+                            : "No Data"}
+                        </TableCell>
                         <TableCell>"View"</TableCell>
                       </TableRow>
                     ))}
