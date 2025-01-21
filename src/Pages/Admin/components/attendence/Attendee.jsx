@@ -3,11 +3,11 @@
 
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  Typography,
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -16,6 +16,18 @@ import { baseAPI } from "../../../../environment";
 export default function Attendee({ classId }) {
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.patch(`${baseAPI}/class/update/${classId}`, {
+        attendee: selectedTeacher,
+      });
+      console.log(response, "Submit attendee");
+    } catch (error) {
+      console.log("ERROR:", error);
+    }
+  };
+
   const fetchTeachers = () => {
     axios
       .get(`${baseAPI}/teacher/fetch-with-query`, { params: {} })
@@ -58,6 +70,7 @@ export default function Attendee({ classId }) {
               })}
           </Select>
         </FormControl>
+        <Button onClick={handleSubmit}>Submit</Button>
       </Box>
     </>
   );
