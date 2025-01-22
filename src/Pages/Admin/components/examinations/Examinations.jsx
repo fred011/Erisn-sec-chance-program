@@ -103,8 +103,8 @@ const Examinations = () => {
         const response = await axios.post(URL, {
           examDate: values.date,
           examType: values.examType,
-          subjectId: values.subject,
-          classId: selectedClass,
+          subject: values.subject, // Use 'subject' key
+          class: selectedClass,
         });
 
         console.log("Server response:", response.data);
