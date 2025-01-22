@@ -160,9 +160,9 @@ const Examinations = () => {
 
       <Paper sx={{ padding: 2, marginBottom: 2 }}>
         <FormControl sx={{ width: 180 }}>
-          <InputLabel id="class-select-label">Class</InputLabel>
+          <InputLabel>Class</InputLabel>
           <Select
-            labelId="class-select-label"
+            label="Class"
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
           >
@@ -201,6 +201,7 @@ const Examinations = () => {
           <FormControl fullWidth margin="normal">
             <InputLabel>Subject</InputLabel>
             <Select
+              label="Subject"
               value={formik.values.subject}
               name="subject"
               onChange={formik.handleChange}
