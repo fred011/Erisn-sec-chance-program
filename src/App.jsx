@@ -31,6 +31,7 @@ import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent";
 import { AuthProvider } from "./Pages/AuthPages/AuthContext";
 import ProtectedRoute from "./Pages/AuthPages/ProtectedRoute";
 import AttendanceStudentList from "./Pages/Admin/components/attendence/AttendanceStudentList";
+import AttendanceDetails from "./Pages/Admin/components/attendence/AttendanceDetails";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="attendance" element={<AttendanceStudentList />} />
+            <Route path="attendance/:id" element={<AttendanceDetails />} />
             <Route path="class" element={<Class />} />
             <Route path="fees" element={<Fees />} />
             <Route path="examinations" element={<Examinations />} />

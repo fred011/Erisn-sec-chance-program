@@ -38,6 +38,7 @@ import {
 import { useState } from "react";
 import { baseAPI } from "../../../../environment";
 import Attendee from "./Attendee";
+import { Link } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -45,7 +46,7 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
-  ...theme.applyStyles("dark", {
+  ...(theme.palette.mode === "dark" && {
     backgroundColor: "#1A2027",
   }),
 }));
@@ -59,76 +60,6 @@ export default function AttendanceStudentList() {
   const [attendanceData, setAttendanceData] = useState({});
   const [params, setParams] = useState({});
   const [selectedClass, setSelectedClass] = useState(null);
-
-  const initialValues = {
-    name: "",
-    email: "",
-    student_class: "",
-    age: "",
-    gender: "",
-    guardian: "",
-    guardian_phone: "",
-    password: "",
-    confirm_password: "",
-  };
-
-  const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete student?")) {
-      axios
-        .delete(`${baseAPI}/student/delete/${id}`)
-        .then((res) => {
-          alert("Student deleted successfully");
-          fetchStudents();
-        })
-        .catch((err) => {
-          console.error(
-            "Error in deleting student",
-            err.response || err.message
-          );
-          alert("Failed to delete student");
-        });
-    }
-  };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: edit ? studentEditSchema : studentSchema,
-    onSubmit: (values, { resetForm }) => {
-      const data = {
-        name: values.name,
-        email: values.email,
-        student_class: values.student_class,
-        age: values.age,
-        gender: values.gender,
-        guardian: values.guardian,
-        guardian_phone: values.guardian_phone,
-        ...(values.password && { password: values.password }),
-      };
-
-      const endpoint = edit
-        ? `${baseAPI}/student/update/${editId}`
-        : `${baseAPI}/student/register`;
-
-      const apiCall = edit ? axios.patch : axios.post;
-
-      apiCall(endpoint, data, { withCredentials: true })
-        .then((res) => {
-          alert(`Student ${edit ? "updated" : "registered"} successfully!`);
-          resetForm();
-          fetchStudents();
-        })
-        .catch((err) => {
-          console.error(
-            `Error ${edit ? "updating" : "registering"} student`,
-            err.response || err.message
-          );
-          alert(
-            err.response?.data?.error ||
-              `Error ${edit ? "updating" : "registering"} student`
-          );
-        });
-    },
-  });
 
   const fetchAttendanceForStudents = async (studentsList) => {
     const attendancePromises = studentsList.map((student) =>
@@ -287,7 +218,11 @@ export default function AttendanceStudentList() {
                             ? `${attendanceData[student._id].toFixed(2)}%`
                             : "No Data"}
                         </TableCell>
-                        <TableCell>"View"</TableCell>
+                        <TableCell>
+                          <Link to={`/school/attendance/${student._id}`}>
+                            Details
+                          </Link>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
