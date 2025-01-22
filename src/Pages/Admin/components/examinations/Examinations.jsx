@@ -43,7 +43,7 @@ const Examinations = () => {
       setEditId(id);
       formik.setValues({
         date: selectedExamination.examDate,
-        subject: selectedExamination.subject._id,
+        subjectId: selectedExamination.subject._id,
         examType: selectedExamination.examType,
       });
     }
@@ -79,7 +79,7 @@ const Examinations = () => {
 
   const initialValues = {
     date: "",
-    subject: "",
+    subjectId: "",
     examType: "",
   };
 
@@ -88,12 +88,6 @@ const Examinations = () => {
     validationSchema: examinationSchema,
     onSubmit: async (values) => {
       console.log("Form values:", values);
-      console.log("Payload being sent:", {
-        examDate: values.date,
-        examType: values.examType,
-        subjectId: values.subject,
-        classId: selectedClass,
-      });
 
       try {
         const URL = editId
@@ -101,10 +95,10 @@ const Examinations = () => {
           : `${baseAPI}/examination/create`;
 
         const response = await axios.post(URL, {
-          examDate: values.date,
+          date: values.date,
           examType: values.examType,
-          subject: values.subject, // Use 'subject' key
-          class: selectedClass,
+          subjectId: values.subjectId,
+          classId: selectedClass,
         });
 
         console.log("Server response:", response.data);
@@ -220,8 +214,8 @@ const Examinations = () => {
             <InputLabel>Subject</InputLabel>
             <Select
               label="Subject"
-              value={formik.values.subject}
-              name="subject"
+              value={formik.values.subjectId}
+              name="subjectId"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
@@ -232,8 +226,8 @@ const Examinations = () => {
               ))}
             </Select>
           </FormControl>
-          {formik.touched.subject && formik.errors.subject && (
-            <Typography color="error">{formik.errors.subject}</Typography>
+          {formik.touched.subjectId && formik.errors.subjectId && (
+            <Typography color="error">{formik.errors.subjectId}</Typography>
           )}
 
           <TextField
