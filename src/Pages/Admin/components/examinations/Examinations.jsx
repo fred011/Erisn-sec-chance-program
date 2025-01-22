@@ -87,7 +87,12 @@ const Examinations = () => {
     initialValues,
     validationSchema: examinationSchema,
     onSubmit: async (values) => {
-      console.log("Form values:", values);
+      if (!selectedClass) {
+        alert("Please select a class before submitting the form.");
+        return;
+      }
+
+      console.log("Form values on submit:", values);
 
       try {
         const URL = editId
@@ -127,7 +132,7 @@ const Examinations = () => {
     try {
       const response = await axios.get(`${baseAPI}/subject/all`);
       setSubjects(response.data.data);
-      console.log("Students fetched:", response.data.data);
+      console.log("Subjects fetched:", response.data.data);
     } catch (error) {
       console.error("Error fetching subjects:", error);
     }
