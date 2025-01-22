@@ -87,7 +87,7 @@ const Examinations = () => {
     initialValues,
     validationSchema: examinationSchema,
     onSubmit: async (values) => {
-      console.log("Form values:", values); // Check what values are being submitted
+      console.log("Form values:", values); // Debug form values before submission
       try {
         const URL = editId
           ? `${baseAPI}/examination/update/${editId}`
@@ -100,14 +100,25 @@ const Examinations = () => {
           classId: selectedClass,
         });
 
+        console.log("Server response:", response.data); // Log the response for debugging
+
         alert(editId ? "Exam updated successfully" : "Exam added successfully");
         formik.resetForm();
         fetchExaminations();
         setEdit(false);
         setEditId(null);
       } catch (error) {
-        console.error("Error saving exam:", error);
-        alert("Failed to save examination");
+        if (error.response) {
+          console.error("Error response:", error.response.data); // Log error details
+          alert(
+            `Failed to save examination: ${
+              error.response.data.message || "Error occurred"
+            }`
+          );
+        } else {
+          console.error("Error saving exam:", error);
+          alert("An unexpected error occurred. Please try again.");
+        }
       }
     },
   });
