@@ -1,341 +1,287 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import * as React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { Formik, useFormik } from "formik";
-
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import {
+  Box,
   Button,
   FormControl,
-  Typography,
   InputLabel,
-  Select,
   MenuItem,
   Paper,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Grid from "@mui/material/Grid2";
-
-import {
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
+  Typography,
 } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useFormik } from "formik";
+import { examinationSchema } from "../../../../Components/yupSchema/examinationSchema";
 import axios from "axios";
-
-import {
-  studentEditSchema,
-  studentSchema,
-} from "../../../../Components/yupSchema/studentSchema";
-import { useState } from "react";
 import { baseAPI } from "../../../../environment";
-import Attendee from "./Attendee";
-import { Link } from "react-router-dom";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  ...(theme.palette.mode === "dark" && {
-    backgroundColor: "#1A2027",
-  }),
-}));
-
-export default function AttendanceStudentList() {
+const Examinations = () => {
+  const [examinations, setExaminations] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [selectedClass, setSelectedClass] = useState("");
 
-  const [classes, setClasses] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [attendanceData, setAttendanceData] = useState({});
-  const [params, setParams] = useState({});
-  const [selectedClass, setSelectedClass] = useState(null);
-  const [showForm, setShowForm] = useState(false);
-
-  const [formData, setFormData] = useState({
-    studentName: "",
-    date: "",
-  });
-
-  const fetchAttendanceForStudents = async (studentsList) => {
-    const attendancePromises = studentsList.map((student) =>
-      fetchAttendanceForStudent(student._id)
-    );
-    const results = await Promise.all(attendancePromises);
-    const updatedAttendanceData = {};
-    results.forEach(({ studentId, attendancePercentage }) => {
-      updatedAttendanceData[studentId] = attendancePercentage;
-    });
-    setAttendanceData(updatedAttendanceData);
-  };
-
-  const fetchAttendanceForStudent = async (studentId) => {
-    try {
-      const response = await axios.get(`${baseAPI}/attendance/${studentId}`);
-      const attendanceRecords = response.data;
-      const totalClasses = attendanceRecords.length;
-      const presentCount = attendanceRecords.filter(
-        (record) => record.status === "Present"
-      ).length;
-      const attendancePercentage =
-        totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
-      return { studentId, attendancePercentage };
-    } catch (error) {
-      console.error(
-        `Error fetching attendance for student ${studentId}`,
-        error.response || error.message
-      );
-      return { studentId, attendancePercentage: 0 };
+  const handleEdit = (id) => {
+    const selectedExamination = examinations.find((exam) => exam._id === id);
+    if (selectedExamination) {
+      setEdit(true);
+      setEditId(id);
+      formik.setValues({
+        date: selectedExamination.examDate,
+        subject: selectedExamination.subject._id,
+        examType: selectedExamination.examType,
+      });
     }
   };
 
-  const fetchClasses = () => {
-    axios
-      .get(`${baseAPI}/class/all`)
-      .then((res) => {
-        setClasses(res.data.data);
-      })
-      .catch((e) => {
-        console.error("Error in fetching classes", e.response || e.message);
-      });
-  };
-
-  const fetchStudents = () => {
-    axios
-      .get(`${baseAPI}/student/fetch-with-query`, { params })
-      .then((res) => {
-        setStudents(res.data.students);
-        fetchAttendanceForStudents(res.data.students);
-      })
-      .catch((e) => {
-        console.error("Error in fetching students", e.response || e.message);
-      });
-  };
-
-  const handleClass = (e) => {
-    setSelectedClass(e.target.value);
-    setParams((prevParams) => ({
-      ...prevParams,
-      student_class: e.target.value || undefined,
-    }));
-  };
-
-  const handleSearch = (e) => {
-    setParams((prevParams) => ({
-      ...prevParams,
-      search: e.target.value || undefined,
-    }));
-  };
-
-  const handleEdit = (studentId) => {
-    setEdit(true);
-    setEditId(studentId);
-    setShowForm(true);
-
-    const student = students.find((s) => s._id === studentId);
-    setFormData({
-      studentName: student.name || "",
-      date: "",
-    });
-  };
-
-  const handleSubmit = async () => {
-    if (edit) {
-      // Update logic
-      console.log("Updating record:", formData);
-    } else {
-      // Add logic
-      console.log("Adding record:", formData);
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this exam?")) {
+      try {
+        await axios.delete(`${baseAPI}/examination/delete/${id}`);
+        alert("Exam deleted successfully");
+        fetchExaminations();
+      } catch (err) {
+        console.error("Error deleting exam:", err);
+        alert("Failed to delete examination");
+      }
     }
+  };
 
-    setFormData({ studentName: "", date: "" });
-    setShowForm(false);
+  const handleCancel = () => {
     setEdit(false);
     setEditId(null);
+    formik.resetForm();
   };
 
-  React.useEffect(() => {
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate().toString().padStart(2, "0")}-${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${date.getFullYear()}`;
+  };
+
+  const initialValues = {
+    date: "",
+    subject: "",
+    examType: "",
+  };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: examinationSchema,
+    onSubmit: async (values) => {
+      try {
+        const URL = editId
+          ? `${baseAPI}/examination/update/${editId}`
+          : `${baseAPI}/examination/create`;
+
+        const response = await axios.post(URL, {
+          examDate: values.date,
+          examType: values.examType,
+          subjectId: values.subject,
+          classId: selectedClass,
+        });
+
+        alert(editId ? "Exam updated successfully" : "Exam added successfully");
+        formik.resetForm();
+        fetchExaminations();
+        setEdit(false);
+        setEditId(null);
+      } catch (error) {
+        console.error("Error saving exam:", error);
+        alert("Failed to save examination");
+      }
+    },
+  });
+
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get(`${baseAPI}/subject/all`);
+      setSubjects(response.data.data);
+    } catch (error) {
+      console.error("Error fetching subjects:", error);
+    }
+  };
+
+  const fetchClasses = async () => {
+    try {
+      const response = await axios.get(`${baseAPI}/class/all`);
+      setClasses(response.data.data);
+      setSelectedClass(response.data.data[0]?._id || "");
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    }
+  };
+
+  const fetchExaminations = async () => {
+    try {
+      if (selectedClass) {
+        const response = await axios.get(
+          `${baseAPI}/examination/class/${selectedClass}`
+        );
+        setExaminations(response.data.examinations);
+      }
+    } catch (error) {
+      console.error("Error fetching examinations:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchClasses();
+    fetchSubjects();
   }, []);
 
-  React.useEffect(() => {
-    fetchStudents();
-  }, [params]);
+  useEffect(() => {
+    fetchExaminations();
+  }, [selectedClass]);
 
   return (
     <>
-      <Box
-        component={"div"}
-        sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
-      >
-        <Typography
-          variant="h3"
-          sx={{ textAlign: "center", fontWeight: "500" }}
-        >
-          Students Attendance
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={6} md={4}>
-            <Item>
-              <Box
-                component={"div"}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  marginTop: "40px",
-                }}
-              >
-                <TextField
-                  label="Search"
-                  value={params.search || ""}
-                  onChange={handleSearch}
-                />
+      <Typography variant="h4" gutterBottom>
+        Examinations
+      </Typography>
 
-                <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
-                  <InputLabel id="student_class">Student Class</InputLabel>
-                  <Select
-                    label="Student Class"
-                    value={params.student_class || ""}
-                    onChange={handleClass}
-                  >
-                    <MenuItem value="">Select Class</MenuItem>
-                    {classes.map((x) => (
-                      <MenuItem key={x._id} value={x._id}>
-                        {x.class_text} ({x.class_num})
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box>{selectedClass && <Attendee classId={selectedClass} />}</Box>
-            </Item>
-          </Grid>
-          <Grid item xs={6} md={8}>
-            <Item>
-              <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Gender</TableCell>
-                      <TableCell>Guardian Phone</TableCell>
-                      <TableCell>Class</TableCell>
-                      <TableCell>Percentage</TableCell>
-                      <TableCell>View</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {students.map((student) => (
-                      <TableRow key={student._id}>
-                        <TableCell>{student.name}</TableCell>
-                        <TableCell>{student.gender}</TableCell>
-                        <TableCell>{student.guardian_phone}</TableCell>
-                        <TableCell>
-                          {student.student_class
-                            ? student.student_class.class_text
-                            : "Not Assigned"}
-                        </TableCell>
-                        <TableCell>
-                          {attendanceData[student._id] !== undefined
-                            ? `${attendanceData[student._id].toFixed(2)}%`
-                            : "No Data"}
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            variant="outlined"
-                            onClick={() => handleEdit(student._id)}
-                          >
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Box sx={{ marginTop: 2, textAlign: "center" }}>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setShowForm((prev) => !prev);
-                    if (edit) {
-                      setEdit(false);
-                      setEditId(null);
-                    }
-                  }}
-                >
-                  {showForm ? "Hide Form" : "Add New Attendance"}
-                </Button>
-              </Box>
-              {showForm && (
-                <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="h6">
-                    {edit ? "Edit Attendance" : "Add Attendance"}
-                  </Typography>
-                  <TextField
-                    label="Student Name"
-                    fullWidth
-                    margin="normal"
-                    value={formData.studentName}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        studentName: e.target.value,
-                      }))
-                    }
-                  />
-                  <TextField
-                    label="Date"
-                    type="date"
-                    fullWidth
-                    margin="normal"
-                    value={formData.date}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        date: e.target.value,
-                      }))
-                    }
-                    InputLabelProps={{ shrink: true }} // Still necessary for proper date rendering
-                  />
-                  <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleSubmit}
-                    >
-                      {edit ? "Save Changes" : "Add Attendance"}
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => {
-                        setShowForm(false);
-                        setEdit(false);
-                        setEditId(null);
-                        setFormData({ studentName: "", date: "" });
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </Box>
-                </Box>
+      <Paper sx={{ padding: 2, marginBottom: 2 }}>
+        <FormControl sx={{ width: 180 }}>
+          <InputLabel id="class-select-label">Class</InputLabel>
+          <Select
+            labelId="class-select-label"
+            value={selectedClass}
+            onChange={(e) => setSelectedClass(e.target.value)}
+          >
+            <MenuItem value="">Select Class</MenuItem>
+            {classes.map((cls) => (
+              <MenuItem key={cls._id} value={cls._id}>
+                {cls.class_text}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Paper>
+
+      <Paper sx={{ padding: 2, marginBottom: 2 }}>
+        <Box component="form" onSubmit={formik.handleSubmit} noValidate>
+          <Typography variant="h5">
+            {edit ? "Edit Examination" : "Add New Examination"}
+          </Typography>
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Date"
+              value={formik.values.date ? dayjs(formik.values.date) : null}
+              onChange={(value) =>
+                formik.setFieldValue("date", value?.toISOString() || "")
+              }
+              renderInput={(params) => (
+                <TextField {...params} fullWidth margin="normal" />
               )}
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
+            />
+          </LocalizationProvider>
+          {formik.touched.date && formik.errors.date && (
+            <Typography color="error">{formik.errors.date}</Typography>
+          )}
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Subject</InputLabel>
+            <Select
+              value={formik.values.subject}
+              name="subject"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              {subjects.map((subject) => (
+                <MenuItem key={subject._id} value={subject._id}>
+                  {subject.subject_name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {formik.touched.subject && formik.errors.subject && (
+            <Typography color="error">{formik.errors.subject}</Typography>
+          )}
+
+          <TextField
+            name="examType"
+            label="Exam Type"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            value={formik.values.examType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.examType && formik.errors.examType && (
+            <Typography color="error">{formik.errors.examType}</Typography>
+          )}
+
+          <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
+            {edit && (
+              <Button
+                onClick={handleCancel}
+                variant="outlined"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+            )}
+          </Box>
+        </Box>
+      </Paper>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Exam Date</TableCell>
+              <TableCell>Subject</TableCell>
+              <TableCell>Exam Type</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {examinations.map((exam) => (
+              <TableRow key={exam._id}>
+                <TableCell>{convertDate(exam.examDate)}</TableCell>
+                <TableCell>{exam.subject?.subject_name || "-"}</TableCell>
+                <TableCell>{exam.examType}</TableCell>
+                <TableCell>
+                  <Button onClick={() => handleEdit(exam._id)}>
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    onClick={() => handleDelete(exam._id)}
+                    sx={{ color: "red" }}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
-}
+};
+
+export default Examinations;
