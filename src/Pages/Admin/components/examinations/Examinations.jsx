@@ -75,33 +75,54 @@ const Examinations = () => {
       examType: "",
     },
     validationSchema: examinationSchema,
-    onSubmit: async (values) => {
-      try {
-        const URL = edit
-          ? `${baseAPI}/examination/update/${editId}`
-          : `${baseAPI}/examination/create`;
+    onSubmit: async (values, { resetForm }) => {
+      const requestData = {
+        date: values.date,
+        examType: values.examType,
+        subjectId: values.subjectId,
+        classId: selectedClass,
+      };
 
-        const method = edit ? "put" : "post";
-
-        await axios({
-          method,
-          url: URL,
-          data: {
-            date: values.date,
-            examType: values.examType,
-            subjectId: values.subjectId,
-            classId: selectedClass,
-          },
-        });
-
-        alert(edit ? "Exam updated successfully" : "Exam added successfully");
-        fetchExaminations();
-        formik.resetForm();
-        setEdit(false);
-        setEditId(null);
-      } catch (error) {
-        console.error("Error saving examination:", error);
-        alert("Failed to save examination. Please try again.");
+      if (edit) {
+        axios
+          .put(`${baseAPI}/examination/update/${editId}`, requestData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            console.log("Examination update response", res);
+            alert("Exam updated successfully");
+            fetchExaminations();
+            handleCancel();
+          })
+          .catch((err) => {
+            console.error(
+              "Error updating examination",
+              err.response ? err.response.data : err.message
+            );
+            alert("Failed to update examination.");
+          });
+      } else {
+        axios
+          .post(`${baseAPI}/examination/create`, requestData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            console.log("Examination create response", res);
+            alert("Exam added successfully");
+            fetchExaminations();
+            resetForm();
+          })
+          .catch((err) => {
+            console.error(
+              "Error creating examination",
+              err.response ? err.response.data : err.message
+            );
+            alert("Failed to add examination.");
+          });
       }
     },
   });
@@ -178,13 +199,12 @@ const Examinations = () => {
               renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ marginTop: "20px" }}>
             <InputLabel>Subject</InputLabel>
             <Select
               value={formik.values.subjectId}
               name="subjectId"
               onChange={formik.handleChange}
-              sx={{ marginTop: "20px" }}
             >
               {subjects.map((subject) => (
                 <MenuItem key={subject._id} value={subject._id}>
