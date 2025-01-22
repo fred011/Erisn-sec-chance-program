@@ -221,7 +221,7 @@ const Examinations = () => {
             <Select
               label="Subject"
               value={formik.values.subjectId}
-              name="subjectId"
+              name="subject"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
