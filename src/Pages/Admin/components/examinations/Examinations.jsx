@@ -87,6 +87,7 @@ const Examinations = () => {
     initialValues,
     validationSchema: examinationSchema,
     onSubmit: async (values) => {
+      console.log("Form values:", values); // Check what values are being submitted
       try {
         const URL = editId
           ? `${baseAPI}/examination/update/${editId}`
