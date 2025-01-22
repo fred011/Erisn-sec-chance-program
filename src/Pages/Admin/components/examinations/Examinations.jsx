@@ -87,21 +87,27 @@ const Examinations = () => {
     initialValues,
     validationSchema: examinationSchema,
     onSubmit: async (values) => {
-      console.log("Form values:", values); // Debug form values before submission
+      console.log("Form values:", values);
+      console.log("Payload being sent:", {
+        examDate: values.date,
+        examType: values.examType,
+        subjectId: values.subject,
+        classId: selectedClass,
+      });
+    
       try {
         const URL = editId
           ? `${baseAPI}/examination/update/${editId}`
           : `${baseAPI}/examination/create`;
-
+    
         const response = await axios.post(URL, {
           examDate: values.date,
           examType: values.examType,
           subjectId: values.subject,
           classId: selectedClass,
         });
-
-        console.log("Server response:", response.data); // Log the response for debugging
-
+    
+        console.log("Server response:", response.data);
         alert(editId ? "Exam updated successfully" : "Exam added successfully");
         formik.resetForm();
         fetchExaminations();
@@ -109,18 +115,15 @@ const Examinations = () => {
         setEditId(null);
       } catch (error) {
         if (error.response) {
-          console.error("Error response:", error.response.data); // Log error details
-          alert(
-            `Failed to save examination: ${
-              error.response.data.message || "Error occurred"
-            }`
-          );
+          console.error("Error response:", error.response.data);
+          alert(`Failed to save examination: ${error.response.data.message || "Error occurred"}`);
         } else {
           console.error("Error saving exam:", error);
           alert("An unexpected error occurred. Please try again.");
         }
       }
-    },
+    };
+    
   });
 
   const fetchSubjects = async () => {
