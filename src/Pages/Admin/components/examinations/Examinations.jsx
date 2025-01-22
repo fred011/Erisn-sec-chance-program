@@ -43,7 +43,7 @@ const Examinations = () => {
       setEditId(id);
       formik.setValues({
         date: selectedExamination.examDate,
-        subjectId: selectedExamination.subject._id,
+        subject: selectedExamination.subject._id,
         examType: selectedExamination.examType,
       });
     }
@@ -79,7 +79,7 @@ const Examinations = () => {
 
   const initialValues = {
     date: "",
-    subjectId: "",
+    subject: "",
     examType: "",
   };
 
@@ -102,7 +102,7 @@ const Examinations = () => {
         const response = await axios.post(URL, {
           date: values.date,
           examType: values.examType,
-          subjectId: values.subjectId,
+          subjectId: values.subject,
           classId: selectedClass,
         });
 
@@ -220,7 +220,7 @@ const Examinations = () => {
             <InputLabel>Subject</InputLabel>
             <Select
               label="Subject"
-              value={formik.values.subjectId}
+              value={formik.values.subject}
               name="subject"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
