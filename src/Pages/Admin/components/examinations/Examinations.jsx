@@ -152,7 +152,7 @@ const Examinations = () => {
         Examinations
       </Typography>
       <Paper sx={{ padding: 2, marginBottom: 2 }}>
-        <FormControl fullWidth>
+        <FormControl sx={{ width: "310px" }}>
           <InputLabel>Class</InputLabel>
           <Select
             value={selectedClass}
@@ -184,6 +184,7 @@ const Examinations = () => {
               value={formik.values.subjectId}
               name="subjectId"
               onChange={formik.handleChange}
+              sx={{ marginTop: "20px" }}
             >
               {subjects.map((subject) => (
                 <MenuItem key={subject._id} value={subject._id}>
@@ -198,8 +199,15 @@ const Examinations = () => {
             name="examType"
             value={formik.values.examType}
             onChange={formik.handleChange}
+            sx={{ marginTop: "20px" }}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "20px",
+            }}
+          >
             <Button type="submit" variant="contained">
               {edit ? "Update" : "Add"} Exam
             </Button>
