@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   Button,
@@ -36,103 +36,10 @@ const Examinations = () => {
   const [editId, setEditId] = useState(null);
   const [selectedClass, setSelectedClass] = useState("");
 
-  const handleEdit = (id) => {
-    const selectedExamination = examinations.find((exam) => exam._id === id);
-    if (selectedExamination) {
-      setEdit(true);
-      setEditId(id);
-      formik.setValues({
-        date: selectedExamination.examDate,
-        subject: selectedExamination.subject._id,
-        examType: selectedExamination.examType,
-      });
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this exam?")) {
-      try {
-        await axios.delete(`${baseAPI}/examination/delete/${id}`);
-        alert("Exam deleted successfully");
-        fetchExaminations();
-      } catch (err) {
-        console.error("Error deleting exam:", err);
-        alert("Failed to delete examination");
-      }
-    }
-  };
-
-  const handleCancel = () => {
-    setEdit(false);
-    setEditId(null);
-    formik.resetForm();
-  };
-
-  const convertDate = (dateString) => {
-    const date = new Date(dateString);
-    return `${date.getDate().toString().padStart(2, "0")}-${(
-      date.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}-${date.getFullYear()}`;
-  };
-
-  const initialValues = {
-    date: "",
-    subject: "",
-    examType: "",
-  };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: examinationSchema,
-    onSubmit: async (values) => {
-      if (!selectedClass) {
-        alert("Please select a class before submitting the form.");
-        return;
-      }
-
-      console.log("Form values on submit:", values);
-
-      try {
-        const URL = editId
-          ? `${baseAPI}/examination/update/${editId}`
-          : `${baseAPI}/examination/create`;
-
-        const response = await axios.post(URL, {
-          date: values.date,
-          examType: values.examType,
-          subjectId: values.subject,
-          classId: selectedClass,
-        });
-
-        console.log("Server response:", response.data);
-        alert(editId ? "Exam updated successfully" : "Exam added successfully");
-        formik.resetForm();
-        fetchExaminations();
-        setEdit(false);
-        setEditId(null);
-      } catch (error) {
-        if (error.response) {
-          console.error("Error response:", error.response.data);
-          alert(
-            `Failed to save examination: ${
-              error.response.data.message || "Error occurred"
-            }`
-          );
-        } else {
-          console.error("Error saving exam:", error);
-          alert("An unexpected error occurred. Please try again.");
-        }
-      }
-    },
-  });
-
   const fetchSubjects = async () => {
     try {
       const response = await axios.get(`${baseAPI}/subject/all`);
       setSubjects(response.data.data);
-      console.log("Subjects fetched:", response.data.data);
     } catch (error) {
       console.error("Error fetching subjects:", error);
     }
@@ -161,6 +68,75 @@ const Examinations = () => {
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      date: "",
+      subjectId: "",
+      examType: "",
+    },
+    validationSchema: examinationSchema,
+    onSubmit: async (values) => {
+      try {
+        const URL = edit
+          ? `${baseAPI}/examination/update/${editId}`
+          : `${baseAPI}/examination/create`;
+
+        const method = edit ? "put" : "post";
+
+        await axios({
+          method,
+          url: URL,
+          data: {
+            date: values.date,
+            examType: values.examType,
+            subjectId: values.subjectId,
+            classId: selectedClass,
+          },
+        });
+
+        alert(edit ? "Exam updated successfully" : "Exam added successfully");
+        fetchExaminations();
+        formik.resetForm();
+        setEdit(false);
+        setEditId(null);
+      } catch (error) {
+        console.error("Error saving examination:", error);
+        alert("Failed to save examination. Please try again.");
+      }
+    },
+  });
+
+  const handleEdit = (id) => {
+    const selectedExamination = examinations.find((exam) => exam._id === id);
+    if (selectedExamination) {
+      setEdit(true);
+      setEditId(id);
+      formik.setValues({
+        date: selectedExamination.examDate,
+        subjectId: selectedExamination.subject._id,
+        examType: selectedExamination.examType,
+      });
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this exam?")) {
+      try {
+        await axios.delete(`${baseAPI}/examination/delete/${id}`);
+        fetchExaminations();
+      } catch (error) {
+        console.error("Error deleting examination:", error);
+        alert("Failed to delete examination.");
+      }
+    }
+  };
+
+  const handleCancel = () => {
+    setEdit(false);
+    setEditId(null);
+    formik.resetForm();
+  };
+
   useEffect(() => {
     fetchClasses();
     fetchSubjects();
@@ -175,16 +151,13 @@ const Examinations = () => {
       <Typography variant="h4" gutterBottom>
         Examinations
       </Typography>
-
       <Paper sx={{ padding: 2, marginBottom: 2 }}>
-        <FormControl sx={{ width: 180 }}>
+        <FormControl fullWidth>
           <InputLabel>Class</InputLabel>
           <Select
-            label="Class"
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
           >
-            <MenuItem value="">Select Class</MenuItem>
             {classes.map((cls) => (
               <MenuItem key={cls._id} value={cls._id}>
                 {cls.class_text}
@@ -193,37 +166,24 @@ const Examinations = () => {
           </Select>
         </FormControl>
       </Paper>
-
-      <Paper sx={{ padding: 2, marginBottom: 2 }}>
-        <Box component="form" onSubmit={formik.handleSubmit} noValidate>
-          <Typography variant="h5">
-            {edit ? "Edit Examination" : "Add New Examination"}
-          </Typography>
-
+      <Paper sx={{ padding: 2 }}>
+        <Box component="form" onSubmit={formik.handleSubmit}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Date"
               value={formik.values.date ? dayjs(formik.values.date) : null}
               onChange={(value) =>
-                formik.setFieldValue("date", value?.toISOString() || "")
+                formik.setFieldValue("date", value?.toISOString())
               }
-              renderInput={(params) => (
-                <TextField {...params} fullWidth margin="normal" />
-              )}
+              renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
-          {formik.touched.date && formik.errors.date && (
-            <Typography color="error">{formik.errors.date}</Typography>
-          )}
-
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth>
             <InputLabel>Subject</InputLabel>
             <Select
-              label="Subject"
-              value={formik.values.subject}
-              name="subject"
+              value={formik.values.subjectId}
+              name="subjectId"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
             >
               {subjects.map((subject) => (
                 <MenuItem key={subject._id} value={subject._id}>
@@ -232,27 +192,16 @@ const Examinations = () => {
               ))}
             </Select>
           </FormControl>
-          {formik.touched.subjectId && formik.errors.subjectId && (
-            <Typography color="error">{formik.errors.subjectId}</Typography>
-          )}
-
           <TextField
-            name="examType"
-            label="Exam Type"
             fullWidth
-            margin="normal"
-            variant="outlined"
+            label="Exam Type"
+            name="examType"
             value={formik.values.examType}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
           />
-          {formik.touched.examType && formik.errors.examType && (
-            <Typography color="error">{formik.errors.examType}</Typography>
-          )}
-
-          <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Button type="submit" variant="contained">
-              Submit
+              {edit ? "Update" : "Add"} Exam
             </Button>
             {edit && (
               <Button
@@ -266,12 +215,11 @@ const Examinations = () => {
           </Box>
         </Box>
       </Paper>
-
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Exam Date</TableCell>
+              <TableCell>Date</TableCell>
               <TableCell>Subject</TableCell>
               <TableCell>Exam Type</TableCell>
               <TableCell>Actions</TableCell>
@@ -280,17 +228,16 @@ const Examinations = () => {
           <TableBody>
             {examinations.map((exam) => (
               <TableRow key={exam._id}>
-                <TableCell>{convertDate(exam.examDate)}</TableCell>
+                <TableCell>
+                  {new Date(exam.examDate).toLocaleDateString()}
+                </TableCell>
                 <TableCell>{exam.subject?.subject_name || "-"}</TableCell>
                 <TableCell>{exam.examType}</TableCell>
                 <TableCell>
                   <Button onClick={() => handleEdit(exam._id)}>
                     <EditIcon />
                   </Button>
-                  <Button
-                    onClick={() => handleDelete(exam._id)}
-                    sx={{ color: "red" }}
-                  >
+                  <Button onClick={() => handleDelete(exam._id)} color="error">
                     <DeleteIcon />
                   </Button>
                 </TableCell>
