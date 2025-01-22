@@ -127,6 +127,7 @@ const Examinations = () => {
     try {
       const response = await axios.get(`${baseAPI}/subject/all`);
       setSubjects(response.data.data);
+      console.log("Students fetched:", response.data.data);
     } catch (error) {
       console.error("Error fetching subjects:", error);
     }
