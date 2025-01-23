@@ -29,6 +29,7 @@ import { useEffect } from "react";
 export default function Examinations() {
   const [examinations, setExaminations] = React.useState([]);
   const [subjects, setSubjects] = React.useState([]);
+  const [classes, setClasses] = React.useState([]);
 
   const initialValues = {
     date: "",
@@ -53,13 +54,46 @@ export default function Examinations() {
       console.log("Error fetching Subjects (Exam Comp)", error);
     }
   };
+  const fetchClasses = async () => {
+    try {
+      const response = await axios.get(`${baseAPI}/class/all`);
+      console.log("EXAM Classes:", response);
+      setClasses(response.data.data);
+    } catch (error) {
+      console.log("Error fetching classes (Exam Comp)", error);
+    }
+  };
 
   useEffect(() => {
     fetchSubjects();
+    fetchClasses();
   }, []);
 
   return (
     <>
+      <Paper>
+        <Box>
+          <FormControl fullWidth sx={{ marginTop: "10px" }}>
+            <InputLabel>Class</InputLabel>
+            <Select
+              value={formik.values.class}
+              label="Class"
+              onChange={formik.handleChange}
+              fullWidth
+            >
+              <MenuItem value={""}>Select Subject</MenuItem>
+              {classes?.map((x) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.class_text}
+                </MenuItem>
+              ))}
+            </Select>
+            {formik.touched.class && formik.errors.class && (
+              <Typography color="error">{formik.errors.class}</Typography>
+            )}
+          </FormControl>
+        </Box>
+      </Paper>
       <Paper>
         <Box
           component="form"
