@@ -163,14 +163,24 @@ const Subject = () => {
         {edit ? (
           <Typography
             variant="h4"
-            sx={{ textAlign: "center", fontWeight: "700", mb: 2 }}
+            sx={{
+              textAlign: "center",
+              fontWeight: "700",
+              mb: 2,
+              color: "#1976d2",
+            }}
           >
             Edit Subject
           </Typography>
         ) : (
           <Typography
             variant="h4"
-            sx={{ textAlign: "center", fontWeight: "700", mb: 2 }}
+            sx={{
+              textAlign: "center",
+              fontWeight: "700",
+              mb: 2,
+              color: "#1976d2",
+            }}
           >
             Add New Subject
           </Typography>

@@ -225,6 +225,7 @@ export default function Examinations() {
               marginBottom: "10px",
               fontWeight: "600",
               textAlign: "center",
+              color: "#1976d2",
             }}
           >
             {editId ? "Edit Exam" : "Add New Exam"}
