@@ -18,6 +18,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -32,6 +34,8 @@ export default function Examinations() {
   const [subjects, setSubjects] = React.useState([]);
   const [classes, setClasses] = React.useState([]);
   const [selectedClass, setSelectedClass] = React.useState("");
+  const [edit, setEdit] = React.useState(false);
+  const [editId, setEditId] = React.useState(null);
 
   const convertDate = (dateData) => {
     const date = new Date(dateData);
@@ -71,6 +75,38 @@ export default function Examinations() {
     },
   });
 
+  const handleEdit = (id) => {
+    console.log("Edit", id);
+    setEdit(true);
+    setEditId(id);
+    const selectedExam = examinations.filter((x) => x._id === id);
+    formik.setFieldValue("date", selectedExam[0].examDate);
+    formik.setFieldValue("subject", selectedExam[0].subject._id);
+    formik.setFieldValue("examType", selectedExam[0].examType);
+  };
+  const handleEditCancel = () => {
+    setEditId(null);
+    formik.resetForm();
+  };
+  const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete class?")) {
+      console.log("Delete", id);
+      axios
+        .delete(`${baseAPI}/examination/delete/${id}`)
+        .then((res) => {
+          console.log("Exam delete response", res);
+
+          alert("Exam deleted successfully");
+          fetchExaminations();
+        })
+        .catch((err) => {
+          console.log("Error in deleting Exam", err);
+
+          alert("Failed to delete Exam");
+        });
+    }
+  };
+
   const fetchExaminations = async () => {
     try {
       if (selectedClass) {
@@ -99,7 +135,7 @@ export default function Examinations() {
       const response = await axios.get(`${baseAPI}/class/all`);
       console.log("EXAM Classes:", response);
       setClasses(response.data.data);
-      setSelectedClass;
+      setSelectedClass(response.data.data[0]._id);
     } catch (error) {
       console.log("Error fetching classes (Exam Comp)", error);
     }
@@ -143,9 +179,22 @@ export default function Examinations() {
           autoComplete="off"
           onSubmit={formik.handleSubmit}
         >
-          <Typography variant="h4" sx={{ marginBottom: "10px" }}>
-            Add New Exam
-          </Typography>
+          {editId ? (
+            <Typography
+              variant="h4"
+              sx={{ marginBottom: "10px", fontWeight: "500" }}
+            >
+              Edit Exam
+            </Typography>
+          ) : (
+            <Typography
+              variant="h4"
+              sx={{ marginBottom: "10px", fontWeight: "500" }}
+            >
+              Add New Exam
+            </Typography>
+          )}
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Date"
@@ -198,6 +247,16 @@ export default function Examinations() {
           <Button type="submit" variant="contained" sx={{ marginTop: "10px" }}>
             Submit
           </Button>
+          {editId && (
+            <Button
+              type="button"
+              variant="outlined"
+              onClick={handleEditCancel}
+              sx={{ marginTop: "10px" }}
+            >
+              Cancle
+            </Button>
+          )}
         </Box>
       </Paper>
       <TableContainer component={Paper}>
@@ -223,7 +282,23 @@ export default function Examinations() {
                   {examination.subject ? examination.subject.subject_name : ""}
                 </TableCell>
                 <TableCell>{examination.examType}</TableCell>
-                <TableCell>`Action`</TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => {
+                      handleEdit(examination._id);
+                    }}
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleDelete(examination._id);
+                    }}
+                    sx={{ color: "red" }}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
