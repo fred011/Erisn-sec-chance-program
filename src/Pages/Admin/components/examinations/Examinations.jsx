@@ -35,9 +35,12 @@ export default function Examinations() {
 
   const convertDate = (dateData) => {
     const date = new Date(dateData);
-    return (
-      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
-    );
+
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" }); // Get the full month name
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
   };
 
   const initialValues = {
