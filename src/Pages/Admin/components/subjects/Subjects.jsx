@@ -244,12 +244,17 @@ const Subject = () => {
       >
         <Table sx={{ minWidth: 650 }} aria-label="subjects table">
           <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>Subject Name</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>
+            <TableRow sx={{ backgroundColor: "#1976d2" }}>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Subject Name
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                 Subject Codename
               </TableCell>
-              <TableCell align="center" sx={{ fontWeight: "bold" }}>
+              <TableCell
+                align="center"
+                sx={{ color: "#fff", fontWeight: "bold" }}
+              >
                 Actions
               </TableCell>
             </TableRow>

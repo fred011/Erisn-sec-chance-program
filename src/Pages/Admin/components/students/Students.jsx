@@ -502,15 +502,31 @@ export default function Students() {
         <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Class</TableCell>
-                <TableCell>Age</TableCell>
-                <TableCell>Gender</TableCell>
-                <TableCell>Guardian</TableCell>
-                <TableCell>Guardian Phone</TableCell>
-                <TableCell>Actions</TableCell>
+              <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Name
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Email
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Class
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Age
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Gender
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Guardian
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Guardian Phone
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

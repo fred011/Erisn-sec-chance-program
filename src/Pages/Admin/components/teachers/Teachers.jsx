@@ -469,26 +469,29 @@ export default function Teachers() {
         <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
           <Table sx={{ minWidth: 650 }} aria-label="teacher table">
             <TableHead>
-              <TableRow>
-                <TableCell>
+              <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                   <strong>Name</strong>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                   <strong>Email</strong>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                   <strong>Qualification</strong>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                   <strong>Age</strong>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                   <strong>Gender</strong>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                   <strong>Phone Number</strong>
                 </TableCell>
-                <TableCell align="center">
+                <TableCell
+                  sx={{ color: "#fff", fontWeight: "bold" }}
+                  align="center"
+                >
                   <strong>Actions</strong>
                 </TableCell>
               </TableRow>

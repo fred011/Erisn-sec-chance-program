@@ -191,10 +191,16 @@ const Class = () => {
       <TableContainer component={Paper} sx={{ marginTop: 4 }}>
         <Table>
           <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>Class Text</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Class Number</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
+            <TableRow sx={{ backgroundColor: "#1976d2" }}>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Class Text
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Class Number
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
