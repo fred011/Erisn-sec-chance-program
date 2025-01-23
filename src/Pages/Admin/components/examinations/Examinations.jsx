@@ -28,6 +28,7 @@ import { useEffect } from "react";
 
 export default function Examinations() {
   const [examinations, setExaminations] = React.useState([]);
+  const [subjects, setSubjects] = React.useState([]);
 
   const initialValues = {
     date: "",
@@ -47,6 +48,7 @@ export default function Examinations() {
     try {
       const response = await axios.get(`${baseAPI}/subject/all`);
       console.log("EXAM SUBJECTS:", response);
+      setSubjects(response.data.data);
     } catch (error) {
       console.log("Error fetching Subjects (Exam Comp)", error);
     }
@@ -93,11 +95,11 @@ export default function Examinations() {
               onBlur={formik.handleBlur}
               fullWidth
             >
-              {/* {subjects?.map((x) => (
+              {subjects?.map((x) => (
                 <MenuItem key={x._id} value={x._id}>
                   {x.subject_name}
                 </MenuItem>
-              ))} */}
+              ))}
             </Select>
             {formik.touched.subject && formik.errors.subject && (
               <Typography color="error">{formik.errors.subject}</Typography>
