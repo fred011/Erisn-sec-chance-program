@@ -7,52 +7,108 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, TextField } from "@mui/material";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const examinations = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { useFormik } from "formik";
+import { examinationSchema } from "../../../../Components/yupSchema/examinationSchema";
 
 export default function Examinations() {
   const [examinations, setExaminations] = React.useState([]);
+  const initialValues = {
+    date: "",
+    subject: "",
+    examType: "",
+  };
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: examinationSchema,
+    onSubmit: (value) => {
+      console.log("Examination", value);
+    },
+  });
 
   return (
     <>
       <Box
         component="form"
-        sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+        sx={{ width: "24vw", minWidth: "310px", margin: "auto" }}
         noValidate
         autoComplete="off"
+        onSubmit={formik.handleSubmit}
       >
+        <Typography variant="h4" sx={{ marginBottom: "20px" }}>
+          Add New Exam
+        </Typography>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Date"
+            value={formik.values.date ? dayjs(formik.values.date) : null}
+            name="date"
+            onChange={(value) => {
+              console.log("Selected Date:", value.toDate());
+              formik.setFieldValue("date", value.toDate());
+            }}
+          />
+        </LocalizationProvider>
+        {formik.touched.date && formik.errors.date && (
+          <Typography color="error">{formik.errors.date}</Typography>
+        )}
+        <FormControl fullWidth sx={{ marginTop: "20px" }}>
+          <InputLabel>Subject</InputLabel>
+          <Select
+            value={formik.values.subject}
+            name="subject"
+            label="Subject"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            fullWidth
+          >
+            {subjects?.map((x) => (
+              <MenuItem key={x._id} value={x._id}>
+                {x.subject_name}
+              </MenuItem>
+            ))}
+          </Select>
+          {formik.touched.subject && formik.errors.subject && (
+            <Typography color="error">{formik.errors.subject}</Typography>
+          )}
+        </FormControl>
         <TextField
-          id="outlined-suffix-shrink"
-          label="Outlined"
-          variant="outlined"
-        />
-        <TextField id="filled-suffix-shrink" label="Filled" variant="filled" />
-        <TextField
-          id="standard-suffix-shrink"
-          label="Standard"
+          name="examType"
+          label="Exam Type"
           variant="standard"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          fullWidth
+          sx={{ marginTop: "20px" }}
         />
+        {formik.touched.examType && formik.errors.examType && (
+          <Typography color="error">{formik.errors.examType}</Typography>
+        )}
+
+        <Button type="submit" variant="contained" sx={{ marginTop: "20px" }}>
+          Submit
+        </Button>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell>
+              <TableCell>Exam Date</TableCell>
+              <TableCell>Subject</TableCell>
+              <TableCell>Exam Type</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,10 +120,10 @@ export default function Examinations() {
                 <TableCell component="th" scope="examination">
                   {examination.name}
                 </TableCell>
-                <TableCell align="right">{examination.calories}</TableCell>
-                <TableCell align="right">{examination.fat}</TableCell>
-                <TableCell align="right">{examination.carbs}</TableCell>
-                <TableCell align="right">{examination.protein}</TableCell>
+                <TableCell>{examination.calories}</TableCell>
+                <TableCell>{examination.fat}</TableCell>
+                <TableCell>{examination.carbs}</TableCell>
+                <TableCell>{examination.protein}</TableCell>
               </TableRow>
             ))}
           </TableBody>
