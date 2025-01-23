@@ -71,9 +71,9 @@ export default function Examinations() {
 
   return (
     <>
-      <Paper>
+      <Paper sx={{ marginBottom: "20px" }}>
         <Box>
-          <FormControl fullWidth sx={{ marginTop: "10px" }}>
+          <FormControl sx={{ marginTop: "10px", minWidth: "210px" }}>
             <InputLabel>Class</InputLabel>
             <Select
               value={formik.values.class}
@@ -81,16 +81,13 @@ export default function Examinations() {
               onChange={formik.handleChange}
               fullWidth
             >
-              <MenuItem value={""}>Select Subject</MenuItem>
+              <MenuItem value={""}>Select Class</MenuItem>
               {classes?.map((x) => (
                 <MenuItem key={x._id} value={x._id}>
                   {x.class_text}
                 </MenuItem>
               ))}
             </Select>
-            {formik.touched.class && formik.errors.class && (
-              <Typography color="error">{formik.errors.class}</Typography>
-            )}
           </FormControl>
         </Box>
       </Paper>
