@@ -34,9 +34,10 @@ export default function Examinations() {
   const [selectedClass, setSelectedClass] = React.useState("");
 
   const convertDate = (dateData) => {
-    const date = new Date();
+    const date = new Date(dateData);
+
     return (
-      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear
+      date.getDate() + "-" + (+date.getMonth + 1) + "-" + date.getFullYear()
     );
   };
 
