@@ -66,6 +66,7 @@ export default function Examinations() {
         const response = await axios.get(
           `${baseAPI}/examination/class/${selectedClass}`
         );
+        console.log("FETCHED EXAM:", response);
         setExaminations(response.data.examinations);
       }
     } catch (error) {
