@@ -226,76 +226,152 @@ const Notice = () => {
           </Button>
         )}
       </Box>
-      <Box>
-        <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: 2,
+          backgroundColor: "grey.100",
+          borderRadius: 2,
+          boxShadow: 1,
+          my: 2,
+        }}
+      >
+        <Box sx={{ mb: 2, textAlign: "center" }}>
           <Typography
             variant="h4"
-            sx={{ alignItems: "center", justifyContent: "center" }}
+            sx={{
+              color: "text.primary",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            Notice For <b>{filterAudience.toUpperCase()}</b>
+            Notice For{" "}
+            <Box
+              component="span"
+              sx={{
+                ml: 1,
+                color: "primary.main",
+                textTransform: "uppercase",
+              }}
+            >
+              {filterAudience}
+            </Box>
           </Typography>
         </Box>
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 2,
+          }}
+        >
           <Button
             variant={filterAudience === "student" ? "contained" : "outlined"}
             onClick={() => setFilterAudience("student")}
-            sx={{ marginRight: "10px" }}
+            sx={{
+              minWidth: 150,
+              textTransform: "uppercase",
+            }}
           >
-            STUDENT NOTICES
+            Student Notices
           </Button>
           <Button
             variant={filterAudience === "teacher" ? "contained" : "outlined"}
             onClick={() => setFilterAudience("teacher")}
-            sx={{ marginRight: "10px" }}
+            sx={{
+              minWidth: 150,
+              textTransform: "uppercase",
+            }}
           >
-            TEACHER NOTICES
+            Teacher Notices
           </Button>
           <Button
             variant={filterAudience === "all" ? "contained" : "outlined"}
             onClick={() => setFilterAudience("all")}
+            sx={{
+              minWidth: 150,
+              textTransform: "uppercase",
+            }}
           >
-            ALL NOTICES
+            All Notices
           </Button>
         </Box>
       </Box>
       <Box
-        component={"div"}
-        sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+        component="div"
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 2,
+          justifyContent: "center",
+        }}
       >
-        {filteredNotices &&
-          filteredNotices.map((x) => {
-            return (
-              <Paper key={x._id} sx={{ m: 2, p: 2 }}>
-                <Box component={"div"}>
-                  <Typography variant="h5">
-                    <b>Title:</b> {x.title}
-                  </Typography>{" "}
-                  <Typography variant="h5" sx={{ fontWeight: "700" }}>
-                    Message:
-                  </Typography>
-                  <Typography variant="h6">{x.message}</Typography>
-                  <Typography variant="h6">Audience: {x.audience}</Typography>
-                </Box>
-                <Box component={"div"}>
-                  <Button
-                    onClick={() => {
-                      handleEdit(x._id, x.title, x.message, x.audience);
-                    }}
-                  >
-                    <EditIcon />
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      handleDelete(x._id);
-                    }}
-                    sx={{ color: "red" }}
-                  >
-                    <DeleteIcon />
-                  </Button>
-                </Box>
-              </Paper>
-            );
-          })}
+        {filteredNotices?.map((notice) => (
+          <Paper
+            key={notice._id}
+            sx={{
+              width: 300,
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.02)",
+                boxShadow: 3,
+              },
+            }}
+            elevation={2}
+          >
+            <Box>
+              <Typography variant="h5" color="primary" gutterBottom>
+                {notice.title}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" paragraph>
+                {notice.message}
+              </Typography>
+              <Typography variant="subtitle2" color="text.disabled">
+                Audience: {notice.audience.toUpperCase()}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                mt: 2,
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                sx={{ mr: 1 }}
+                onClick={() =>
+                  handleEdit(
+                    notice._id,
+                    notice.title,
+                    notice.message,
+                    notice.audience
+                  )
+                }
+              >
+                Edit
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                onClick={() => handleDelete(notice._id)}
+              >
+                Delete
+              </Button>
+            </Box>
+          </Paper>
+        ))}
       </Box>
     </>
   );
