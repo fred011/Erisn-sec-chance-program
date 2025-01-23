@@ -33,6 +33,13 @@ export default function Examinations() {
   const [classes, setClasses] = React.useState([]);
   const [selectedClass, setSelectedClass] = React.useState("");
 
+  const convertDate = (dateData) => {
+    const date = new Date();
+    return (
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear
+    );
+  };
+
   const initialValues = {
     date: "",
     subject: "",
@@ -60,6 +67,7 @@ export default function Examinations() {
       }
     },
   });
+
   const fetchExaminations = async () => {
     try {
       if (selectedClass) {
@@ -206,9 +214,11 @@ export default function Examinations() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="examination">
-                  {examination.date}
+                  {convertDate(examination.examDate)}
                 </TableCell>
-                <TableCell>{examination.subject}</TableCell>
+                <TableCell>
+                  {examination.subject ? examination.subject.subject_name : ""}
+                </TableCell>
                 <TableCell>{examination.examType}</TableCell>
                 <TableCell>`Action`</TableCell>
               </TableRow>
