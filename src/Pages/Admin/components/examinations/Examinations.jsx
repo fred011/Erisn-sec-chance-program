@@ -57,20 +57,41 @@ export default function Examinations() {
     initialValues: initialValues,
     validationSchema: examinationSchema,
     onSubmit: async (value) => {
-      try {
-        console.log("Examination", value);
-        const response = await axios.post(`${baseAPI}/examination/create`, {
-          date: value.date,
-          subjectId: value.subject,
-          classId: selectedClass,
-          examType: value.examType,
-        });
-        alert("New Exam Saved Successfully");
-        formik.resetForm();
-        console.log("RESPONSE NEW EXAM", response);
-      } catch (error) {
-        console.log("Error saving new Exam", error);
-        alert("Failed to save Exam");
+      if (editId) {
+        try {
+          console.log("Examination", value);
+          const response = await axios.patch(
+            `${baseAPI}/examination/update/${editId}`,
+            {
+              date: value.date,
+              subjectId: value.subject,
+              classId: selectedClass,
+              examType: value.examType,
+            }
+          );
+          alert("Exam Updated Successfully");
+          formik.resetForm();
+          console.log("RESPONSE Updated EXAM", response);
+        } catch (error) {
+          console.log("Error updating Exam", error);
+          alert("Failed to update Exam");
+        }
+      } else {
+        try {
+          console.log("Examination", value);
+          const response = await axios.post(`${baseAPI}/examination/create`, {
+            date: value.date,
+            subjectId: value.subject,
+            classId: selectedClass,
+            examType: value.examType,
+          });
+          alert("New Exam Saved Successfully");
+          formik.resetForm();
+          console.log("RESPONSE NEW EXAM", response);
+        } catch (error) {
+          console.log("Error saving new Exam", error);
+          alert("Failed to save Exam");
+        }
       }
     },
   });
