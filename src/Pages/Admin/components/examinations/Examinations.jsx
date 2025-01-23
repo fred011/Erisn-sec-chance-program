@@ -35,9 +35,8 @@ export default function Examinations() {
 
   const convertDate = (dateData) => {
     const date = new Date(dateData);
-
     return (
-      date.getDate() + "-" + (+date.getMonth + 1) + "-" + date.getFullYear()
+      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
     );
   };
 
