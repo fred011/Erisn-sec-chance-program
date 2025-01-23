@@ -230,8 +230,18 @@ const Notice = () => {
               <Paper key={x._id} sx={{ m: 2, p: 2 }}>
                 <Box component={"div"}>
                   <Typography variant="h4">Notice</Typography>
-                  <Typography variant="h4">Title: {x.title}</Typography>
-                  <Typography variant="h4">Message: {x.message}</Typography>
+                  <Typography variant="h5">
+                    <Typography variant="h5" sx={{ fontWeight: "500" }}>
+                      Title:
+                    </Typography>{" "}
+                    {x.title}
+                  </Typography>
+                  <Typography variant="h6">
+                    <Typography variant="h6" sx={{ fontWeight: "500" }}>
+                      Message:
+                    </Typography>{" "}
+                    {x.message}
+                  </Typography>
                 </Box>
                 <Box component={"div"}>
                   <Button
