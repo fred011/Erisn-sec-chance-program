@@ -241,7 +241,7 @@ const Notice = () => {
                 <Box component={"div"}>
                   <Button
                     onClick={() => {
-                      handleEdit(x._id, x.title, x.message);
+                      handleEdit(x._id, x.title, x.message, x.audience);
                     }}
                   >
                     <EditIcon />
