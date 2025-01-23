@@ -18,7 +18,6 @@ import axios from "axios";
 import { baseAPI } from "../../../../environment";
 
 //Icons
-
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -26,6 +25,7 @@ const Notice = () => {
   const [editId, setEditId] = useState(null);
   const [notices, setNotices] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [filterAudience, setFilterAudience] = useState("all");
 
   const handleEdit = (id, title, message, audience) => {
     console.log("Edit", id);
@@ -35,6 +35,7 @@ const Notice = () => {
     formik.setFieldValue("message", message);
     formik.setFieldValue("audience", audience);
   };
+
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete notice?")) {
       console.log("Delete", id);
@@ -42,17 +43,16 @@ const Notice = () => {
         .delete(`${baseAPI}/notice/delete/${id}`)
         .then((res) => {
           console.log("Notice delete response", res);
-
           alert("Notice deleted successfully, reload the page to see changes");
           fetchAllNotices();
         })
         .catch((err) => {
           console.log("Error in deleting notice", err);
-
           alert("Failed to delete notice");
         });
     }
   };
+
   const cancelEdit = () => {
     setEdit(false);
     setEditId(null);
@@ -72,14 +72,13 @@ const Notice = () => {
             { ...values },
             {
               headers: {
-                "Content-Type": "application/json", // Ensure the correct header is sent
+                "Content-Type": "application/json",
               },
             }
           )
           .then((res) => {
             console.log("Notice update response", res);
             alert("Notice updated successfully");
-
             cancelEdit();
             fetchAllNotices();
           })
@@ -123,9 +122,16 @@ const Notice = () => {
         console.log("Error in fetching all notices", err);
       });
   };
+
   useEffect(() => {
     fetchAllNotices();
   }, []);
+
+  // Filter notices based on audience
+  const filteredNotices = notices.filter(
+    (notice) => filterAudience === "all" || notice.audience === filterAudience
+  );
+
   return (
     <>
       <Typography variant="h3" sx={{ textAlign: "center", fontWeight: "700" }}>
@@ -189,7 +195,7 @@ const Notice = () => {
         <FormControl fullWidth sx={{ marginTop: "10px" }}>
           <InputLabel>Audience</InputLabel>
           <Select
-            value={formik.values.subject}
+            value={formik.values.audience}
             name="audience"
             label="Audience"
             onChange={formik.handleChange}
@@ -220,12 +226,37 @@ const Notice = () => {
           </Button>
         )}
       </Box>
+      <Box>
+        <Box>
+          <Typography>Notice For {filterAudience.toUpperCase()}</Typography>
+        </Box>
+        <Box>
+          <Button
+            variant={filterAudience === "student" ? "contained" : "outlined"}
+            onClick={() => setFilterAudience("student")}
+          >
+            STUDENT NOTICES
+          </Button>
+          <Button
+            variant={filterAudience === "teacher" ? "contained" : "outlined"}
+            onClick={() => setFilterAudience("teacher")}
+          >
+            TEACHER NOTICES
+          </Button>
+          <Button
+            variant={filterAudience === "all" ? "contained" : "outlined"}
+            onClick={() => setFilterAudience("all")}
+          >
+            ALL NOTICES
+          </Button>
+        </Box>
+      </Box>
       <Box
         component={"div"}
         sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
       >
-        {notices &&
-          notices.map((x) => {
+        {filteredNotices &&
+          filteredNotices.map((x) => {
             return (
               <Paper key={x._id} sx={{ m: 2, p: 2 }}>
                 <Box component={"div"}>
