@@ -43,7 +43,7 @@ export default function Register() {
       // API call to register the user
       axios
         .post(
-          `https://erisn-api.onrender.com/api/admin/register`, // API endpoint depends on the selected role
+          `${baseAPI}/admin/register`, // API endpoint depends on the selected role
           data,
           { withCredentials: true } // Include credentials like cookies
         )

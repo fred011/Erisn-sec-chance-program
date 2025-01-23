@@ -119,7 +119,7 @@ export default function Teachers() {
 
         axios
           .patch(
-            `https://erisn-api.onrender.com/api/teacher/update/${editId}`, // API endpoint depends on the selected role
+            `${baseAPI}/teacher/update/${editId}`, // API endpoint depends on the selected role
             data,
             { withCredentials: true } // Include credentials like cookies
           )
@@ -151,7 +151,7 @@ export default function Teachers() {
         // API call to register the user
         axios
           .post(
-            `https://erisn-api.onrender.com/api/teacher/register`, // API endpoint depends on the selected role
+            `${baseAPI}/teacher/register`, // API endpoint depends on the selected role
             data,
             { withCredentials: true } // Include credentials like cookies
           )
