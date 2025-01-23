@@ -22,6 +22,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useFormik } from "formik";
 import { examinationSchema } from "../../../../Components/yupSchema/examinationSchema";
+import { baseAPI } from "../../../../environment";
+import axios from "axios";
+import { useEffect } from "react";
 
 export default function Examinations() {
   const [examinations, setExaminations] = React.useState([]);
@@ -31,6 +34,7 @@ export default function Examinations() {
     subject: "",
     examType: "",
   };
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: examinationSchema,
@@ -38,6 +42,19 @@ export default function Examinations() {
       console.log("Examination", value);
     },
   });
+
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get(`${baseAPI}/subject/all`);
+      console.log("EXAM SUBJECTS:", response);
+    } catch (error) {
+      console.log("Error fetching Subjects (Exam Comp)", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
 
   return (
     <>
@@ -60,6 +77,7 @@ export default function Examinations() {
               onChange={(newValue) => {
                 formik.setFieldValue("date", newValue);
               }}
+              onBlur={formik.handleBlur}
             />
           </LocalizationProvider>
           {formik.touched.date && formik.errors.date && (
