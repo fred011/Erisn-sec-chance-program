@@ -242,8 +242,8 @@ const Examinations = () => {
                 </MenuItem>
               ))}
             </Select>
-            {formik.touched.subject && formik.errors.subject && (
-              <Typography color="error">{formik.errors.subject}</Typography>
+            {formik.touched.subjectId && formik.errors.subjectId && (
+              <Typography color="error">{formik.errors.subjectId}</Typography>
             )}
           </FormControl>
           <TextField
