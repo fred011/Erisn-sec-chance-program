@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 import Table from "@mui/material/Table";
@@ -55,9 +56,22 @@ export default function Examinations() {
         console.log("RESPONSE NEW EXAM", response);
       } catch (error) {
         console.log("Error saving new Exam", error);
+        alert("Failed to save Exam");
       }
     },
   });
+  const fetchExaminations = async () => {
+    try {
+      if (selectedClass) {
+        const response = await axios.get(
+          `${baseAPI}/examination/class/${selectedClass}`
+        );
+        setExaminations(response.data.examinations);
+      }
+    } catch (error) {
+      console.log("Error fetching Exam Data", error);
+    }
+  };
 
   const fetchSubjects = async () => {
     try {
@@ -78,7 +92,9 @@ export default function Examinations() {
       console.log("Error fetching classes (Exam Comp)", error);
     }
   };
-
+  useEffect(() => {
+    fetchExaminations();
+  }, [selectedClass]);
   useEffect(() => {
     fetchSubjects();
     fetchClasses();
@@ -185,16 +201,15 @@ export default function Examinations() {
           <TableBody>
             {examinations.map((examination) => (
               <TableRow
-                key={examination.name}
+                key={examination._id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="examination">
-                  {examination.name}
+                  {examination.date}
                 </TableCell>
-                <TableCell>{examination.calories}</TableCell>
-                <TableCell>{examination.fat}</TableCell>
-                <TableCell>{examination.carbs}</TableCell>
-                <TableCell>{examination.protein}</TableCell>
+                <TableCell>{examination.subject}</TableCell>
+                <TableCell>{examination.examType}</TableCell>
+                <TableCell>`Action`</TableCell>
               </TableRow>
             ))}
           </TableBody>
