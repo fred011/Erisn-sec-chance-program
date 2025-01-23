@@ -228,18 +228,22 @@ const Notice = () => {
       </Box>
       <Box>
         <Box>
-          <Typography>Notice For {filterAudience.toUpperCase()}</Typography>
+          <Typography variant="h4" sx>
+            Notice For <b>{filterAudience.toUpperCase()}</b>
+          </Typography>
         </Box>
         <Box>
           <Button
             variant={filterAudience === "student" ? "contained" : "outlined"}
             onClick={() => setFilterAudience("student")}
+            sx={{ marginRight: "10px" }}
           >
             STUDENT NOTICES
           </Button>
           <Button
             variant={filterAudience === "teacher" ? "contained" : "outlined"}
             onClick={() => setFilterAudience("teacher")}
+            sx={{ marginRight: "10px" }}
           >
             TEACHER NOTICES
           </Button>
