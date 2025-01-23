@@ -228,7 +228,10 @@ const Notice = () => {
       </Box>
       <Box>
         <Box>
-          <Typography variant="h4" sx>
+          <Typography
+            variant="h4"
+            sx={{ alignItems: "center", justifyContent: "center" }}
+          >
             Notice For <b>{filterAudience.toUpperCase()}</b>
           </Typography>
         </Box>
