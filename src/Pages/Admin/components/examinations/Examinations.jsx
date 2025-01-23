@@ -294,7 +294,7 @@ export default function Examinations() {
               <TableCell>Exam Date</TableCell>
               <TableCell>Subject</TableCell>
               <TableCell>Exam Type</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -310,7 +310,7 @@ export default function Examinations() {
                   {examination.subject ? examination.subject.subject_name : ""}
                 </TableCell>
                 <TableCell>{examination.examType}</TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Button
                     onClick={() => {
                       handleEdit(examination._id);
