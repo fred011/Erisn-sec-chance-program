@@ -34,7 +34,7 @@ export default function Examinations() {
   const [subjects, setSubjects] = React.useState([]);
   const [classes, setClasses] = React.useState([]);
   const [selectedClass, setSelectedClass] = React.useState("");
-  const [edit, setEdit] = React.useState(false);
+
   const [editId, setEditId] = React.useState(null);
 
   const convertDate = (dateData) => {
@@ -71,6 +71,8 @@ export default function Examinations() {
           );
           alert("Exam Updated Successfully");
           formik.resetForm();
+          setEditId(null);
+          fetchExaminations();
           console.log("RESPONSE Updated EXAM", response);
         } catch (error) {
           console.log("Error updating Exam", error);
@@ -87,6 +89,7 @@ export default function Examinations() {
           });
           alert("New Exam Saved Successfully");
           formik.resetForm();
+          fetchExaminations();
           console.log("RESPONSE NEW EXAM", response);
         } catch (error) {
           console.log("Error saving new Exam", error);
@@ -98,7 +101,7 @@ export default function Examinations() {
 
   const handleEdit = (id) => {
     console.log("Edit", id);
-    setEdit(true);
+
     setEditId(id);
     const selectedExam = examinations.filter((x) => x._id === id);
     formik.setFieldValue("date", selectedExam[0].examDate);
