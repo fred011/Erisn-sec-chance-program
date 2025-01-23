@@ -265,7 +265,11 @@ export default function Examinations() {
             <Typography color="error">{formik.errors.examType}</Typography>
           )}
 
-          <Button type="submit" variant="contained" sx={{ marginTop: "10px" }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ marginTop: "10px", marginRight: "10px" }}
+          >
             Submit
           </Button>
           {editId && (
@@ -275,7 +279,7 @@ export default function Examinations() {
               onClick={handleEditCancel}
               sx={{ marginTop: "10px" }}
             >
-              Cancle
+              Cancel
             </Button>
           )}
         </Box>
