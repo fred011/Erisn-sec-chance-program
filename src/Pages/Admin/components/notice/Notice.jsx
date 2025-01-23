@@ -236,12 +236,11 @@ const Notice = () => {
                     </Typography>{" "}
                     {x.title}
                   </Typography>
-                  <Typography variant="h6">
-                    <Typography variant="h6" sx={{ fontWeight: "500" }}>
-                      Message:
-                    </Typography>{" "}
-                    {x.message}
+
+                  <Typography variant="h6" sx={{ fontWeight: "500" }}>
+                    Message:
                   </Typography>
+                  <Typography variant="h6">{x.message}</Typography>
                 </Box>
                 <Box component={"div"}>
                   <Button
