@@ -30,6 +30,7 @@ export default function Examinations() {
   const [examinations, setExaminations] = React.useState([]);
   const [subjects, setSubjects] = React.useState([]);
   const [classes, setClasses] = React.useState([]);
+  const [selectedClass, setSelectedClass] = React.useState("");
 
   const initialValues = {
     date: "",
@@ -40,8 +41,19 @@ export default function Examinations() {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: examinationSchema,
-    onSubmit: (value) => {
-      console.log("Examination", value);
+    onSubmit: async (value) => {
+      try {
+        console.log("Examination", value);
+        const response = await axios.post(`${baseAPI}/examination/create`, {
+          date: value.date,
+          subjectId: value.subject,
+          classId: selectedClass,
+          examType: value.examType,
+        });
+        console.log("RESPONSE NEW EXAM", response);
+      } catch (error) {
+        console.log("Error saving new Exam", error);
+      }
     },
   });
 
@@ -76,10 +88,11 @@ export default function Examinations() {
           <FormControl sx={{ marginTop: "10px", minWidth: "210px" }}>
             <InputLabel>Class</InputLabel>
             <Select
-              value={formik.values.class}
+              value={selectedClass}
               label="Class"
-              onChange={formik.handleChange}
-              fullWidth
+              onChange={(e) => {
+                setSelectedClass(e.target.value);
+              }}
             >
               <MenuItem value={""}>Select Class</MenuItem>
               {classes?.map((x) => (
