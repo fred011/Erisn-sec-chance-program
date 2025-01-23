@@ -17,26 +17,26 @@ import { baseAPI } from "../../../../environment";
 export default function Attendee({ classId }) {
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState("");
+  const [attendee, setAttendee] = useState(null);
 
   const handleSubmit = async () => {
     try {
       if (selectedTeacher) {
         const response = await axios.patch(
           `${baseAPI}/class/update/${classId}`,
-          {
-            attendee: selectedTeacher,
-          }
+          { attendee: selectedTeacher }
         );
         console.log(response, "Submit attendee");
         alert("Attendee saved/updated successfully");
+        fetchClassDetails(); // Refresh attendee after submission
       } else {
         alert("Please select an attendee teacher first.");
       }
     } catch (error) {
-      console.log("ERROR:", error);
+      console.error("ERROR:", error);
     }
   };
-  const [attendee, setAttendee] = useState(null);
+
   const fetchClassDetails = async () => {
     if (classId) {
       try {
@@ -46,7 +46,7 @@ export default function Attendee({ classId }) {
         );
         console.log("SINGLE CLASS:", response);
       } catch (error) {
-        console.log("ERROR", error);
+        console.error("ERROR", error);
       }
     }
   };
@@ -59,7 +59,7 @@ export default function Attendee({ classId }) {
         console.log("Response Teachers", res);
       })
       .catch((e) => {
-        console.log("Error in fetching class", e);
+        console.error("Error in fetching teachers", e);
       });
   };
 
@@ -68,53 +68,73 @@ export default function Attendee({ classId }) {
     fetchClassDetails();
     fetchTeachers();
   }, [classId]);
+
   return (
-    <>
-      <h1>Attendee</h1>
+    <Box sx={{ mt: 4, p: 3, border: "1px solid #ddd", borderRadius: "8px" }}>
+      <Typography
+        variant="h5"
+        sx={{ mb: 3, fontWeight: "500", textAlign: "center" }}
+      >
+        Attendee Management
+      </Typography>
 
-      <Box>
-        {attendee && (
-          <Box
-            component={"div"}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
+      {attendee && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+            p: 2,
+            backgroundColor: "#f9f9f9",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: "500" }}>
+            Current Attendee:
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: "600", color: "primary.main" }}
           >
-            <Typography variant="h5" sx={{ fontWeight: "500" }}>
-              Attendee Teacher :
-            </Typography>
-            <Typography variant="h5">{attendee.name}</Typography>
-          </Box>
-        )}
+            {attendee.name}
+          </Typography>
+        </Box>
+      )}
 
-        <FormControl fullWidth>
-          <InputLabel>Select Teachers</InputLabel>
-          <Select
-            value={selectedTeacher}
-            name="teacher"
-            label="Select Teachers"
-            onChange={(e) => {
-              setSelectedTeacher(e.target.value);
-            }}
-          >
-            <MenuItem>Select Teacher</MenuItem>
-            {teachers &&
-              teachers.map((x) => {
-                return (
-                  <MenuItem key={x._id} value={x._id}>
-                    {x.name}
-                  </MenuItem>
-                );
-              })}
-          </Select>
-        </FormControl>
+      <FormControl fullWidth sx={{ mb: 3 }}>
+        <InputLabel>Select Teacher</InputLabel>
+        <Select
+          value={selectedTeacher}
+          onChange={(e) => setSelectedTeacher(e.target.value)}
+        >
+          <MenuItem value="">
+            <em>Select Teacher</em>
+          </MenuItem>
+          {teachers.map((teacher) => (
+            <MenuItem key={teacher._id} value={teacher._id}>
+              {teacher.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
-        <Button onClick={handleSubmit}>
-          {attendee ? "Change Attendee" : "Select Attendee"}
-        </Button>
-      </Box>
-    </>
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{
+          py: 1.5,
+          fontWeight: "600",
+          backgroundColor: "primary.main",
+          "&:hover": {
+            backgroundColor: "primary.dark",
+          },
+        }}
+        onClick={handleSubmit}
+      >
+        {attendee ? "Change Attendee" : "Select Attendee"}
+      </Button>
+    </Box>
   );
 }

@@ -2,14 +2,9 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { Formik, useFormik } from "formik";
-
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import {
+  Box,
+  TextField,
   Button,
   FormControl,
   Typography,
@@ -17,44 +12,32 @@ import {
   Select,
   MenuItem,
   Paper,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Grid from "@mui/material/Grid2";
-
-import {
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Grid2,
 } from "@mui/material";
-import axios from "axios";
 
-import {
-  studentEditSchema,
-  studentSchema,
-} from "../../../../Components/yupSchema/studentSchema";
+import { styled } from "@mui/material/styles";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Attendee from "./Attendee";
 import { useState } from "react";
 import { baseAPI } from "../../../../environment";
-import Attendee from "./Attendee";
-import { Link } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
+  backgroundColor: theme.palette.background.paper,
+  padding: theme.spacing(3),
   textAlign: "center",
-  color: theme.palette.text.secondary,
-  ...(theme.palette.mode === "dark" && {
-    backgroundColor: "#1A2027",
-  }),
+  color: theme.palette.text.primary,
+  boxShadow: theme.shadows[3],
+  borderRadius: theme.shape.borderRadius,
 }));
 
 export default function AttendanceStudentList() {
-  const [edit, setEdit] = useState(false);
-  const [editId, setEditId] = useState(null);
-
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [attendanceData, setAttendanceData] = useState({});
@@ -140,71 +123,79 @@ export default function AttendanceStudentList() {
   }, [params]);
 
   return (
-    <>
-      <Box
-        component={"div"}
-        sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
+    <Box sx={{ padding: "20px" }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ textAlign: "center", fontWeight: "500", marginBottom: 4 }}
       >
-        <Typography
-          variant="h3"
-          sx={{ textAlign: "center", fontWeight: "500" }}
-        >
-          Students Attendance
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={6} md={4}>
-            <Item>
-              <Box
-                component={"div"}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  marginTop: "40px",
-                }}
-              >
-                <TextField
-                  label="Search"
-                  value={params.search || ""}
-                  onChange={handleSearch}
-                />
+        Students Attendance
+      </Typography>
 
-                <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
-                  <InputLabel id="student_class">Student Class</InputLabel>
-                  <Select
-                    label="Student Class"
-                    value={params.student_class || ""}
-                    onChange={handleClass}
-                  >
-                    <MenuItem value="">Select Class</MenuItem>
-                    {classes.map((x) => (
-                      <MenuItem key={x._id} value={x._id}>
-                        {x.class_text} ({x.class_num})
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box>{selectedClass && <Attendee classId={selectedClass} />}</Box>
-            </Item>
-          </Grid>
-          <Grid item xs={6} md={8}>
-            <Item>
-              <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Gender</TableCell>
-                      <TableCell>Guardian Phone</TableCell>
-                      <TableCell>Class</TableCell>
-                      <TableCell>Percentage</TableCell>
-                      <TableCell>View</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {students.map((student) => (
-                      <TableRow key={student._id}>
+      <Grid2 container spacing={3}>
+        {/* Filters Section */}
+        <Grid2 item xs={12} md={4}>
+          <Item>
+            <Typography variant="h6" gutterBottom>
+              Filter Students
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <TextField
+                label="Search by Name"
+                value={params.search || ""}
+                onChange={handleSearch}
+                variant="outlined"
+                fullWidth
+              />
+              <FormControl fullWidth>
+                <InputLabel id="student_class">Select Class</InputLabel>
+                <Select
+                  labelId="student_class"
+                  value={params.student_class || ""}
+                  onChange={handleClass}
+                >
+                  <MenuItem value="">All Classes</MenuItem>
+                  {classes.map((cls) => (
+                    <MenuItem key={cls._id} value={cls._id}>
+                      {cls.class_text} ({cls.class_num})
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {selectedClass && <Attendee classId={selectedClass} />}
+            </Box>
+          </Item>
+        </Grid2>
+
+        {/* Students Table Section */}
+        <Grid2 item xs={12} md={8}>
+          <Item>
+            <Typography variant="h6" gutterBottom>
+              Students List
+            </Typography>
+            <TableContainer component={Paper} elevation={0}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Gender</TableCell>
+                    <TableCell>Guardian Phone</TableCell>
+                    <TableCell>Class</TableCell>
+                    <TableCell>Attendance %</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {students.length > 0 ? (
+                    students.map((student) => (
+                      <TableRow
+                        key={student._id}
+                        sx={{
+                          "&:nth-of-type(odd)": {
+                            backgroundColor: "#f9f9f9",
+                          },
+                        }}
+                      >
                         <TableCell>{student.name}</TableCell>
                         <TableCell>{student.gender}</TableCell>
                         <TableCell>{student.guardian_phone}</TableCell>
@@ -219,19 +210,32 @@ export default function AttendanceStudentList() {
                             : "No Data"}
                         </TableCell>
                         <TableCell>
-                          <Link to={`/school/attendance/${student._id}`}>
-                            Details
+                          <Link
+                            to={`/school/attendance/${student._id}`}
+                            style={{
+                              textDecoration: "none",
+                              color: "#1976d2",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            View
                           </Link>
                         </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} align="center">
+                        No students found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Item>
+        </Grid2>
+      </Grid2>
+    </Box>
   );
 }

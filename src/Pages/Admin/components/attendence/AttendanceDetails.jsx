@@ -15,66 +15,78 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
+  backgroundColor: theme.palette.background.paper,
   ...theme.typography.body2,
-  padding: theme.spacing(1),
+  padding: theme.spacing(2),
   textAlign: "center",
   color: theme.palette.text.secondary,
-  ...theme.applyStyles("dark", {
-    backgroundColor: "#1A2027",
-  }),
+  boxShadow: theme.shadows[3],
 }));
 
-export default function AttendanceDetails() {
+const AttendanceDetails = () => {
   const [present, setPresent] = useState(0);
   const [absent, setAbsent] = useState(0);
   const [attendanceData, setAttendanceData] = useState([]);
-  const studentId = useParams().id;
-  const navigate = useNavigate;
+  const { id: studentId } = useParams();
+  const navigate = useNavigate();
 
-  const convertDate = (dateData) => {
-    const date = new Date();
-    return (
-      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear
-    );
+  // Utility to convert date into readable format
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate().toString().padStart(2, "0")}-${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${date.getFullYear()}`;
   };
+
   const fetchAttendanceData = async () => {
     try {
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`);
-      console.log("RESPONSE ATTENDANCE:", response);
-      setAttendanceData(response.data);
       const respData = response.data;
-      console.log("RESPDATA:", respData);
+
       if (respData) {
+        let presentCount = 0;
+        let absentCount = 0;
+
         respData.forEach((attendance) => {
-          if (attendance.status === "Present") {
-            setPresent(present + 1);
-          } else if (attendance.status === "Absent") {
-            setAbsent(absent + 1);
-          }
+          if (attendance.status === "Present") presentCount++;
+          else if (attendance.status === "Absent") absentCount++;
         });
+
+        setAttendanceData(respData);
+        setPresent(presentCount);
+        setAbsent(absentCount);
       }
     } catch (error) {
-      console.lo("Error in fetching student attendance.", error);
+      console.error("Error in fetching student attendance:", error);
       navigate("/admin/attendance");
     }
   };
 
   useEffect(() => {
     fetchAttendanceData();
+    // Dependency array intentionally left empty to run only once on mount
   }, []);
 
   return (
     <>
-      <h1>Attendance Details</h1>
+      <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
+        Attendance Details
+      </Typography>
 
-      <Grid container spacing={2}>
-        <Grid size={6}>
+      <Grid container spacing={3}>
+        {/* Pie Chart */}
+        <Grid xs={12} md={6}>
           <Item>
+            <Typography variant="h6" gutterBottom>
+              Attendance Overview
+            </Typography>
             <PieChart
               series={[
                 {
@@ -85,14 +97,22 @@ export default function AttendanceDetails() {
                 },
               ]}
               width={400}
-              height={200}
+              height={250}
             />
+            <Typography variant="body2" color="text.secondary">
+              Total Attendance Records
+            </Typography>
           </Item>
         </Grid>
-        <Grid size={6}>
+
+        {/* Attendance Table */}
+        <Grid xs={12} md={6}>
           <Item>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Typography variant="h6" gutterBottom>
+              Attendance Records
+            </Typography>
+            <TableContainer component={Paper} elevation={1}>
+              <Table sx={{ minWidth: 650 }} aria-label="attendance table">
                 <TableHead>
                   <TableRow>
                     <TableCell>Date</TableCell>
@@ -103,12 +123,27 @@ export default function AttendanceDetails() {
                   {attendanceData.map((attendance) => (
                     <TableRow
                       key={attendance._id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        backgroundColor:
+                          attendance.status === "Present"
+                            ? "rgba(76, 175, 80, 0.1)"
+                            : "rgba(244, 67, 54, 0.1)",
+                      }}
                     >
                       <TableCell component="th" scope="row">
                         {convertDate(attendance.date)}
                       </TableCell>
-                      <TableCell align="right">{attendance.status}</TableCell>
+                      <TableCell
+                        align="right"
+                        sx={{
+                          fontWeight: "bold",
+                          color:
+                            attendance.status === "Present" ? "green" : "red",
+                        }}
+                      >
+                        {attendance.status}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -119,4 +154,6 @@ export default function AttendanceDetails() {
       </Grid>
     </>
   );
-}
+};
+
+export default AttendanceDetails;
