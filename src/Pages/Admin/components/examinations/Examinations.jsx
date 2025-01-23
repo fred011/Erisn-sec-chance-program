@@ -50,6 +50,8 @@ export default function Examinations() {
           classId: selectedClass,
           examType: value.examType,
         });
+        alert("New Exam Saved Successfully");
+        formik.resetForm();
         console.log("RESPONSE NEW EXAM", response);
       } catch (error) {
         console.log("Error saving new Exam", error);
@@ -71,6 +73,7 @@ export default function Examinations() {
       const response = await axios.get(`${baseAPI}/class/all`);
       console.log("EXAM Classes:", response);
       setClasses(response.data.data);
+      setSelectedClass;
     } catch (error) {
       console.log("Error fetching classes (Exam Comp)", error);
     }
