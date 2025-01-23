@@ -25,6 +25,7 @@ import { examinationSchema } from "../../../../Components/yupSchema/examinationS
 
 export default function Examinations() {
   const [examinations, setExaminations] = React.useState([]);
+  const [subjects, setSubjects] = React.useState([]);
   const initialValues = {
     date: "",
     subject: "",
@@ -40,67 +41,69 @@ export default function Examinations() {
 
   return (
     <>
-      <Box
-        component="form"
-        sx={{ width: "24vw", minWidth: "310px", margin: "auto" }}
-        noValidate
-        autoComplete="off"
-        onSubmit={formik.handleSubmit}
-      >
-        <Typography variant="h4" sx={{ marginBottom: "20px" }}>
-          Add New Exam
-        </Typography>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Date"
-            value={formik.values.date ? dayjs(formik.values.date) : null}
-            name="date"
-            onChange={(value) => {
-              console.log("Selected Date:", value.toDate());
-              formik.setFieldValue("date", value.toDate());
-            }}
-          />
-        </LocalizationProvider>
-        {formik.touched.date && formik.errors.date && (
-          <Typography color="error">{formik.errors.date}</Typography>
-        )}
-        <FormControl fullWidth sx={{ marginTop: "20px" }}>
-          <InputLabel>Subject</InputLabel>
-          <Select
-            value={formik.values.subject}
-            name="subject"
-            label="Subject"
+      <Paper>
+        <Box
+          component="form"
+          sx={{ width: "24vw", minWidth: "310px", margin: "auto" }}
+          noValidate
+          autoComplete="off"
+          onSubmit={formik.handleSubmit}
+        >
+          <Typography variant="h4" sx={{ marginBottom: "10px" }}>
+            Add New Exam
+          </Typography>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Date"
+              value={formik.values.date ? dayjs(formik.values.date) : null}
+              name="date"
+              onChange={(newValue) => {
+                formik.setFieldValue("date", newValue);
+              }}
+            />
+          </LocalizationProvider>
+          {formik.touched.date && formik.errors.date && (
+            <Typography color="error">{formik.errors.date}</Typography>
+          )}
+          <FormControl fullWidth sx={{ marginTop: "10px" }}>
+            <InputLabel>Subject</InputLabel>
+            <Select
+              value={formik.values.subject}
+              name="subject"
+              label="Subject"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              fullWidth
+            >
+              {subjects?.map((x) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.subject_name}
+                </MenuItem>
+              ))}
+            </Select>
+            {formik.touched.subject && formik.errors.subject && (
+              <Typography color="error">{formik.errors.subject}</Typography>
+            )}
+          </FormControl>
+          <TextField
+            name="examType"
+            value={formik.values.examType}
+            label="Exam Type"
+            variant="filled"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             fullWidth
-          >
-            {subjects?.map((x) => (
-              <MenuItem key={x._id} value={x._id}>
-                {x.subject_name}
-              </MenuItem>
-            ))}
-          </Select>
-          {formik.touched.subject && formik.errors.subject && (
-            <Typography color="error">{formik.errors.subject}</Typography>
+            sx={{ marginTop: "10px" }}
+          />
+          {formik.touched.examType && formik.errors.examType && (
+            <Typography color="error">{formik.errors.examType}</Typography>
           )}
-        </FormControl>
-        <TextField
-          name="examType"
-          label="Exam Type"
-          variant="standard"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          fullWidth
-          sx={{ marginTop: "20px" }}
-        />
-        {formik.touched.examType && formik.errors.examType && (
-          <Typography color="error">{formik.errors.examType}</Typography>
-        )}
 
-        <Button type="submit" variant="contained" sx={{ marginTop: "20px" }}>
-          Submit
-        </Button>
-      </Box>
+          <Button type="submit" variant="contained" sx={{ marginTop: "10px" }}>
+            Submit
+          </Button>
+        </Box>
+      </Paper>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
