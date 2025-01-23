@@ -123,11 +123,17 @@ export default function AttendanceStudentList() {
   }, [params]);
 
   return (
-    <Box sx={{ padding: "20px" }}>
+    <Box sx={{ padding: "20px", backgroundColor: "#f5f5f5", borderRadius: 2 }}>
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ textAlign: "center", fontWeight: "500", marginBottom: 4 }}
+        sx={{
+          textAlign: "center",
+          fontWeight: "500",
+          marginBottom: 4,
+          color: "#1976d2",
+          textTransform: "uppercase",
+        }}
       >
         Students Attendance
       </Typography>
@@ -135,8 +141,15 @@ export default function AttendanceStudentList() {
       <Grid2 container spacing={3}>
         {/* Filters Section */}
         <Grid2 item xs={12} md={4}>
-          <Item>
-            <Typography variant="h6" gutterBottom>
+          <Item
+            sx={{
+              padding: "20px",
+              backgroundColor: "#ffffff",
+              borderRadius: "8px",
+              boxShadow: 2,
+            }}
+          >
+            <Typography variant="h6" gutterBottom sx={{ color: "#1976d2" }}>
               Filter Students
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -146,13 +159,33 @@ export default function AttendanceStudentList() {
                 onChange={handleSearch}
                 variant="outlined"
                 fullWidth
+                sx={{
+                  backgroundColor: "#ffffff",
+                  borderRadius: 1,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#1976d2",
+                    },
+                  },
+                }}
               />
               <FormControl fullWidth>
-                <InputLabel id="student_class">Select Class</InputLabel>
+                <InputLabel id="student_class" sx={{ color: "#1976d2" }}>
+                  Select Class
+                </InputLabel>
                 <Select
                   labelId="student_class"
                   value={params.student_class || ""}
                   onChange={handleClass}
+                  sx={{
+                    backgroundColor: "#ffffff",
+                    borderRadius: 1,
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#1976d2",
+                      },
+                    },
+                  }}
                 >
                   <MenuItem value="">All Classes</MenuItem>
                   {classes.map((cls) => (
@@ -169,20 +202,39 @@ export default function AttendanceStudentList() {
 
         {/* Students Table Section */}
         <Grid2 item xs={12} md={8}>
-          <Item>
-            <Typography variant="h6" gutterBottom>
+          <Item
+            sx={{
+              padding: "20px",
+              backgroundColor: "#ffffff",
+              borderRadius: "8px",
+              boxShadow: 2,
+            }}
+          >
+            <Typography variant="h6" gutterBottom sx={{ color: "#1976d2" }}>
               Students List
             </Typography>
             <TableContainer component={Paper} elevation={0}>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Gender</TableCell>
-                    <TableCell>Guardian Phone</TableCell>
-                    <TableCell>Class</TableCell>
-                    <TableCell>Attendance %</TableCell>
-                    <TableCell>Action</TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Name
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Gender
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Guardian Phone
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Class
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Attendance %
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Action
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

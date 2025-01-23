@@ -17,12 +17,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { Outlet, useNavigate } from "react-router-dom";
-import axios from "axios";
-
-// Icons
+import HomeIcon from "@mui/icons-material/Home";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import PeopleIcon from "@mui/icons-material/People";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -33,8 +28,9 @@ import ExplicitIcon from "@mui/icons-material/Explicit";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import HomeIcon from "@mui/icons-material/Home";
-import { Home } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout"; // Import Logout Icon
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -64,7 +60,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -127,22 +122,6 @@ export default function Admin() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  // const handleLogout = async () => {
-  //   axios
-  //     .post(
-  //       "https://erisn-sec-chance-program.vercel.app/api/logout",
-  //       {},
-  //       { withCredentials: true }
-  //     )
-  //     .then((res) => {
-  //       console.log("Logout successful:", res.data);
-  //       navigate("/login"); // Redirect to login page after logout
-  //     })
-  //     .catch((err) => {
-  //       console.error("Logout failed:", err.response?.data || err.message);
-  //       alert("Logout failed. Please try again.");
-  //     });
-  // };
 
   const navArr = [
     { link: "/", component: "Home", icon: HomeIcon },
@@ -151,7 +130,6 @@ export default function Admin() {
     { link: "/admin/subjects", component: "Subjects", icon: SubjectIcon },
     { link: "/admin/students", component: "Students", icon: PeopleIcon },
     { link: "/admin/teachers", component: "Teachers", icon: PeopleAltIcon },
-    //{ link: "/admin/fees", component: "Fees", icon: AttachMoneyIcon },
     { link: "/admin/schedule", component: "Schedule", icon: EventIcon },
     {
       link: "/admin/attendance",
@@ -167,8 +145,25 @@ export default function Admin() {
   ];
 
   const navigate = useNavigate();
+
+  // Handle navigation
   const handleNavigation = (link) => {
     navigate(link);
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "https://erisn-sec-chance-program.vercel.app/api/logout",
+        {},
+        { withCredentials: true }
+      );
+      navigate("/login"); // Redirect to login page after logout
+    } catch (err) {
+      console.error("Logout failed:", err.response?.data || err.message);
+      alert("Logout failed. Please try again.");
+    }
   };
 
   return (
@@ -181,35 +176,13 @@ export default function Admin() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={[
-              {
-                marginRight: 5,
-              },
-              open && { display: "none" },
-            ]}
+            sx={[{ marginRight: 5 }, open && { display: "none" }]}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             Erisn Student Management System
           </Typography>
-          {/* <button
-            className="log-out"
-            style={{
-              fontSize: "16px",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              position: "absolute",
-              right: "15px",
-              background: "transparent",
-              border: "none",
-              color: "white",
-              cursor: "pointer",
-            }}
-            onClick={handleLogout}
-          >
-            Log Out
-          </button> */}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -228,111 +201,60 @@ export default function Admin() {
             <ListItem key={index} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
+                  { minHeight: 48, px: 2.5 },
                   open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
+                    ? { justifyContent: "initial" }
+                    : { justifyContent: "center" },
                 ]}
-                onClick={() => {
-                  handleNavigation(navItem.link);
-                }}
+                onClick={() => handleNavigation(navItem.link)}
               >
                 <ListItemIcon
                   sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
+                    { minWidth: 0, justifyContent: "center" },
+                    open ? { mr: 3 } : { mr: "auto" },
                   ]}
                 >
                   {<navItem.icon />}
                 </ListItemIcon>
                 <ListItemText
                   primary={navItem.component}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
+                  sx={[open ? { opacity: 1 } : { opacity: 0 }]}
                 />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
-        {/* <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
+        {/* Logout Button */}
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              px: 2.5,
+              justifyContent: "center",
+            }}
+            onClick={handleLogout}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                justifyContent: "center",
+              }}
+            >
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Logout"
+              sx={{
+                opacity: open ? 1 : 0,
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Outlet />
+        {/* Content will go here */}
       </Box>
     </Box>
   );

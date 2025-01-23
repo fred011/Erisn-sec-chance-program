@@ -200,11 +200,21 @@ export default function Teachers() {
     <>
       <Box
         component={"div"}
-        sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
+        sx={{
+          height: "100%",
+          paddingTop: "20px", // Increased padding for a cleaner look
+          paddingBottom: "20px",
+          backgroundColor: "#f4f6f9", // Light background color for the section
+        }}
       >
         <Typography
           variant="h3"
-          sx={{ textAlign: "center", fontWeight: "500" }}
+          sx={{
+            textAlign: "center",
+            fontWeight: "500",
+            marginBottom: "20px", // Add spacing below the title
+            color: "#333", // Darker color for the heading
+          }}
         >
           Teachers
         </Typography>
@@ -212,29 +222,42 @@ export default function Teachers() {
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1 }, // Add margin to child elements
+            "& > :not(style)": { m: 2 }, // Add margin to child elements for spacing
             display: "flex",
             flexDirection: "column",
             width: "60vw",
             minWidth: "230px",
             margin: "auto",
-            marginTop: "5px",
+            backgroundColor: "#fff", // White background for the form
+            borderRadius: "8px", // Rounded corners for the form
+            padding: "20px", // Padding inside the form
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Light shadow for form elevation
           }}
           noValidate
           autoComplete="off"
-          onSubmit={formik.handleSubmit} // Attach Formik's submit handler
+          onSubmit={formik.handleSubmit}
         >
           {edit ? (
             <Typography
               variant="h4"
-              sx={{ textAlign: "center", fontWeight: "500" }}
+              sx={{
+                textAlign: "center",
+                fontWeight: "500",
+                marginBottom: "15px", // Add spacing below the title
+                color: "#1976d2", // Highlight edit text with blue
+              }}
             >
               Edit Teacher
             </Typography>
           ) : (
             <Typography
               variant="h4"
-              sx={{ textAlign: "center", fontWeight: "500" }}
+              sx={{
+                textAlign: "center",
+                fontWeight: "500",
+                marginBottom: "15px", // Add spacing below the title
+                color: "#1976d2", // Highlight add text with blue
+              }}
             >
               Add Teacher
             </Typography>
@@ -247,9 +270,16 @@ export default function Teachers() {
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }} // Add margin for spacing between fields
           />
           {formik.touched.name && formik.errors.name && (
-            <p style={{ color: "red" }}>{formik.errors.name}</p> // Show error if name is invalid
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.name}
+            </Typography>
           )}
 
           {/* Email Input */}
@@ -259,22 +289,37 @@ export default function Teachers() {
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
           />
           {formik.touched.email && formik.errors.email && (
-            <p style={{ color: "red" }}>{formik.errors.email}</p>
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.email}
+            </Typography>
           )}
-          {/* Teacher qualification Input */}
 
+          {/* Qualification Input */}
           <TextField
             name="qualification"
             label="Qualification"
             value={formik.values.qualification}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
           />
           {formik.touched.qualification && formik.errors.qualification && (
-            <p style={{ color: "red" }}>{formik.errors.qualification}</p> // Show error if name is invalid
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.qualification}
+            </Typography>
           )}
+
           {/* Age Input */}
           <TextField
             name="age"
@@ -282,13 +327,20 @@ export default function Teachers() {
             value={formik.values.age}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
           />
           {formik.touched.age && formik.errors.age && (
-            <p style={{ color: "red" }}>{formik.errors.age}</p> // Show error if name is invalid
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.age}
+            </Typography>
           )}
 
           {/* Gender Input */}
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ marginBottom: "15px" }}>
             <InputLabel id="gender">Gender</InputLabel>
             <Select
               labelId="gender"
@@ -304,19 +356,32 @@ export default function Teachers() {
             </Select>
           </FormControl>
           {formik.touched.gender && formik.errors.gender && (
-            <p style={{ color: "red" }}>{formik.errors.gender}</p> // Show error if name is invalid
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.gender}
+            </Typography>
           )}
 
-          {/*  phone Input */}
+          {/* Phone Input */}
           <TextField
             name="phone_number"
             label="Phone Number"
             value={formik.values.phone_number}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
           />
           {formik.touched.phone_number && formik.errors.phone_number && (
-            <p style={{ color: "red" }}>{formik.errors.phone_number}</p> // Show error if name is invalid
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.phone_number}
+            </Typography>
           )}
 
           {/* Password Input */}
@@ -327,9 +392,16 @@ export default function Teachers() {
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
           />
           {formik.touched.password && formik.errors.password && (
-            <p style={{ color: "red" }}>{formik.errors.password}</p>
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.password}
+            </Typography>
           )}
 
           {/* Confirm Password Input */}
@@ -340,19 +412,31 @@ export default function Teachers() {
             value={formik.values.confirm_password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
           />
           {formik.touched.confirm_password &&
             formik.errors.confirm_password && (
-              <p style={{ color: "red" }}>{formik.errors.confirm_password}</p>
+              <Typography
+                color="error"
+                variant="body2"
+                sx={{ marginBottom: "15px" }}
+              >
+                {formik.errors.confirm_password}
+              </Typography>
             )}
 
           {/* Submit Button */}
-          <Button sx={{ width: "120px" }} type="submit" variant="contained">
+          <Button
+            sx={{ width: "120px", marginBottom: "15px" }}
+            type="submit"
+            variant="contained"
+          >
             Submit
           </Button>
+
           {edit && (
             <Button
-              sx={{ width: "120px" }}
+              sx={{ width: "120px", marginBottom: "15px" }}
               onClick={() => cancelEdit()}
               type="button"
               variant="outlined"
@@ -361,102 +445,28 @@ export default function Teachers() {
             </Button>
           )}
         </Box>
+
         <Box
           component={"div"}
           sx={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
-            marginTop: "40px",
+            marginTop: "30px",
           }}
         >
           <TextField
-            label="search"
+            label="Search"
             value={params.search ? params.search : ""}
             onChange={(e) => {
               handleSearch(e);
             }}
-            // onBlur={formik.handleBlur}
+            sx={{ width: "300px" }} // Set a width for the search input
           />
         </Box>
-        {/* <Box
-          component={"div"}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "40px",
-          }}
-        >
-          {teachers &&
-            teachers.map((teacher) => {
-              return (
-                <Card key={teacher._id} sx={{ maxWidth: 345, margin: "10px" }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        sx={{ fontWeight: "700" }}
-                      >
-                        Teacher Details
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Name : </span>
-                        {teacher.name}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Email : </span>
-                        {teacher.email}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>
-                          Qualification :{" "}
-                        </span>
-                        {teacher.qualification}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Age : </span>
-                        {teacher.age}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Gender : </span>
-                        {teacher.gender}
-                      </Typography>
 
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Phone Number : </span>
-                        {teacher.phone_number}
-                      </Typography>
-
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "text.secondary" }}
-                      >
-                        <Button
-                          onClick={() => {
-                            handleEdit(teacher._id);
-                          }}
-                        >
-                          <EditIcon />
-                        </Button>
-                        <Button
-                          sx={{ marginLeft: "10px" }}
-                          onClick={() => {
-                            handleDelete(teacher._id);
-                          }}
-                        >
-                          <DeleteIcon sx={{ color: "red" }} />
-                        </Button>
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              );
-            })}
-        </Box> */}
-        <TableContainer component={Paper}>
+        {/* Table for Teachers */}
+        <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
           <Table sx={{ minWidth: 650 }} aria-label="teacher table">
             <TableHead>
               <TableRow>

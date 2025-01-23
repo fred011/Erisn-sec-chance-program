@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
+  Box,
   Button,
   FormControl,
   MenuItem,
@@ -107,57 +108,105 @@ export default function Schedule() {
 
   return (
     <>
-      <Typography variant="h4" sx={{ fontWeight: "500" }}>
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "500",
+          color: "#1976d2",
+          marginBottom: 2,
+          textTransform: "uppercase",
+          textAlign: "center",
+        }}
+      >
         Schedule
       </Typography>
-      <Typography variant="h5" sx={{ fontWeight: "500" }}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: "500",
+          color: "#1976d2",
+          marginBottom: 2,
+          textAlign: "center",
+        }}
+      >
         Class
       </Typography>
-      <FormControl fullWidth>
+      <FormControl fullWidth sx={{ marginBottom: 3 }}>
         <Select
           value={selectedClass || ""}
-          onChange={(e) => {
-            setSelectedClass(e.target.value);
+          onChange={(e) => setSelectedClass(e.target.value)}
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: 1,
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#1976d2",
+              },
+            },
           }}
         >
           {classes &&
-            classes.map((x) => {
-              return (
-                <MenuItem key={x._id} value={x._id}>
-                  {x.class_text}
-                </MenuItem>
-              );
-            })}
+            classes.map((x) => (
+              <MenuItem key={x._id} value={x._id}>
+                {x.class_text}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
 
-      <Button onClick={() => setNewPeriod(true)}>Add new Period</Button>
+      <Box sx={{ textAlign: "center", marginBottom: 3 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setNewPeriod(true)}
+          sx={{
+            padding: "10px 20px",
+            backgroundColor: "#1976d2",
+            color: "#fff",
+            fontWeight: "bold",
+            borderRadius: "8px",
+            "&:hover": {
+              backgroundColor: "#1565c0",
+            },
+          }}
+        >
+          Add new Period
+        </Button>
+      </Box>
+
       {(newPeriod || edit) && (
         <ScheduleEvent
           selectedClass={selectedClass}
           handleEventClose={handleEventClose}
-          onAddNewPeriod={handleAddNewPeriod} // Pass the callback function to ScheduleEvent
+          onAddNewPeriod={handleAddNewPeriod}
           edit={edit}
           selectedEventId={selectedEventId}
         />
       )}
 
-      <Calendar
-        defaultView="week"
-        localizer={localizer}
-        events={events}
-        step={30}
-        timeslots={1}
-        min={new Date(1970, 1, 1, 7, 0, 0)}
-        startAccessor="start"
-        endAccessor="end"
-        onSelectEvent={handleSelectEvent}
-        max={new Date(1970, 1, 1, 17, 0, 0)}
-        defaultDate={new Date()}
-        showMultiDayTimes
-        style={{ height: "100%", width: "100%" }}
-        views={["week", "day", "agenda"]}
-      />
+      <Box sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}>
+        <Calendar
+          defaultView="week"
+          localizer={localizer}
+          events={events}
+          step={30}
+          timeslots={1}
+          min={new Date(1970, 1, 1, 7, 0, 0)}
+          startAccessor="start"
+          endAccessor="end"
+          onSelectEvent={handleSelectEvent}
+          max={new Date(1970, 1, 1, 17, 0, 0)}
+          defaultDate={new Date()}
+          showMultiDayTimes
+          style={{
+            height: "80vh", // Adjusting calendar height to make it more responsive
+            width: "100%",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+          }}
+          views={["week", "day", "agenda"]}
+        />
+      </Box>
     </>
   );
 }

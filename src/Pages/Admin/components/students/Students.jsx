@@ -222,11 +222,22 @@ export default function Students() {
     <>
       <Box
         component={"div"}
-        sx={{ height: "100%", paddingTop: "5px", paddingBottom: "5px" }}
+        sx={{
+          height: "100%",
+          paddingTop: "20px",
+          paddingBottom: "20px",
+          backgroundColor: "#f4f6f8", // Light background color for the page
+          borderRadius: "8px",
+        }}
       >
         <Typography
           variant="h3"
-          sx={{ textAlign: "center", fontWeight: "500" }}
+          sx={{
+            textAlign: "center",
+            fontWeight: "500",
+            color: "#1976d2", // Primary color
+            marginBottom: "20px",
+          }}
         >
           Students
         </Typography>
@@ -234,29 +245,41 @@ export default function Students() {
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1 }, // Add margin to child elements
+            "& > :not(style)": { m: 2 }, // Margin between form elements
             display: "flex",
             flexDirection: "column",
             width: "60vw",
-            minWidth: "230px",
+            minWidth: "250px",
             margin: "auto",
-            marginTop: "5px",
+            marginTop: "10px",
+            backgroundColor: "#fff", // White background for form
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: 2, // Adds a slight shadow for visual appeal
           }}
           noValidate
           autoComplete="off"
-          onSubmit={formik.handleSubmit} // Attach Formik's submit handler
+          onSubmit={formik.handleSubmit}
         >
           {edit ? (
             <Typography
               variant="h4"
-              sx={{ textAlign: "center", fontWeight: "500" }}
+              sx={{
+                textAlign: "center",
+                fontWeight: "500",
+                marginBottom: "20px",
+              }}
             >
               Edit Student
             </Typography>
           ) : (
             <Typography
               variant="h4"
-              sx={{ textAlign: "center", fontWeight: "500" }}
+              sx={{
+                textAlign: "center",
+                fontWeight: "500",
+                marginBottom: "20px",
+              }}
             >
               Add Student
             </Typography>
@@ -269,9 +292,12 @@ export default function Students() {
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: 2 }}
           />
           {formik.touched.name && formik.errors.name && (
-            <p style={{ color: "red" }}>{formik.errors.name}</p> // Show error if name is invalid
+            <Typography color="error" variant="body2">
+              {formik.errors.name}
+            </Typography>
           )}
 
           {/* Email Input */}
@@ -281,13 +307,16 @@ export default function Students() {
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: 2 }}
           />
           {formik.touched.email && formik.errors.email && (
-            <p style={{ color: "red" }}>{formik.errors.email}</p>
+            <Typography color="error" variant="body2">
+              {formik.errors.email}
+            </Typography>
           )}
-          {/* Student class Input */}
 
-          <FormControl fullWidth>
+          {/* Student class Input */}
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
             <InputLabel id="student_class">Student Class</InputLabel>
             <Select
               labelId="student_class"
@@ -297,20 +326,20 @@ export default function Students() {
               name="student_class"
               onChange={formik.handleChange}
             >
-              {/* <MenuItem value={""}>Select Class</MenuItem> */}
               {classes &&
-                classes.map((x) => {
-                  return (
-                    <MenuItem key={x._id} value={x._id}>
-                      {x.class_text} ({x.class_num})
-                    </MenuItem>
-                  );
-                })}
+                classes.map((x) => (
+                  <MenuItem key={x._id} value={x._id}>
+                    {x.class_text} ({x.class_num})
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
           {formik.touched.student_class && formik.errors.student_class && (
-            <p style={{ color: "red" }}>{formik.errors.student_class}</p> // Show error if name is invalid
+            <Typography color="error" variant="body2">
+              {formik.errors.student_class}
+            </Typography>
           )}
+
           {/* Age Input */}
           <TextField
             name="age"
@@ -318,12 +347,16 @@ export default function Students() {
             value={formik.values.age}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: 2 }}
           />
           {formik.touched.age && formik.errors.age && (
-            <p style={{ color: "red" }}>{formik.errors.age}</p> // Show error if name is invalid
+            <Typography color="error" variant="body2">
+              {formik.errors.age}
+            </Typography>
           )}
+
           {/* Gender Input */}
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
             <InputLabel id="gender">Gender</InputLabel>
             <Select
               labelId="gender"
@@ -339,8 +372,11 @@ export default function Students() {
             </Select>
           </FormControl>
           {formik.touched.gender && formik.errors.gender && (
-            <p style={{ color: "red" }}>{formik.errors.gender}</p> // Show error if name is invalid
+            <Typography color="error" variant="body2">
+              {formik.errors.gender}
+            </Typography>
           )}
+
           {/* Guardian Input */}
           <TextField
             name="guardian"
@@ -348,20 +384,27 @@ export default function Students() {
             value={formik.values.guardian}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: 2 }}
           />
           {formik.touched.guardian && formik.errors.guardian && (
-            <p style={{ color: "red" }}>{formik.errors.guardian}</p> // Show error if name is invalid
+            <Typography color="error" variant="body2">
+              {formik.errors.guardian}
+            </Typography>
           )}
-          {/* Guardian phone Input */}
+
+          {/* Guardian Phone Input */}
           <TextField
             name="guardian_phone"
             label="Guardian Phone Number"
             value={formik.values.guardian_phone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: 2 }}
           />
           {formik.touched.guardian_phone && formik.errors.guardian_phone && (
-            <p style={{ color: "red" }}>{formik.errors.guardian_phone}</p> // Show error if name is invalid
+            <Typography color="error" variant="body2">
+              {formik.errors.guardian_phone}
+            </Typography>
           )}
 
           {/* Password Input */}
@@ -372,9 +415,12 @@ export default function Students() {
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: 2 }}
           />
           {formik.touched.password && formik.errors.password && (
-            <p style={{ color: "red" }}>{formik.errors.password}</p>
+            <Typography color="error" variant="body2">
+              {formik.errors.password}
+            </Typography>
           )}
 
           {/* Confirm Password Input */}
@@ -385,27 +431,38 @@ export default function Students() {
             value={formik.values.confirm_password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            sx={{ marginBottom: 2 }}
           />
           {formik.touched.confirm_password &&
             formik.errors.confirm_password && (
-              <p style={{ color: "red" }}>{formik.errors.confirm_password}</p>
+              <Typography color="error" variant="body2">
+                {formik.errors.confirm_password}
+              </Typography>
             )}
 
           {/* Submit Button */}
-          <Button sx={{ width: "120px" }} type="submit" variant="contained">
+          <Button
+            sx={{ width: "120px", marginBottom: 2 }}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
             Submit
           </Button>
           {edit && (
             <Button
-              sx={{ width: "120px" }}
+              sx={{ width: "120px", marginBottom: 2 }}
               onClick={() => cancelEdit()}
               type="button"
               variant="outlined"
+              color="secondary"
             >
               Cancel
             </Button>
           )}
         </Box>
+
+        {/* Search and Class Filter Section */}
         <Box
           component={"div"}
           sx={{
@@ -416,120 +473,32 @@ export default function Students() {
           }}
         >
           <TextField
-            label="search"
-            value={params.search ? params.search : ""}
-            onChange={(e) => {
-              handleSearch(e);
-            }}
-            // onBlur={formik.handleBlur}
+            label="Search"
+            value={params.search || ""}
+            onChange={handleSearch}
+            sx={{ marginRight: "10px", width: "300px" }}
           />
 
           <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
             <InputLabel id="student_class">Student Class</InputLabel>
             <Select
-              // value={formik.values.student_class}
-              label="Student Class"
-              value={params.student_class ? params.student_class : ""}
-              // name="student_class"
-              onChange={(e) => {
-                handleClass(e);
-              }}
+              labelId="student_class"
+              id="student_class"
+              value={params.student_class || ""}
+              onChange={handleClass}
             >
               <MenuItem value="">Select Class</MenuItem>
               {classes &&
-                classes.map((x) => {
-                  return (
-                    <MenuItem key={x._id} value={x._id}>
-                      {x.class_text} ({x.class_num})
-                    </MenuItem>
-                  );
-                })}
+                classes.map((x) => (
+                  <MenuItem key={x._id} value={x._id}>
+                    {x.class_text} ({x.class_num})
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Box>
-        {/* <Box
-          component={"div"}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "40px",
-          }}
-        >
-          {students &&
-            students.map((student) => {
-              return (
-                <Card key={student._id} sx={{ maxWidth: 345, margin: "10px" }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        sx={{ fontWeight: "700" }}
-                      >
-                        Student Details
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Name : </span>
-                        {student.name}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Email : </span>
-                        {student.email}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Class : </span>
-                        {student.student_class
-                          ? student.student_class.class_text
-                          : "Not Assigned"}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Age : </span>
-                        {student.age}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Gender : </span>
-                        {student.gender}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>Guardian : </span>
-                        {student.guardian}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="div">
-                        <span style={{ fontWeight: 700 }}>
-                          Guardian Phone :{" "}
-                        </span>
-                        {student.guardian_phone}
-                      </Typography>
 
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "text.secondary" }}
-                      >
-                        <Button
-                          onClick={() => {
-                            handleEdit(student._id);
-                          }}
-                        >
-                          <EditIcon />
-                        </Button>
-                        <Button
-                          sx={{ marginLeft: "10px" }}
-                          onClick={() => {
-                            handleDelete(student._id);
-                          }}
-                        >
-                          <DeleteIcon sx={{ color: "red" }} />
-                        </Button>
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              );
-            })}
-        </Box> */}
-        {/* Table Section */}
+        {/* Students Table Section */}
         <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
           <Table>
             <TableHead>
@@ -562,6 +531,7 @@ export default function Students() {
                     <Button
                       onClick={() => handleEdit(student._id)}
                       startIcon={<EditIcon />}
+                      sx={{ marginRight: "10px" }}
                     >
                       Edit
                     </Button>
