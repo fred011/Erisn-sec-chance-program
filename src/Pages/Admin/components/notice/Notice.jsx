@@ -229,7 +229,7 @@ const Notice = () => {
             return (
               <Paper key={x._id} sx={{ m: 2, p: 2 }}>
                 <Box component={"div"}>
-                  <Typography variant="h4" sx={{ fontWeight: "500" }}>
+                  <Typography variant="h4">
                     <b>Title:</b> {x.title}
                   </Typography>{" "}
                   <Typography variant="h5" sx={{ fontWeight: "700" }}>
