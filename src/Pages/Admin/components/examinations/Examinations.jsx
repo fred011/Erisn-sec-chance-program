@@ -95,6 +95,7 @@ export default function Examinations() {
               onBlur={formik.handleBlur}
               fullWidth
             >
+              <MenuItem value={""}>Select Subject</MenuItem>
               {subjects?.map((x) => (
                 <MenuItem key={x._id} value={x._id}>
                   {x.subject_name}
