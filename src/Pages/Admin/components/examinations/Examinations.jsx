@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   Button,
@@ -44,13 +43,6 @@ const Examinations = () => {
       console.error("Error fetching subjects:", error);
     }
   };
-  const convertDate = (dateData) => {
-    const date = new Date();
-
-    return (
-      date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear
-    );
-  };
 
   const fetchClasses = async () => {
     try {
@@ -91,45 +83,28 @@ const Examinations = () => {
       };
 
       if (edit) {
-        axios
-          .put(`${baseAPI}/examination/update/${editId}`, requestData, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            console.log("Examination update response", res);
-            alert("Exam updated successfully");
-            fetchExaminations();
-            handleCancel();
-          })
-          .catch((err) => {
-            console.error(
-              "Error updating examination",
-              err.response ? err.response.data : err.message
-            );
-            alert("Failed to update examination.");
-          });
+        try {
+          await axios.patch(
+            `${baseAPI}/examination/update/${editId}`,
+            requestData
+          );
+          alert("Exam updated successfully.");
+          fetchExaminations();
+          handleCancel();
+        } catch (err) {
+          console.error("Error updating examination:", err.message);
+          alert("Failed to update examination.");
+        }
       } else {
-        axios
-          .post(`${baseAPI}/examination/create`, requestData, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            console.log("Examination create response", res);
-            alert("Exam added successfully");
-            fetchExaminations();
-            resetForm();
-          })
-          .catch((err) => {
-            console.error(
-              "Error creating examination",
-              err.response ? err.response.data : err.message
-            );
-            alert("Failed to add examination.");
-          });
+        try {
+          await axios.post(`${baseAPI}/examination/create`, requestData);
+          alert("Exam added successfully.");
+          fetchExaminations();
+          resetForm();
+        } catch (err) {
+          console.error("Error creating examination:", err.message);
+          alert("Failed to add examination.");
+        }
       }
     },
   });
@@ -178,6 +153,11 @@ const Examinations = () => {
     fetchExaminations();
   }, [selectedClass]);
 
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
   return (
     <>
       <h1>Examinations</h1>
@@ -218,10 +198,9 @@ const Examinations = () => {
             <DatePicker
               label="Date"
               value={formik.values.date ? dayjs(formik.values.date) : null}
-              onChange={(value) => {
-                console.log("Selected Date:", value.toDate());
-                formik.setFieldValue("date", value.toDate());
-              }}
+              onChange={(value) =>
+                formik.setFieldValue("date", value?.toISOString())
+              }
             />
           </LocalizationProvider>
           {formik.touched.date && formik.errors.date && (
@@ -230,13 +209,12 @@ const Examinations = () => {
           <FormControl fullWidth sx={{ marginTop: "10px" }}>
             <InputLabel>Subject</InputLabel>
             <Select
-              value={formik.values.subject}
-              name="subject"
-              label="Subject"
+              value={formik.values.subjectId}
+              name="subjectId"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
-              {subjects?.map((subject) => (
+              {subjects.map((subject) => (
                 <MenuItem key={subject._id} value={subject._id}>
                   {subject.subject_name}
                 </MenuItem>
@@ -266,7 +244,7 @@ const Examinations = () => {
           {editId && (
             <Button
               onClick={handleCancel}
-              variant="outline"
+              variant="outlined"
               sx={{ marginTop: "10px" }}
             >
               Cancel
@@ -289,7 +267,9 @@ const Examinations = () => {
               <TableRow key={examination._id}>
                 <TableCell>{convertDate(examination.examDate)}</TableCell>
                 <TableCell>
-                  {examination.subject ? examination.subject.subject_name : " "}
+                  {examination.subject
+                    ? examination.subject.subject_name
+                    : "N/A"}
                 </TableCell>
                 <TableCell>{examination.examType}</TableCell>
                 <TableCell>
