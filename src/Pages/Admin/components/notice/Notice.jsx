@@ -134,65 +134,78 @@ const Notice = () => {
 
   return (
     <>
-      <Typography variant="h3" sx={{ textAlign: "center", fontWeight: "700" }}>
+      <Typography
+        variant="h3"
+        sx={{
+          textAlign: "center",
+          fontWeight: "700",
+          color: "primary.main",
+          mb: 3,
+        }}
+      >
         Notices
       </Typography>
+
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1 },
           display: "flex",
           flexDirection: "column",
-          width: "60vw",
-          minWidth: "230px",
+          width: { xs: "90vw", sm: "70vw", md: "60vw" },
+          maxWidth: 600,
           margin: "auto",
-          background: "#fff",
+          background: "white",
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 2,
+          gap: 2,
         }}
         noValidate
         autoComplete="off"
         onSubmit={formik.handleSubmit}
       >
-        {edit ? (
-          <Typography
-            variant="h4"
-            sx={{ textAlign: "center", fontWeight: "700" }}
-          >
-            Edit Notice
-          </Typography>
-        ) : (
-          <Typography
-            variant="h4"
-            sx={{ textAlign: "center", fontWeight: "700" }}
-          >
-            Add New Notice
-          </Typography>
-        )}
+        <Typography
+          variant="h4"
+          sx={{
+            textAlign: "center",
+            fontWeight: "700",
+            color: edit ? "warning.main" : "primary.main",
+          }}
+        >
+          {edit ? "Edit Notice" : "Add New Notice"}
+        </Typography>
 
         <TextField
+          fullWidth
           name="title"
           label="Title"
+          variant="outlined"
           value={formik.values.title}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.title && Boolean(formik.errors.title)}
+          helperText={formik.touched.title && formik.errors.title}
         />
-        {formik.touched.title && formik.errors.title && (
-          <p style={{ color: "red" }}>{formik.errors.title}</p>
-        )}
 
         <TextField
+          fullWidth
           multiline
           rows={5}
           name="message"
           label="Message"
+          variant="outlined"
           value={formik.values.message}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          error={formik.touched.message && Boolean(formik.errors.message)}
+          helperText={formik.touched.message && formik.errors.message}
         />
-        {formik.touched.message && formik.errors.message && (
-          <p style={{ color: "red" }}>{formik.errors.message}</p>
-        )}
 
-        <FormControl fullWidth sx={{ marginTop: "10px" }}>
+        <FormControl
+          fullWidth
+          variant="outlined"
+          error={formik.touched.audience && Boolean(formik.errors.audience)}
+        >
           <InputLabel>Audience</InputLabel>
           <Select
             value={formik.values.audience}
@@ -200,31 +213,40 @@ const Notice = () => {
             label="Audience"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            fullWidth
           >
             <MenuItem value={""}>Select Audience</MenuItem>
             <MenuItem value={"teacher"}>Teacher</MenuItem>
             <MenuItem value={"student"}>Student</MenuItem>
           </Select>
           {formik.touched.audience && formik.errors.audience && (
-            <Typography color="error">{formik.errors.audience}</Typography>
+            <Typography color="error" variant="caption">
+              {formik.errors.audience}
+            </Typography>
           )}
         </FormControl>
 
-        <Button sx={{ width: "120px" }} type="submit" variant="contained">
-          Submit
-        </Button>
-
-        {edit && (
+        <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
           <Button
-            sx={{ width: "120px" }}
-            onClick={() => cancelEdit()}
-            type="button"
-            variant="outlined"
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ minWidth: 120 }}
           >
-            Cancel
+            {edit ? "Update" : "Submit"}
           </Button>
-        )}
+
+          {edit && (
+            <Button
+              type="button"
+              variant="outlined"
+              color="secondary"
+              sx={{ minWidth: 120 }}
+              onClick={cancelEdit}
+            >
+              Cancel
+            </Button>
+          )}
+        </Box>
       </Box>
       <Box
         sx={{
