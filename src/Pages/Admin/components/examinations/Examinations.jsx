@@ -203,7 +203,7 @@ const Examinations = () => {
       <Paper>
         <Box
           component="form"
-          sx={{ width: "24vw", minWidth: "310px", margin: "auto" }}
+          sx={{ width: "100%", margin: "auto" }}
           noValidate
           autoComplete="off"
           onSubmit={formik.handleSubmit}
