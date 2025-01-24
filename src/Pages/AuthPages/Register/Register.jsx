@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom"; // To navigate between pages after registration
+import { baseAPI } from "../../../environment";
 
 export default function Register() {
   const navigate = useNavigate(); // Initialize the navigation function
