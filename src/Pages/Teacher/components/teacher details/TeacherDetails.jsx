@@ -12,19 +12,26 @@ import { baseAPI } from "../../../../environment";
 export default function TeacherDetails() {
   const [teacherDetails, setTeacherDetails] = React.useState(null);
 
-  const teacherDetail = async () => {
+  const fetchTeacherDetails = async () => {
     try {
-      const response = await axios.get(`${baseAPI}/teacher/fetch-single`);
-      setTeacherDetails(response.data.teacher); // Update the state with the response data
-      console.log("TEACHER DETAIL", response.data.teacher);
+      const response = await axios.get(`${baseAPI}/teacher/fetch-single`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setTeacherDetails(response.data.teacher);
     } catch (error) {
-      console.error("Error in Fetching Teacher Details", error.message); // Log error message
+      console.error("Error fetching teacher details:", error);
     }
   };
 
   React.useEffect(() => {
-    teacherDetail();
+    fetchTeacherDetails();
   }, []);
+
+  if (!teacherDetails) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       {teacherDetails && (
