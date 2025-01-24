@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
-const Logout = () => {
+const LogOut = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -21,4 +21,4 @@ const Logout = () => {
   return <>Log Out</>;
 };
 
-export default Logout;
+export default LogOut;
