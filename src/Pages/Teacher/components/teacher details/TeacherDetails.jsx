@@ -15,9 +15,10 @@ export default function TeacherDetails() {
   const teacherDetail = async () => {
     try {
       const response = await axios.get(`${baseAPI}/teacher/fetch-single`);
-      console.log("TEACHER DETAIL ", response.data);
+      setTeacherDetails(response.data.teacher); // Update the state with the response data
+      console.log("TEACHER DETAIL", response.data.teacher);
     } catch (error) {
-      console.log("Error in Fetching Teacher Details", error);
+      console.error("Error in Fetching Teacher Details", error.message); // Log error message
     }
   };
 
