@@ -14,10 +14,8 @@ export default function TeacherDetails() {
 
   const fetchTeacherDetails = async () => {
     try {
-      const token = localStorage.getItem("authToken"); // or however you store the token
       const response = await axios.get(`${baseAPI}/teacher/fetch-single`, {
         headers: {
-          Authorization: `Bearer ${token}`,
           withCredentials: true, // Include the token in the header
         },
       });
