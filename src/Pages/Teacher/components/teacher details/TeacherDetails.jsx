@@ -14,14 +14,19 @@ export default function TeacherDetails() {
 
   const fetchTeacherDetails = async () => {
     try {
+      const token = localStorage.getItem("authToken"); // or however you store the token
       const response = await axios.get(`${baseAPI}/teacher/fetch-single`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
+          withCredentials: true, // Include the token in the header
         },
       });
       setTeacherDetails(response.data.teacher);
     } catch (error) {
-      console.error("Error fetching teacher details:", error);
+      console.error(
+        "Error fetching teacher details:",
+        error.response?.data || error.message
+      );
     }
   };
 
