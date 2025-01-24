@@ -24,7 +24,7 @@ export default function TeacherDetails() {
       setTeacherDetails(response.data.teacher);
     } catch (error) {
       console.error(
-        "Error fetching teacher details:",
+        "Error fetching teacher details ---:",
         error.response?.data || error.message
       );
     }
