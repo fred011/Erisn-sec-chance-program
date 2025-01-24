@@ -129,19 +129,19 @@ export default function Admin() {
     setOpen(false);
   };
   // Handle logout
-  const handleLogout = async () => {
-    try {
-      await axios.post(
-        "https://erisn-sec-chance-program.vercel.app/api/logout",
-        {},
-        { withCredentials: true }
-      );
-      navigate("/login"); // Redirect to login page after logout
-    } catch (err) {
-      console.error("Logout failed:", err.response?.data || err.message);
-      alert("Logout failed. Please try again.");
-    }
-  };
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post(
+  //       "https://erisn-sec-chance-program.vercel.app/api/logout",
+  //       {},
+  //       { withCredentials: true }
+  //     );
+  //     navigate("/login"); // Redirect to login page after logout
+  //   } catch (err) {
+  //     console.error("Logout failed:", err.response?.data || err.message);
+  //     alert("Logout failed. Please try again.");
+  //   }
+  // };
   // const handleLogout = async () => {
   //   axios
   //     .post(
@@ -179,6 +179,7 @@ export default function Admin() {
       icon: ExplicitIcon,
     },
     { link: "/admin/notice", component: "Notice", icon: NotificationsIcon },
+    { link: "/logout", component: "Log Out", icon: LogoutIcon },
   ];
 
   const navigate = useNavigate();
@@ -278,7 +279,7 @@ export default function Admin() {
           </List>
           <Divider />
           {/* Logout Button */}
-          <ListItem disablePadding sx={{ display: "block" }}>
+          {/* <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -298,11 +299,12 @@ export default function Admin() {
               <ListItemText
                 primary="Logout"
                 sx={{
+                  mr: 3,
                   opacity: open ? 1 : 0,
                 }}
               />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />

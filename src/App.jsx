@@ -32,6 +32,7 @@ import { AuthProvider } from "./Pages/AuthPages/AuthContext";
 import ProtectedRoute from "./Pages/AuthPages/ProtectedRoute";
 import AttendanceStudentList from "./Pages/Admin/components/attendence/AttendanceStudentList";
 import AttendanceDetails from "./Pages/Admin/components/attendence/AttendanceDetails";
+import Logout from "./Pages/AuthPages/LogOut/LogOut";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin-reg" element={<Register />} />
+          <Route path="/logout" element={<Logout />} />
 
           {/* Admin Route */}
           <Route
