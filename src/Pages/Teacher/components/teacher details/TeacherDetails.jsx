@@ -13,8 +13,12 @@ export default function TeacherDetails() {
   const [teacherDetails, setTeacherDetails] = React.useState(null);
 
   const teacherDetail = async () => {
-    const response = await axios.get(`${baseAPI}/teacher/fetch-single`);
-    console.log("TEACHER DETAIL ", response);
+    try {
+      const response = await axios.get(`${baseAPI}/teacher/fetch-single`);
+      console.log("TEACHER DETAIL ", response.data);
+    } catch (error) {
+      console.log("Error in Fetching Teacher Details", error);
+    }
   };
 
   React.useEffect(() => {
