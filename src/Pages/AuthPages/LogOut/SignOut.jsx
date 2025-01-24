@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../AuthContext";
 
 const SignOut = () => {
   const { logout } = useContext(AuthContext);
