@@ -146,11 +146,6 @@ export default function Teacher() {
 
   const navArr = [
     {
-      link: "/",
-      component: "Home",
-      icon: HomeIcon,
-    },
-    {
       link: "/teacher",
       component: "Your Details",
       icon: DashboardCustomizeIcon,
