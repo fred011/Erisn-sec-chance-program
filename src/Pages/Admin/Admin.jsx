@@ -160,7 +160,6 @@ export default function Admin() {
   // };
 
   const navArr = [
-    { link: "/", component: "Home", icon: HomeIcon },
     { link: "/admin", component: "Dashboard", icon: DashboardCustomizeIcon },
     { link: "/admin/class", component: "Class", icon: FormatListNumberedIcon },
     { link: "/admin/subjects", component: "Subjects", icon: SubjectIcon },
