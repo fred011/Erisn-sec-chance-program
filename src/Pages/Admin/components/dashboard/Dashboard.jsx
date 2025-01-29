@@ -3,8 +3,38 @@
 import React from "react";
 
 import { Box, Typography } from "@mui/material";
+import { AuthContext } from "../../../AuthPages/AuthContext";
+import axios from "axios";
+import { baseAPI } from "../../../../environment";
 
 const Dashboard = () => {
+  const { auth } = React.useContext(AuthContext);
+  const token = auth?.token; // Get token from context instead
+  console.log("Token from context:", token);
+  const [adminDetails, setAdminDetails] = React.useState(null);
+
+  const fetchTeacherDetails = async () => {
+    try {
+      const response = await axios.get(`${baseAPI}/admin/fetch-single`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+
+      setAdminDetails(response.data.teacher);
+    } catch (error) {
+      console.error(
+        "Error fetching admin details:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  React.useEffect(() => {
+    fetchTeacherDetails();
+  }, []);
   return (
     <>
       <Box
@@ -27,7 +57,7 @@ const Dashboard = () => {
           }}
         >
           <Typography variant="h3" color="lightgrey">
-            Welcome, Admin
+            Welcome, {adminDetails.name}
           </Typography>
 
           <Typography variant="h5" color="grey">
