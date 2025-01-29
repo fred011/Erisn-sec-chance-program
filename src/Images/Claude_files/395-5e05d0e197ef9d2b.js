@@ -259,12 +259,15 @@
               );
             }),
             (t.getFeatureGate = function (t, n) {
-              return this.capture(function () {
-                return e.getClientX().getFeatureGate(t, n);
-              }, new s.FeatureGate(t, !1, "", {
-                time: Date.now(),
-                reason: s.EvaluationReason.Uninitialized,
-              }));
+              return this.capture(
+                function () {
+                  return e.getClientX().getFeatureGate(t, n);
+                },
+                new s.FeatureGate(t, !1, "", {
+                  time: Date.now(),
+                  reason: s.EvaluationReason.Uninitialized,
+                })
+              );
             }),
             (t.checkGateWithExposureLoggingDisabled = function (t, n) {
               return this.capture(function () {
@@ -284,26 +287,32 @@
             (t.getConfig = function (t, n) {
               return (
                 void 0 === n && (n = !1),
-                this.capture(function () {
-                  return e.getClientX().getConfig(t, n);
-                }, new s.DynamicConfig(t, {}, "", {
-                  time: Date.now(),
-                  reason: s.EvaluationReason.Uninitialized,
-                }))
+                this.capture(
+                  function () {
+                    return e.getClientX().getConfig(t, n);
+                  },
+                  new s.DynamicConfig(t, {}, "", {
+                    time: Date.now(),
+                    reason: s.EvaluationReason.Uninitialized,
+                  })
+                )
               );
             }),
             (t.getConfigWithExposureLoggingDisabled = function (t, n) {
-              return this.capture(function () {
-                return e
-                  .getClientX()
-                  .getConfigWithExposureLoggingDisabled(
-                    t,
-                    null == n ? void 0 : n.ignoreOverrides
-                  );
-              }, new s.DynamicConfig(t, {}, "", {
-                time: Date.now(),
-                reason: s.EvaluationReason.Uninitialized,
-              }));
+              return this.capture(
+                function () {
+                  return e
+                    .getClientX()
+                    .getConfigWithExposureLoggingDisabled(
+                      t,
+                      null == n ? void 0 : n.ignoreOverrides
+                    );
+                },
+                new s.DynamicConfig(t, {}, "", {
+                  time: Date.now(),
+                  reason: s.EvaluationReason.Uninitialized,
+                })
+              );
             }),
             (t.manuallyLogConfigExposure = function (t) {
               this.capture(function () {
@@ -314,27 +323,33 @@
               return (
                 void 0 === n && (n = !1),
                 void 0 === r && (r = !1),
-                this.capture(function () {
-                  return e.getClientX().getExperiment(t, n, r);
-                }, new s.DynamicConfig(t, {}, "", {
-                  time: Date.now(),
-                  reason: s.EvaluationReason.Uninitialized,
-                }))
+                this.capture(
+                  function () {
+                    return e.getClientX().getExperiment(t, n, r);
+                  },
+                  new s.DynamicConfig(t, {}, "", {
+                    time: Date.now(),
+                    reason: s.EvaluationReason.Uninitialized,
+                  })
+                )
               );
             }),
             (t.getExperimentWithExposureLoggingDisabled = function (t, n) {
-              return this.capture(function () {
-                return e
-                  .getClientX()
-                  .getExperimentWithExposureLoggingDisabled(
-                    t,
-                    null == n ? void 0 : n.keepDeviceValue,
-                    null == n ? void 0 : n.ignoreOverrides
-                  );
-              }, new s.DynamicConfig(t, {}, "", {
-                time: Date.now(),
-                reason: s.EvaluationReason.Uninitialized,
-              }));
+              return this.capture(
+                function () {
+                  return e
+                    .getClientX()
+                    .getExperimentWithExposureLoggingDisabled(
+                      t,
+                      null == n ? void 0 : n.keepDeviceValue,
+                      null == n ? void 0 : n.ignoreOverrides
+                    );
+                },
+                new s.DynamicConfig(t, {}, "", {
+                  time: Date.now(),
+                  reason: s.EvaluationReason.Uninitialized,
+                })
+              );
             }),
             (t.manuallyLogExperimentExposure = function (t, n) {
               this.capture(function () {
@@ -344,26 +359,32 @@
             (t.getLayer = function (t, n) {
               return (
                 void 0 === n && (n = !1),
-                this.capture(function () {
-                  return e.getClientX().getLayer(t, n);
-                }, s.Layer._create(t, {}, "", {
-                  time: Date.now(),
-                  reason: s.EvaluationReason.Uninitialized,
-                }))
+                this.capture(
+                  function () {
+                    return e.getClientX().getLayer(t, n);
+                  },
+                  s.Layer._create(t, {}, "", {
+                    time: Date.now(),
+                    reason: s.EvaluationReason.Uninitialized,
+                  })
+                )
               );
             }),
             (t.getLayerWithExposureLoggingDisabled = function (t, n) {
-              return this.capture(function () {
-                return e
-                  .getClientX()
-                  .getLayerWithExposureLoggingDisabled(
-                    t,
-                    null == n ? void 0 : n.keepDeviceValue
-                  );
-              }, s.Layer._create(t, {}, "", {
-                time: Date.now(),
-                reason: s.EvaluationReason.Uninitialized,
-              }));
+              return this.capture(
+                function () {
+                  return e
+                    .getClientX()
+                    .getLayerWithExposureLoggingDisabled(
+                      t,
+                      null == n ? void 0 : n.keepDeviceValue
+                    );
+                },
+                s.Layer._create(t, {}, "", {
+                  time: Date.now(),
+                  reason: s.EvaluationReason.Uninitialized,
+                })
+              );
             }),
             (t.manuallyLogLayerParameterExposure = function (t, n, r) {
               void 0 === r && (r = !1),
@@ -4971,12 +4992,10 @@
                   "undefined" != typeof navigator &&
                   (null == navigator ? void 0 : navigator.sendBeacon) != null)
               ) {
-                !this.sdkInternal
-                  .getNetwork()
-                  .sendLogBeacon({
-                    events: r,
-                    statsigMetadata: this.sdkInternal.getStatsigMetadata(),
-                  }) &&
+                !this.sdkInternal.getNetwork().sendLogBeacon({
+                  events: r,
+                  statsigMetadata: this.sdkInternal.getStatsigMetadata(),
+                }) &&
                   ((this.queue = r.concat(this.queue)),
                   this.queue.length > 0 &&
                     (this.addFailedRequest({
@@ -8462,7 +8481,7 @@
               var t;
               try {
                 if (this.isStorageAccessible())
-                  return window.sessionStorage.getItem(e);
+                  return window.localStorage.getItem(e);
               } catch (e) {}
               return null !== (t = this.fallbackSessionCache[e]) && void 0 !== t
                 ? t
@@ -8471,7 +8490,7 @@
             (e.setItem = function (e, t) {
               try {
                 if (this.isStorageAccessible()) {
-                  window.sessionStorage.setItem(e, t);
+                  window.localStorage.setItem(e, t);
                   return;
                 }
               } catch (e) {}
@@ -8480,7 +8499,7 @@
             (e.removeItem = function (e) {
               try {
                 if (this.isStorageAccessible()) {
-                  window.sessionStorage.removeItem(e);
+                  window.localStorage.removeItem(e);
                   return;
                 }
               } catch (e) {}
@@ -8489,14 +8508,14 @@
             (e.cleanup = function () {
               try {
                 if (this.isStorageAccessible(!0))
-                  for (var e in window.sessionStorage)
-                    "string" != typeof window.sessionStorage[e] ||
+                  for (var e in window.localStorage)
+                    "string" != typeof window.localStorage[e] ||
                       null == e ||
                       (!this.disabled && e in r.LOCAL_STORAGE_KEYS) ||
                       (!this.disabled &&
                         e.substring(0, r.STORAGE_PREFIX.length) !==
                           r.STORAGE_PREFIX) ||
-                      window.sessionStorage.removeItem(e);
+                      window.localStorage.removeItem(e);
               } catch (e) {}
             }),
             (e.isStorageAccessible = function (e) {
@@ -8506,7 +8525,7 @@
                     "undefined" != typeof Storage &&
                     "undefined" != typeof window &&
                     null != window &&
-                    null != window.sessionStorage);
+                    null != window.localStorage);
               var t = this.canAccessStorageAccessible;
               return e ? t : !this.disabled && t;
             }),

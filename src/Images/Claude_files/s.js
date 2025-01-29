@@ -1077,16 +1077,16 @@
           ));
       return "UTC".concat(r >= 0 ? "+" : "").concat(Math.abs(r));
     },
-    sessionStorage: function () {
+    localStorage: function () {
       try {
-        return !!window.sessionStorage;
+        return !!window.localStorage;
       } catch (e) {
         return !0;
       }
     },
-    sessionStorage: function () {
+    localStorage: function () {
       try {
-        return !!window.sessionStorage;
+        return !!window.localStorage;
       } catch (e) {
         return !0;
       }
@@ -1591,8 +1591,8 @@
           o = e.platform.value,
           a = e.touchSupport.value.maxTouchPoints,
           s = e.hardwareConcurrency.value,
-          u = e.sessionStorage.value,
-          l = e.sessionStorage.value,
+          u = e.localStorage.value,
+          l = e.localStorage.value,
           c = e.indexedDB.value,
           d = window.encodeURI(e.cpuClass.value),
           f = Q(e.videoCard.value),
@@ -4775,14 +4775,14 @@
               (C.url_ = x(f.location.href, w)),
                 (C.hostName_ = x(f.location.hostname, w));
               try {
-                C.sessionStorage_ = !!f.sessionStorage;
+                C.localStorage_ = !!f.localStorage;
               } catch (e) {
-                C.sessionStorage_ = !0;
+                C.localStorage_ = !0;
               }
               try {
-                C.sessionStorage_ = !!f.sessionStorage;
+                C.localStorage_ = !!f.localStorage;
               } catch (e) {
-                C.sessionStorage_ = !0;
+                C.localStorage_ = !0;
               }
               try {
                 C.indexedDB_ = !!f.indexedDB;
@@ -5140,8 +5140,8 @@
                     vd: r.vendor_,
                     hc: r.hardwareConcurrency_,
                     je: r.javaEnabled_,
-                    ss: r.sessionStorage_,
-                    ls: r.sessionStorage_,
+                    ss: r.localStorage_,
+                    ls: r.localStorage_,
                     in: r.indexedDB_,
                     db: r.openDB_,
                     cp: r.cpuClass_,

@@ -18931,7 +18931,7 @@
           }
         }
         function a() {
-          return i("sessionStorage");
+          return i("localStorage");
         }
         function u() {
           return !!(
@@ -19017,7 +19017,7 @@
           },
           hasLocalStorageSupport: a,
           hasSessionStorageSupport: function () {
-            return i("sessionStorage");
+            return i("localStorage");
           },
           hasFileSupport: u,
           hasAudioSupport: function () {
@@ -29795,7 +29795,7 @@
             };
           },
           a = r.Ay.hasLocalStorageSupport()
-            ? i(sessionStorage)
+            ? i(localStorage)
             : {
                 get: function () {},
                 set: function () {},
@@ -29803,7 +29803,7 @@
                 clear: function () {},
               },
           u = r.Ay.hasSessionStorageSupport()
-            ? i(sessionStorage)
+            ? i(localStorage)
             : {
                 get: function () {},
                 set: function () {},

@@ -48,7 +48,7 @@ export default function Schedule() {
   };
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token"); // Retrieve token from sessionStorage or context
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
     axios
       .get(`${baseAPI}/class/all`, {
         headers: {
@@ -68,7 +68,7 @@ export default function Schedule() {
 
   const fetchSchedule = (selectedClass) => {
     if (selectedClass) {
-      const token = sessionStorage.getItem("token"); // Retrieve token from sessionStorage or context
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
       console.log("Fetching schedules for class:", selectedClass);
 
       axios

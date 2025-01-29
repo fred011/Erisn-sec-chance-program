@@ -675,12 +675,12 @@
       }
       function eh(e) {
         try {
-          if ("undefined" != typeof sessionStorage)
-            (e.getItem = (e) => sessionStorage.getItem(e)),
+          if ("undefined" != typeof localStorage)
+            (e.getItem = (e) => localStorage.getItem(e)),
               (e.setItem = (e, t) => {
-                sessionStorage.setItem(e, t);
+                localStorage.setItem(e, t);
               });
-          else throw Error("sessionStorage not supported in this environment");
+          else throw Error("localStorage not supported in this environment");
         } catch (t) {
           console.error(t), (e.getItem = () => null), (e.setItem = () => {});
         }

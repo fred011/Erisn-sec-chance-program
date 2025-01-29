@@ -6393,7 +6393,7 @@
                 ) {
                   !(function (e, t) {
                     try {
-                      let r = e.sessionStorage.getItem(oe);
+                      let r = e.localStorage.getItem(oe);
                       if (r) {
                         let e = JSON.parse(r);
                         for (let [r, n] of Object.entries(e || {}))
@@ -6407,11 +6407,11 @@
                         let r = {};
                         for (let [e, n] of t) r[e] = [...n];
                         try {
-                          e.sessionStorage.setItem(oe, JSON.stringify(r));
+                          e.localStorage.setItem(oe, JSON.stringify(r));
                         } catch (e) {
                           a(
                             !1,
-                            "Failed to save applied view transitions in sessionStorage (" +
+                            "Failed to save applied view transitions in localStorage (" +
                               e +
                               ")."
                           );
@@ -20375,7 +20375,7 @@
         }),
         (t.storage = (function () {
           try {
-            return sessionStorage;
+            return localStorage;
           } catch (e) {}
         })()),
         (t.destroy = (() => {
@@ -32889,7 +32889,7 @@
                   G[e] = window.scrollY;
                 }
                 try {
-                  sessionStorage.setItem(r || V, JSON.stringify(G));
+                  localStorage.setItem(r || V, JSON.stringify(G));
                 } catch (e) {}
                 window.history.scrollRestoration = "auto";
               }, [r, t, p.state, f, d])
@@ -32897,7 +32897,7 @@
             "undefined" != typeof document &&
               (a.useLayoutEffect(() => {
                 try {
-                  let e = sessionStorage.getItem(r || V);
+                  let e = localStorage.getItem(r || V);
                   e && (G = JSON.parse(e));
                 } catch (e) {}
               }, [r]),

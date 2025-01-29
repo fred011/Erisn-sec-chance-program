@@ -2328,19 +2328,19 @@
       let r = "customSystemPrompt",
         o = () => {
           let [e, t] = (0, a.useState)(() =>
-            "undefined" == typeof sessionStorage
+            "undefined" == typeof localStorage
               ? ""
-              : sessionStorage.getItem(r) || ""
+              : localStorage.getItem(r) || ""
           );
           return (
             (0, a.useEffect)(() => {
-              sessionStorage.setItem(r, e);
+              localStorage.setItem(r, e);
             }, [e]),
             { customSystemPrompt: e, setCustomSystemPrompt: t }
           );
         },
         i = () =>
-          "undefined" == typeof sessionStorage ? "" : sessionStorage.getItem(r);
+          "undefined" == typeof localStorage ? "" : localStorage.getItem(r);
     },
     23489: function (e, t, n) {
       n.d(t, {

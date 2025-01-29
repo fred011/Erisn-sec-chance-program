@@ -481,14 +481,14 @@
       }
       function i(e) {
         return e.reduce((e, t) => {
-          let n = sessionStorage.getItem(t);
+          let n = localStorage.getItem(t);
           return null !== n && e.push([t, n]), e;
         }, []);
       }
       function o(e) {
         e.forEach((e) => {
           let [t, n] = e;
-          sessionStorage.setItem(t, n);
+          localStorage.setItem(t, n);
         });
       }
     },

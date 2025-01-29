@@ -30,7 +30,7 @@ const Class = () => {
 
   const fetchAllClasses = () => {
     // Get the token from storage or context
-    const token = sessionStorage.getItem("token"); // Or use context if the token is stored there
+    const token = localStorage.getItem("token"); // Or use context if the token is stored there
 
     axios
       .get(`${baseAPI}/class/all`, {
@@ -63,7 +63,7 @@ const Class = () => {
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this class?")) {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       axios
         .delete(`${baseAPI}/class/delete/${id}`, {
@@ -93,7 +93,7 @@ const Class = () => {
     initialValues: { class_text: "", class_num: "" },
     validationSchema: classSchema,
     onSubmit: (values, { resetForm }) => {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       if (edit) {
         axios

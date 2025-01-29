@@ -1744,7 +1744,7 @@
       }
       var z = {
           Cookie: "cookie",
-          LocalStorage: "sessionStorage",
+          LocalStorage: "localStorage",
           Memory: "memory",
         },
         R = function (t, e, n, r) {
@@ -1997,17 +1997,17 @@
         Q = (function () {
           function t() {}
           return (
-            (t.prototype.sessionStorageWarning = function (t, e) {
+            (t.prototype.localStorageWarning = function (t, e) {
               console.warn(
                 "Unable to access "
-                  .concat(t, ", sessionStorage may be ")
+                  .concat(t, ", localStorage may be ")
                   .concat(e)
               );
             }),
             (t.prototype.get = function (t) {
               var e;
               try {
-                var n = sessionStorage.getItem(t);
+                var n = localStorage.getItem(t);
                 if (null === n) return null;
                 try {
                   return null !== (e = JSON.parse(n)) && void 0 !== e
@@ -2017,21 +2017,21 @@
                   return null != n ? n : null;
                 }
               } catch (e) {
-                return this.sessionStorageWarning(t, "unavailable"), null;
+                return this.localStorageWarning(t, "unavailable"), null;
               }
             }),
             (t.prototype.set = function (t, e) {
               try {
-                sessionStorage.setItem(t, JSON.stringify(e));
+                localStorage.setItem(t, JSON.stringify(e));
               } catch (e) {
-                this.sessionStorageWarning(t, "full");
+                this.localStorageWarning(t, "full");
               }
             }),
             (t.prototype.remove = function (t) {
               try {
-                return sessionStorage.removeItem(t);
+                return localStorage.removeItem(t);
               } catch (e) {
-                this.sessionStorageWarning(t, "unavailable");
+                this.localStorageWarning(t, "unavailable");
               }
             }),
             t
@@ -2065,7 +2065,7 @@
       var X = {
           persist: !0,
           cookie: { key: "ajs_user_id", oldKey: "ajs_user" },
-          sessionStorage: { key: "ajs_user_traits" },
+          localStorage: { key: "ajs_user_traits" },
         },
         tt = (function () {
           function t(t, e) {
@@ -2134,11 +2134,11 @@
               (this.traitsKey =
                 null !==
                   (s =
-                    null === (i = t.sessionStorage) || void 0 === i
+                    null === (i = t.localStorage) || void 0 === i
                       ? void 0
                       : i.key) && void 0 !== s
                   ? s
-                  : X.sessionStorage.key),
+                  : X.localStorage.key),
               (this.anonKey = "ajs_anonymous_id"),
               (this.identityStore = this.createStorage(this.options, e)),
               (this.legacyUserStore = this.createStorage(
@@ -2202,7 +2202,7 @@
                     null !== t.storage &&
                     B(t.storage) &&
                     (r = t.storage.stores),
-                  t.sessionStorageFallbackDisabled &&
+                  t.localStorageFallbackDisabled &&
                     (r = r.filter(function (t) {
                       return t !== z.LocalStorage;
                     })),
@@ -2217,7 +2217,7 @@
         te = {
           persist: !0,
           cookie: { key: "ajs_group_id" },
-          sessionStorage: { key: "ajs_group_properties" },
+          localStorage: { key: "ajs_group_properties" },
         },
         tn = (function (t) {
           function e(e, n) {
@@ -2940,8 +2940,8 @@
             (e.prototype.debug = function (t) {
               return (
                 !1 === t &&
-                  sessionStorage.getItem("debug") &&
-                  sessionStorage.removeItem("debug"),
+                  localStorage.getItem("debug") &&
+                  localStorage.removeItem("debug"),
                 (this._debug = t),
                 this
               );
@@ -5886,9 +5886,9 @@
           removeItem: function () {},
         };
       try {
-        a = (0, s.j)() && window.sessionStorage ? window.sessionStorage : a;
+        a = (0, s.j)() && window.localStorage ? window.localStorage : a;
       } catch (t) {
-        console.warn("Unable to access sessionStorage", t);
+        console.warn("Unable to access localStorage", t);
       }
       function u(t) {
         var e = a.getItem(t);

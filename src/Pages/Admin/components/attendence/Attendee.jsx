@@ -22,8 +22,8 @@ export default function Attendee({ classId }) {
   const handleSubmit = async () => {
     try {
       if (selectedTeacher) {
-        // Get the token from sessionStorage (or context if using state management)
-        const token = sessionStorage.getItem("token");
+        // Get the token from localStorage (or context if using state management)
+        const token = localStorage.getItem("token");
 
         // Include token in the Authorization header
         const response = await axios.patch(
@@ -49,7 +49,7 @@ export default function Attendee({ classId }) {
   const fetchClassDetails = async () => {
     if (classId) {
       try {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
         const response = await axios.get(`${baseAPI}/class/single/${classId}`, {
           headers: {
@@ -68,7 +68,7 @@ export default function Attendee({ classId }) {
   };
 
   const fetchTeachers = () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     axios
       .get(`${baseAPI}/teacher/fetch-with-query`, {

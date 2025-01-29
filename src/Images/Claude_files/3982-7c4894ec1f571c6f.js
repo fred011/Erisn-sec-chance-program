@@ -267,12 +267,12 @@
             let n = t instanceof Function ? t() : t;
             if (d) return n;
             try {
-              let t = window.sessionStorage.getItem(e);
+              let t = window.localStorage.getItem(e);
               return t ? u(t) : n;
             } catch (t) {
               return (
                 console.warn(
-                  `Error reading sessionStorage key \u201C${e}\u201D:`,
+                  `Error reading localStorage key \u201C${e}\u201D:`,
                   t
                 ),
                 n
@@ -285,18 +285,18 @@
           v = f((t) => {
             d &&
               console.warn(
-                `Tried setting sessionStorage key \u201C${e}\u201D even though environment is not a client`
+                `Tried setting localStorage key \u201C${e}\u201D even though environment is not a client`
               );
             try {
               let n = t instanceof Function ? t(c()) : t;
-              window.sessionStorage.setItem(e, o(n)),
+              window.localStorage.setItem(e, o(n)),
                 l(n),
                 window.dispatchEvent(
                   new StorageEvent("local-storage", { key: e })
                 );
             } catch (t) {
               console.warn(
-                `Error setting sessionStorage key \u201C${e}\u201D:`,
+                `Error setting localStorage key \u201C${e}\u201D:`,
                 t
               );
             }
@@ -304,10 +304,10 @@
           g = f(() => {
             d &&
               console.warn(
-                `Tried removing sessionStorage key \u201C${e}\u201D even though environment is not a client`
+                `Tried removing localStorage key \u201C${e}\u201D even though environment is not a client`
               );
             let n = t instanceof Function ? t() : t;
-            window.sessionStorage.removeItem(e),
+            window.localStorage.removeItem(e),
               l(n),
               window.dispatchEvent(
                 new StorageEvent("local-storage", { key: e })
@@ -485,12 +485,12 @@
             let n = t instanceof Function ? t() : t;
             if (p) return n;
             try {
-              let t = window.sessionStorage.getItem(e);
+              let t = window.localStorage.getItem(e);
               return t ? u(t) : n;
             } catch (t) {
               return (
                 console.warn(
-                  `Error reading sessionStorage key \u201C${e}\u201D:`,
+                  `Error reading localStorage key \u201C${e}\u201D:`,
                   t
                 ),
                 n
@@ -503,18 +503,18 @@
           d = f((t) => {
             p &&
               console.warn(
-                `Tried setting sessionStorage key \u201C${e}\u201D even though environment is not a client`
+                `Tried setting localStorage key \u201C${e}\u201D even though environment is not a client`
               );
             try {
               let n = t instanceof Function ? t(c()) : t;
-              window.sessionStorage.setItem(e, o(n)),
+              window.localStorage.setItem(e, o(n)),
                 l(n),
                 window.dispatchEvent(
                   new StorageEvent("session-storage", { key: e })
                 );
             } catch (t) {
               console.warn(
-                `Error setting sessionStorage key \u201C${e}\u201D:`,
+                `Error setting localStorage key \u201C${e}\u201D:`,
                 t
               );
             }
@@ -522,10 +522,10 @@
           v = f(() => {
             p &&
               console.warn(
-                `Tried removing sessionStorage key \u201C${e}\u201D even though environment is not a client`
+                `Tried removing localStorage key \u201C${e}\u201D even though environment is not a client`
               );
             let n = t instanceof Function ? t() : t;
-            window.sessionStorage.removeItem(e),
+            window.localStorage.removeItem(e),
               l(n),
               window.dispatchEvent(
                 new StorageEvent("session-storage", { key: e })

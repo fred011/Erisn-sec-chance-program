@@ -4,16 +4,16 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => {
-    const savedUser = sessionStorage.getItem("auth");
+    const savedUser = localStorage.getItem("auth");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
   const login = (user) => {
     setAuth(user);
-    sessionStorage.setItem("auth", JSON.stringify(user));
+    localStorage.setItem("auth", JSON.stringify(user));
 
     if (user.token) {
-      sessionStorage.setItem("token", user.token); // Store token separately
+      localStorage.setItem("token", user.token); // Store token separately
     } else {
       console.error("Login response does not include a token.");
     }
@@ -21,12 +21,12 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setAuth(null);
-    sessionStorage.removeItem("auth");
-    sessionStorage.removeItem("token"); // Also clear the token from sessionStorage
+    localStorage.removeItem("auth");
+    localStorage.removeItem("token"); // Also clear the token from localStorage
   };
 
   useEffect(() => {
-    const savedUser = sessionStorage.getItem("auth");
+    const savedUser = localStorage.getItem("auth");
     if (savedUser) {
       setAuth(JSON.parse(savedUser));
     }

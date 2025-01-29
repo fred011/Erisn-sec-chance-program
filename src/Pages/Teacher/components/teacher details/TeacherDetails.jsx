@@ -56,6 +56,24 @@ export default function TeacherDetails() {
             </TableCell>
             <TableCell align="right">{teacherDetails.email}</TableCell>
           </TableRow>
+          <TableRow>
+            <TableCell>
+              <b>Age :</b>
+            </TableCell>
+            <TableCell align="right">{teacherDetails.age}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <b>Gender :</b>
+            </TableCell>
+            <TableCell align="right">{teacherDetails.gender}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <b>Qualification :</b>
+            </TableCell>
+            <TableCell align="right">{teacherDetails.qualification}</TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>

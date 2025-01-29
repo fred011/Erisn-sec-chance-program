@@ -5513,12 +5513,10 @@
                     "undefined" != typeof navigator &&
                     (null == navigator ? void 0 : navigator.sendBeacon) != null)
                 ) {
-                  this.sdkInternal
-                    .getNetwork()
-                    .sendLogBeacon({
-                      events: o,
-                      statsigMetadata: this.sdkInternal.getStatsigMetadata(),
-                    }) ||
+                  this.sdkInternal.getNetwork().sendLogBeacon({
+                    events: o,
+                    statsigMetadata: this.sdkInternal.getStatsigMetadata(),
+                  }) ||
                     ((this.queue = o.concat(this.queue)),
                     this.queue.length > 0 &&
                       (this.addFailedRequest({
@@ -8907,7 +8905,7 @@
               var t;
               try {
                 if (this.isStorageAccessible())
-                  return window.sessionStorage.getItem(e);
+                  return window.localStorage.getItem(e);
               } catch (e) {}
               return null !== (t = this.fallbackSessionCache[e]) && void 0 !== t
                 ? t
@@ -8916,7 +8914,7 @@
             (e.setItem = function (e, t) {
               try {
                 if (this.isStorageAccessible()) {
-                  window.sessionStorage.setItem(e, t);
+                  window.localStorage.setItem(e, t);
                   return;
                 }
               } catch (e) {}
@@ -8925,7 +8923,7 @@
             (e.removeItem = function (e) {
               try {
                 if (this.isStorageAccessible()) {
-                  window.sessionStorage.removeItem(e);
+                  window.localStorage.removeItem(e);
                   return;
                 }
               } catch (e) {}
@@ -8934,14 +8932,14 @@
             (e.cleanup = function () {
               try {
                 if (this.isStorageAccessible(!0))
-                  for (var e in window.sessionStorage)
-                    "string" != typeof window.sessionStorage[e] ||
+                  for (var e in window.localStorage)
+                    "string" != typeof window.localStorage[e] ||
                       null == e ||
                       (!this.disabled && e in n.LOCAL_STORAGE_KEYS) ||
                       (!this.disabled &&
                         e.substring(0, n.STORAGE_PREFIX.length) !==
                           n.STORAGE_PREFIX) ||
-                      window.sessionStorage.removeItem(e);
+                      window.localStorage.removeItem(e);
               } catch (e) {}
             }),
             (e.isStorageAccessible = function (e) {
@@ -8951,7 +8949,7 @@
                     "undefined" != typeof Storage &&
                     "undefined" != typeof window &&
                     null != window &&
-                    null != window.sessionStorage);
+                    null != window.localStorage);
               var t = this.canAccessStorageAccessible;
               return e ? t : !this.disabled && t;
             }),
