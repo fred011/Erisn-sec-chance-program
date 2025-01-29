@@ -7,8 +7,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
+import { AuthContext } from "../../../AuthPages/AuthContext";
 
 export default function TeacherDetails() {
+  const { auth } = React.useContext(AuthContext);
+  const token = auth?.token; // Get token from context instead
+  console.log("Token from context:", token);
   const [teacherDetails, setTeacherDetails] = React.useState(null);
 
   const fetchTeacherDetails = async () => {
