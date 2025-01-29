@@ -33,17 +33,11 @@ export default function Login() {
           withCredentials: true,
         })
         .then((res) => {
-          if (res.data.token) {
-            localStorage.setItem("token", res.data.token);
-            console.log("Token stored in localStorage:", res.data.token);
-            console.log("Logged in successfully");
-            alert("Logged in successfully");
-            resetForm();
-            navigate(`/${values.role}`);
-            login({ ...res.data, role: values.role });
-          } else {
-            console.log("Login failed: No token received.");
-          }
+          login({ ...res.data, role: values.role });
+          console.log("Logged in successfully");
+          alert("Logged in successfully");
+          resetForm();
+          navigate(`/${values.role}`);
         })
         .catch((err) => {
           console.log("Failed to login ", err);
