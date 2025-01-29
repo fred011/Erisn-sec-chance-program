@@ -190,14 +190,22 @@ export default function Students() {
 
   const [students, setStudents] = useState([]);
   const fetchStudents = () => {
+    // Get the token from localStorage
+    const token = localStorage.getItem("token");
+
     axios
-      .get(`${baseAPI}/student/fetch-with-query`, { params })
+      .get(`${baseAPI}/student/fetch-with-query`, {
+        params,
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+        },
+      })
       .then((res) => {
         console.log("Response Students", res.data.students); // Inspect the response
         setStudents(res.data.students);
       })
       .catch((e) => {
-        console.log("Error in fetching students");
+        console.log("Error in fetching students", e.response || e.message);
       });
   };
 
