@@ -47,8 +47,8 @@ const AttendanceDetails = () => {
 
   const fetchAttendanceData = async () => {
     try {
-      // Get the token from localStorage or context
-      const token = localStorage.getItem("token"); // Or use context if the token is stored there
+      // Get the token from sessionStorage or context
+      const token = sessionStorage.getItem("token"); // Or use context if the token is stored there
 
       // Include the token in the Authorization header
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {

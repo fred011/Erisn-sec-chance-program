@@ -90,7 +90,7 @@ export default function ScheduleEvent({
 
   const handleDelete = (setEvents) => {
     if (confirm("Are you sure you want to delete this period?")) {
-      const token = localStorage.getItem("token"); // Include token for authentication
+      const token = sessionStorage.getItem("token"); // Include token for authentication
       axios
         .delete(`${baseAPI}/schedule/delete/${selectedEventId}`, {
           headers: {
@@ -144,7 +144,7 @@ export default function ScheduleEvent({
         endTime: formattedEndTime,
       };
 
-      const token = localStorage.getItem("token"); // Include token for authentication
+      const token = sessionStorage.getItem("token"); // Include token for authentication
       if (edit) {
         axios
           .post(
@@ -202,7 +202,7 @@ export default function ScheduleEvent({
 
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("token"); // Include token for fetching data
+      const token = sessionStorage.getItem("token"); // Include token for fetching data
       const teacherResponse = await axios.get(
         `${baseAPI}/teacher/fetch-with-query`,
         {
@@ -239,7 +239,7 @@ export default function ScheduleEvent({
     const fetchEventData = async () => {
       if (selectedEventId) {
         try {
-          const token = localStorage.getItem("token"); // Include token for event fetch
+          const token = sessionStorage.getItem("token"); // Include token for event fetch
           const res = await axios.get(
             `${baseAPI}/schedule/fetch/${selectedEventId}`,
             {

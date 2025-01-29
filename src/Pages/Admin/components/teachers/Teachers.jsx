@@ -158,7 +158,7 @@ export default function Teachers() {
 
   const [teachers, setTeachers] = useState([]);
   const fetchTeachers = () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
       console.log("No token found. Please log in.");

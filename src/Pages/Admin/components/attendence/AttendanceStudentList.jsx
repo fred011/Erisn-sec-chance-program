@@ -58,8 +58,8 @@ export default function AttendanceStudentList() {
 
   const fetchAttendanceForStudent = async (studentId) => {
     try {
-      // Get the token from localStorage (or context if using state management)
-      const token = localStorage.getItem("token");
+      // Get the token from sessionStorage (or context if using state management)
+      const token = sessionStorage.getItem("token");
 
       // Include token in the Authorization header
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
@@ -87,7 +87,7 @@ export default function AttendanceStudentList() {
   };
 
   const fetchClasses = () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     axios
       .get(`${baseAPI}/class/all`, {
@@ -104,7 +104,7 @@ export default function AttendanceStudentList() {
   };
 
   const fetchStudents = () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     axios
       .get(`${baseAPI}/student/fetch-with-query`, {

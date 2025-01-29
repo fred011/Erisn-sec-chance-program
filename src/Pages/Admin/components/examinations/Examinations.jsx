@@ -57,7 +57,7 @@ export default function Examinations() {
     initialValues: initialValues,
     validationSchema: examinationSchema,
     onSubmit: async (value) => {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
 
       if (editId) {
         try {
@@ -131,7 +131,7 @@ export default function Examinations() {
 
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete exam?")) {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       console.log("Delete", id);
 
       axios
@@ -155,7 +155,7 @@ export default function Examinations() {
   };
 
   const fetchExaminations = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     try {
       if (selectedClass) {
@@ -176,7 +176,7 @@ export default function Examinations() {
   };
 
   const fetchSubjects = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     try {
       const response = await axios.get(`${baseAPI}/subject/all`, {
@@ -192,7 +192,7 @@ export default function Examinations() {
   };
 
   const fetchClasses = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     try {
       const response = await axios.get(`${baseAPI}/class/all`, {

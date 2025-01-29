@@ -59,7 +59,7 @@ export default function Students() {
 
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete this student?")) {
-      const token = localStorage.getItem("token"); // Get token for authentication
+      const token = sessionStorage.getItem("token"); // Get token for authentication
       axios
         .delete(`${baseAPI}/student/delete/${id}`, {
           headers: {
@@ -118,7 +118,7 @@ export default function Students() {
         data.password = values.password;
       }
 
-      const token = localStorage.getItem("token"); // Get token for authentication
+      const token = sessionStorage.getItem("token"); // Get token for authentication
 
       if (edit) {
         axios
@@ -159,7 +159,7 @@ export default function Students() {
   });
 
   const fetchClasses = () => {
-    const token = localStorage.getItem("token"); // Add token for authentication
+    const token = sessionStorage.getItem("token"); // Add token for authentication
     axios
       .get(`${baseAPI}/class/all`, {
         headers: {
@@ -190,8 +190,8 @@ export default function Students() {
 
   const [students, setStudents] = useState([]);
   const fetchStudents = () => {
-    // Get the token from localStorage
-    const token = localStorage.getItem("token");
+    // Get the token from sessionStorage
+    const token = sessionStorage.getItem("token");
 
     axios
       .get(`${baseAPI}/student/fetch-with-query`, {

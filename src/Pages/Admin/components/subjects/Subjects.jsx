@@ -74,7 +74,7 @@ const Subject = () => {
       }
 
       const requestData = { ...values };
-      const token = localStorage.getItem("token"); // For authentication
+      const token = sessionStorage.getItem("token"); // For authentication
 
       if (edit) {
         axios
@@ -123,7 +123,7 @@ const Subject = () => {
   });
 
   const fetchAllSubjects = () => {
-    const token = localStorage.getItem("token"); // Add token for authentication
+    const token = sessionStorage.getItem("token"); // Add token for authentication
     axios
       .get(`${baseAPI}/subject/all`, {
         headers: {

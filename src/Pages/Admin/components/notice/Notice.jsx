@@ -37,7 +37,7 @@ const Notice = () => {
   };
 
   const handleDelete = (id) => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+    const token = sessionStorage.getItem("token"); // Retrieve token from sessionStorage or context
     if (confirm("Are you sure you want to delete notice?")) {
       console.log("Delete", id);
       axios
@@ -68,7 +68,7 @@ const Notice = () => {
     initialValues: { title: "", message: "", audience: "" },
     validationSchema: noticeSchema,
     onSubmit: (values, { resetForm }) => {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+      const token = sessionStorage.getItem("token"); // Retrieve token from sessionStorage or context
 
       console.log(values);
 
@@ -129,7 +129,7 @@ const Notice = () => {
   });
 
   const fetchAllNotices = () => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+    const token = sessionStorage.getItem("token"); // Retrieve token from sessionStorage or context
 
     axios
       .get(`${baseAPI}/notice/all`, {
