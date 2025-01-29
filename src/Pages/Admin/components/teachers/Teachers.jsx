@@ -158,14 +158,21 @@ export default function Teachers() {
 
   const [teachers, setTeachers] = useState([]);
   const fetchTeachers = () => {
+    const token = localStorage.getItem("token");
+
     axios
-      .get(`${baseAPI}/teacher/fetch-with-query`, { params })
+      .get(`${baseAPI}/teacher/fetch-with-query`, {
+        params,
+        headers: {
+          Authorization: `Bearer ${token}`, // Add token here
+        },
+      })
       .then((res) => {
         setTeachers(res.data.teachers);
         console.log("Response Teachers", res);
       })
       .catch((e) => {
-        console.log("Error in fetching teachers", e);
+        console.log("Error in fetching teachers", e.response || e.message);
       });
   };
 
