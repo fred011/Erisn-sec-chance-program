@@ -160,25 +160,35 @@ export default function Teachers() {
   const fetchTeachers = () => {
     const token = localStorage.getItem("token");
 
+    if (!token) {
+      console.log("No token found. Please log in.");
+      return;
+    }
+
+    console.log("Token retrieved: ", token); // Debugging token
+
     axios
       .get(`${baseAPI}/teacher/fetch-with-query`, {
         params,
         headers: {
-          Authorization: `Bearer ${token}`, // Add token here
+          Authorization: `Bearer ${token}`, // Ensure the token is included in the header
         },
       })
       .then((res) => {
         setTeachers(res.data.teachers);
-        console.log("Response Teachers", res);
+        console.log("Response Teachers:", res);
       })
       .catch((e) => {
-        console.log("Error in fetching teachers", e.response || e.message);
+        // Enhanced error handling
+        const errorMessage = e.response ? e.response.data.message : e.message;
+        console.log("Error in fetching teachers:", errorMessage);
       });
   };
 
   React.useEffect(() => {
     fetchTeachers();
   }, [params]);
+
   return (
     <>
       <Box
