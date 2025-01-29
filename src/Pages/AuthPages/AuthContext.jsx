@@ -16,7 +16,9 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("auth", JSON.stringify(user));
 
     if (user.token) {
-      localStorage.setItem("token", user.token); // Store the token separately
+      localStorage.setItem("token", user.token); // Store token separately
+    } else {
+      console.error("Login response does not include a token.");
     }
   };
 
