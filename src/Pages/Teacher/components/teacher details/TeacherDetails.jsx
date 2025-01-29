@@ -3,7 +3,6 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
@@ -14,15 +13,19 @@ export default function TeacherDetails() {
 
   const fetchTeacherDetails = async () => {
     try {
+      const token = localStorage.getItem("token"); // Get token from local storage
       const response = await axios.get(`${baseAPI}/teacher/fetch-single`, {
         headers: {
-          withCredentials: true, // Include the token in the header
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
+        withCredentials: true,
       });
+
       setTeacherDetails(response.data.teacher);
     } catch (error) {
       console.error(
-        "Error fetching teacher details ---:",
+        "Error fetching teacher details:",
         error.response?.data || error.message
       );
     }
@@ -32,53 +35,26 @@ export default function TeacherDetails() {
     fetchTeacherDetails();
   }, []);
 
-  if (!teacherDetails) {
-    return <div>Loading...</div>;
-  }
+  if (!teacherDetails) return <div>Loading...</div>;
+
   return (
-    <>
-      {teacherDetails && (
-        <>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <b>Name :</b>
-                  </TableCell>
-                  <TableCell align="right">{teacherDetails.name}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>Email :</b>
-                  </TableCell>
-                  <TableCell align="right">{teacherDetails.email}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>Age :</b>
-                  </TableCell>
-                  <TableCell align="right">{teacherDetails.age}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>Gender :</b>
-                  </TableCell>
-                  <TableCell align="right">{teacherDetails.gender}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>Qualification :</b>
-                  </TableCell>
-                  <TableCell align="right">
-                    {teacherDetails.qualification}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </>
-      )}
-    </>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableBody>
+          <TableRow>
+            <TableCell>
+              <b>Name :</b>
+            </TableCell>
+            <TableCell align="right">{teacherDetails.name}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <b>Email :</b>
+            </TableCell>
+            <TableCell align="right">{teacherDetails.email}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
