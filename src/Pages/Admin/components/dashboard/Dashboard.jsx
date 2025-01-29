@@ -13,7 +13,7 @@ const Dashboard = () => {
   console.log("Token from context:", token);
   const [adminDetails, setAdminDetails] = React.useState(null);
 
-  const fetchTeacherDetails = async () => {
+  const fetchAdminDetails = async () => {
     try {
       const response = await axios.get(`${baseAPI}/admin/fetch-single`, {
         headers: {
@@ -23,7 +23,7 @@ const Dashboard = () => {
         withCredentials: true,
       });
 
-      setAdminDetails(response.data.teacher);
+      setAdminDetails(response.data.admin);
     } catch (error) {
       console.error(
         "Error fetching admin details:",
@@ -33,7 +33,7 @@ const Dashboard = () => {
   };
 
   React.useEffect(() => {
-    fetchTeacherDetails();
+    fetchAdminDetails();
   }, []);
   return (
     <>
@@ -57,7 +57,7 @@ const Dashboard = () => {
           }}
         >
           <Typography variant="h3" color="lightgrey">
-            Welcome, {adminDetails.name}
+            Welcome, {adminDetails ? adminDetails.name : "Admin"}
           </Typography>
 
           <Typography variant="h5" color="grey">
