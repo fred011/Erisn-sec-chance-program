@@ -1,6 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
@@ -25,6 +22,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setAuth(null);
     localStorage.removeItem("auth");
+    localStorage.removeItem("token"); // Also clear the token from localStorage
   };
 
   useEffect(() => {
