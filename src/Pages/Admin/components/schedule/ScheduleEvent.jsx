@@ -89,9 +89,14 @@ export default function ScheduleEvent({
   };
 
   const handleDelete = (setEvents) => {
-    if (confirm("Are you sure you want to delete period?")) {
+    if (confirm("Are you sure you want to delete this period?")) {
+      const token = localStorage.getItem("token"); // Include token for authentication
       axios
-        .delete(`${baseAPI}/schedule/delete/${selectedEventId}`)
+        .delete(`${baseAPI}/schedule/delete/${selectedEventId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add the token to headers
+          },
+        })
         .then((res) => {
           alert("Event Deleted Successfully");
           console.log("Event Deleted Successfully", res);
@@ -111,11 +116,10 @@ export default function ScheduleEvent({
   const formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
-    onSubmit: (values, setEvents) => {
+    onSubmit: (values, { resetForm, setEvents }) => {
       const { date, period } = values;
       const [startTime, endTime] = period.split(",");
 
-      // Ensure the date is properly formatted and valid
       const selectedDate = dayjs(date);
 
       if (!selectedDate.isValid()) {
@@ -123,7 +127,6 @@ export default function ScheduleEvent({
         return;
       }
 
-      // Construct startTime and endTime using dayjs
       const formattedStartTime = selectedDate
         .hour(parseInt(startTime.split(":")[0], 10))
         .minute(parseInt(startTime.split(":")[1], 10))
@@ -140,13 +143,23 @@ export default function ScheduleEvent({
         startTime: formattedStartTime,
         endTime: formattedEndTime,
       };
+
+      const token = localStorage.getItem("token"); // Include token for authentication
       if (edit) {
         axios
-          .post(`${baseAPI}/schedule/update/${selectedEventId}`, formattedData)
+          .post(
+            `${baseAPI}/schedule/update/${selectedEventId}`,
+            formattedData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Add token to headers
+              },
+            }
+          )
           .then((res) => {
             console.log("API Response:", res.data);
             alert("Period Updated successfully");
-            formik.resetForm();
+            resetForm();
             handleEventClose();
           })
           .catch((e) => {
@@ -155,11 +168,15 @@ export default function ScheduleEvent({
           });
       } else {
         axios
-          .post(`${baseAPI}/schedule/create`, formattedData)
+          .post(`${baseAPI}/schedule/create`, formattedData, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add token to headers
+            },
+          })
           .then((res) => {
             console.log("API Response:", res.data);
             alert("Period created successfully");
-            formik.resetForm();
+            resetForm();
             handleEventClose();
           })
           .catch((e) => {
@@ -167,6 +184,7 @@ export default function ScheduleEvent({
             alert("Failed to create period");
           });
       }
+
       const updatedEvent = {
         id: selectedEventId,
         title: `Subject: ${values.subject.subject_name}, Teacher: ${values.teacher.name}`,
@@ -174,7 +192,6 @@ export default function ScheduleEvent({
         end: formattedEndTime,
       };
 
-      // Update the state directly
       setEvents((prevEvents) =>
         prevEvents.map((event) =>
           event.id === selectedEventId ? updatedEvent : event
@@ -185,11 +202,18 @@ export default function ScheduleEvent({
 
   const fetchData = async () => {
     try {
+      const token = localStorage.getItem("token"); // Include token for fetching data
       const teacherResponse = await axios.get(
-        `${baseAPI}/teacher/fetch-with-query`
+        `${baseAPI}/teacher/fetch-with-query`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
+      const subjectResponse = await axios.get(`${baseAPI}/subject/all`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       console.log("Fetched Teachers:", teacherResponse.data);
-      const subjectResponse = await axios.get(`${baseAPI}/subject/all`);
       console.log("Fetched Subjects:", subjectResponse.data);
 
       setTeachers(teacherResponse.data.teachers || []);
@@ -202,6 +226,7 @@ export default function ScheduleEvent({
   useEffect(() => {
     fetchData();
   }, [selectedClass]);
+
   const dateFormat = (date) => {
     const dateHours = date.getHours();
     const dateMinutes = date.getMinutes();
@@ -214,8 +239,12 @@ export default function ScheduleEvent({
     const fetchEventData = async () => {
       if (selectedEventId) {
         try {
+          const token = localStorage.getItem("token"); // Include token for event fetch
           const res = await axios.get(
-            `${baseAPI}/schedule/fetch/${selectedEventId}`
+            `${baseAPI}/schedule/fetch/${selectedEventId}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
           );
           const eventData = res.data.data;
 
@@ -229,11 +258,6 @@ export default function ScheduleEvent({
 
           const finalFormattedTime = dateFormat(start) + "," + dateFormat(end);
           formik.setFieldValue("period", finalFormattedTime);
-
-          console.log(
-            end.getHours(),
-            (end.getMinutes() < 10 ? "0" : "") + end.getMinutes()
-          );
 
           console.log("RESPONSE:", res);
         } catch (e) {

@@ -59,42 +59,44 @@ export default function Teachers() {
   };
 
   const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete teacher?")) {
+    if (confirm("Are you sure you want to delete this teacher?")) {
       console.log("Delete", id);
       axios
         .delete(`${baseAPI}/teacher/delete/${id}`)
         .then((res) => {
           console.log("Teacher delete response", res);
-
           alert("Teacher deleted successfully");
-          fetchTeachers();
+          fetchTeachers(); // Fetch updated list after delete
         })
         .catch((err) => {
           console.log("Error in deleting teacher", err);
-
-          alert("Failed to delete teacher");
+          alert(err.response?.data?.error || "Failed to delete teacher");
         });
     }
   };
+
   const cancelEdit = () => {
     setEdit(false);
     setEditId(null);
-    formik.resetForm();
+    formik.resetForm(); // Reset form values
   };
 
   const handleEdit = (id) => {
     setEdit(true);
     setEditId(id);
-    const filteredTeacher = teachers.filter((x) => x._id === id);
-    console.log("Filtered Teacher ", filteredTeacher);
 
-    formik.setFieldValue("name", filteredTeacher[0].name);
-    formik.setFieldValue("email", filteredTeacher[0].email);
-    formik.setFieldValue("qualification", filteredTeacher[0].qualification);
-    formik.setFieldValue("age", filteredTeacher[0].age);
-    formik.setFieldValue("gender", filteredTeacher[0].gender);
-    formik.setFieldValue("guardian", filteredTeacher[0].guardian);
-    formik.setFieldValue("phone_number", filteredTeacher[0].phone_number);
+    const filteredTeacher = teachers.find((x) => x._id === id);
+    console.log("Filtered Teacher", filteredTeacher);
+
+    if (filteredTeacher) {
+      formik.setFieldValue("name", filteredTeacher.name);
+      formik.setFieldValue("email", filteredTeacher.email);
+      formik.setFieldValue("qualification", filteredTeacher.qualification);
+      formik.setFieldValue("age", filteredTeacher.age);
+      formik.setFieldValue("gender", filteredTeacher.gender);
+      formik.setFieldValue("guardian", filteredTeacher.guardian);
+      formik.setFieldValue("phone_number", filteredTeacher.phone_number);
+    }
   };
 
   // Formik setup for form state management, validation, and submission
@@ -102,81 +104,55 @@ export default function Teachers() {
     initialValues, // Set initial values
     validationSchema: edit ? teacherEditSchema : teacherSchema, // Attach Yup schema for validation
     onSubmit: (values, { resetForm }) => {
-      if (edit) {
-        const data = {
-          name: values.name,
-          email: values.email,
-          qualification: values.qualification,
-          age: values.age,
-          gender: values.gender,
+      const data = {
+        name: values.name,
+        email: values.email,
+        qualification: values.qualification,
+        age: values.age,
+        gender: values.gender,
+        phone_number: values.phone_number,
+      };
 
-          phone_number: values.phone_number,
-        };
-
-        if (values.password) {
-          const data = { password: values.password };
-        }
-
-        axios
-          .patch(
-            `${baseAPI}/teacher/update/${editId}`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
-          .then((res) => {
-            // On successful registration
-            console.log("updated Teachers data : ", res.data.data);
-            alert(`Teacher updated successfully!`);
-
-            resetForm(); // Clear the form
-            fetchTeachers();
-          })
-          .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error updating Teacher");
-          });
-      } else {
-        // Prepare the data to be sent to the API
-        const data = {
-          name: values.name,
-          email: values.email,
-          qualification: values.qualification,
-          age: values.age,
-          gender: values.gender,
-
-          phone_number: values.phone_number,
-          password: values.password,
-        };
-
-        // API call to register the user
-        axios
-          .post(
-            `${baseAPI}/teacher/register`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
-          .then((res) => {
-            // On successful registration
-            console.log("Registered Teachers data : ", res.data.data);
-            alert(`Teacher registered successfully!`);
-
-            resetForm();
-            fetchTeachers();
-          })
-          .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error registering Teacher");
-          });
+      if (values.password) {
+        data.password = values.password; // Include password only if provided
       }
+
+      const apiCall = edit
+        ? axios.patch(`${baseAPI}/teacher/update/${editId}`, data, {
+            withCredentials: true,
+          })
+        : axios.post(`${baseAPI}/teacher/register`, data, {
+            withCredentials: true,
+          });
+
+      apiCall
+        .then((res) => {
+          console.log(
+            `${edit ? "Updated" : "Registered"} Teachers data:`,
+            res.data.data
+          );
+          alert(
+            `${edit ? "Teacher updated" : "Teacher registered"} successfully!`
+          );
+          resetForm();
+          fetchTeachers(); // Fetch updated list after submit
+        })
+        .catch((err) => {
+          console.log("Error in submitting teacher", err);
+          alert(
+            err.response?.data?.error ||
+              `Error ${edit ? "updating" : "registering"} teacher`
+          );
+        });
     },
   });
 
+  // Teacher search functionality
   const [params, setParams] = useState({});
-
   const handleSearch = (e) => {
     setParams((prevParams) => ({
       ...prevParams,
-      search: e.target.value || undefined,
+      search: e.target.value || undefined, // If no input, remove 'search' param
     }));
   };
 
@@ -189,7 +165,7 @@ export default function Teachers() {
         console.log("Response Teachers", res);
       })
       .catch((e) => {
-        console.log("Error in fetching class");
+        console.log("Error in fetching teachers", e);
       });
   };
 

@@ -48,8 +48,13 @@ export default function Schedule() {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
     axios
-      .get(`${baseAPI}/class/all`)
+      .get(`${baseAPI}/class/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in the request header
+        },
+      })
       .then((res) => {
         setClasses(res.data.data);
         setSelectedClass(res.data.data[0]._id);
@@ -63,10 +68,15 @@ export default function Schedule() {
 
   const fetchSchedule = (selectedClass) => {
     if (selectedClass) {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
       console.log("Fetching schedules for class:", selectedClass);
 
       axios
-        .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`)
+        .get(`${baseAPI}/schedule/fetch-with-class/${selectedClass}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in the request header
+          },
+        })
         .then((res) => {
           console.log("API Response:", res.data);
 

@@ -22,9 +22,18 @@ export default function Attendee({ classId }) {
   const handleSubmit = async () => {
     try {
       if (selectedTeacher) {
+        // Get the token from localStorage (or context if using state management)
+        const token = localStorage.getItem("token");
+
+        // Include token in the Authorization header
         const response = await axios.patch(
           `${baseAPI}/class/update/${classId}`,
-          { attendee: selectedTeacher }
+          { attendee: selectedTeacher },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(response, "Submit attendee");
         alert("Attendee saved/updated successfully");
@@ -33,33 +42,45 @@ export default function Attendee({ classId }) {
         alert("Please select an attendee teacher first.");
       }
     } catch (error) {
-      console.error("ERROR:", error);
+      console.error("ERROR:", error.response || error.message);
     }
   };
 
   const fetchClassDetails = async () => {
     if (classId) {
       try {
-        const response = await axios.get(`${baseAPI}/class/single/${classId}`);
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(`${baseAPI}/class/single/${classId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         setAttendee(
           response.data.data.attendee ? response.data.data.attendee : null
         );
         console.log("SINGLE CLASS:", response);
       } catch (error) {
-        console.error("ERROR", error);
+        console.error("ERROR", error.response || error.message);
       }
     }
   };
 
   const fetchTeachers = () => {
+    const token = localStorage.getItem("token");
+
     axios
-      .get(`${baseAPI}/teacher/fetch-with-query`, { params: {} })
+      .get(`${baseAPI}/teacher/fetch-with-query`, {
+        params: {},
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         setTeachers(res.data.teachers);
         console.log("Response Teachers", res);
       })
       .catch((e) => {
-        console.error("Error in fetching teachers", e);
+        console.error("Error in fetching teachers", e.response || e.message);
       });
   };
 

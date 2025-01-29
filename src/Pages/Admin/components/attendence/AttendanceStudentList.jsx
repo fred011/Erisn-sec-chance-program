@@ -58,7 +58,16 @@ export default function AttendanceStudentList() {
 
   const fetchAttendanceForStudent = async (studentId) => {
     try {
-      const response = await axios.get(`${baseAPI}/attendance/${studentId}`);
+      // Get the token from localStorage (or context if using state management)
+      const token = localStorage.getItem("token");
+
+      // Include token in the Authorization header
+      const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const attendanceRecords = response.data;
       const totalClasses = attendanceRecords.length;
       const presentCount = attendanceRecords.filter(
@@ -66,6 +75,7 @@ export default function AttendanceStudentList() {
       ).length;
       const attendancePercentage =
         totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
+
       return { studentId, attendancePercentage };
     } catch (error) {
       console.error(
@@ -77,8 +87,14 @@ export default function AttendanceStudentList() {
   };
 
   const fetchClasses = () => {
+    const token = localStorage.getItem("token");
+
     axios
-      .get(`${baseAPI}/class/all`)
+      .get(`${baseAPI}/class/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         setClasses(res.data.data);
       })
@@ -88,8 +104,13 @@ export default function AttendanceStudentList() {
   };
 
   const fetchStudents = () => {
+    const token = localStorage.getItem("token");
+
     axios
-      .get(`${baseAPI}/student/fetch-with-query`, { params })
+      .get(`${baseAPI}/student/fetch-with-query`, {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         setStudents(res.data.students);
         fetchAttendanceForStudents(res.data.students);

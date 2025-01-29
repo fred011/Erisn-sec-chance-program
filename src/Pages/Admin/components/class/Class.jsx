@@ -29,14 +29,24 @@ const Class = () => {
   const [edit, setEdit] = useState(false);
 
   const fetchAllClasses = () => {
+    // Get the token from storage or context
+    const token = localStorage.getItem("token"); // Or use context if the token is stored there
+
     axios
-      .get(`${baseAPI}/class/all`)
+      .get(`${baseAPI}/class/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      })
       .then((res) => {
         console.log("Classes", res.data);
-        setClasses(res.data.data);
+        setClasses(res.data.data); // Assuming response contains data in this format
       })
       .catch((err) => {
-        console.error("Error in fetching all classes", err);
+        console.error(
+          "Error in fetching all classes",
+          err.response?.data || err.message
+        );
       });
   };
 
@@ -53,8 +63,14 @@ const Class = () => {
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this class?")) {
+      const token = localStorage.getItem("token");
+
       axios
-        .delete(`${baseAPI}/class/delete/${id}`)
+        .delete(`${baseAPI}/class/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           console.log("Class delete response", res);
           alert("Class deleted successfully.");
@@ -77,9 +93,15 @@ const Class = () => {
     initialValues: { class_text: "", class_num: "" },
     validationSchema: classSchema,
     onSubmit: (values, { resetForm }) => {
+      const token = localStorage.getItem("token");
+
       if (edit) {
         axios
-          .patch(`${baseAPI}/class/update/${editId}`, values)
+          .patch(`${baseAPI}/class/update/${editId}`, values, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((res) => {
             console.log("Class update response", res);
             alert("Class updated successfully.");
@@ -92,7 +114,11 @@ const Class = () => {
           });
       } else {
         axios
-          .post(`${baseAPI}/class/create`, values)
+          .post(`${baseAPI}/class/create`, values, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((res) => {
             console.log("Class add response", res);
             alert("Class added successfully.");

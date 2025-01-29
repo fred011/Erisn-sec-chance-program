@@ -38,28 +38,28 @@ const Subject = () => {
     Formik.setFieldValue("subject_codename", subject_codename);
   };
   const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete subject?")) {
+    if (confirm("Are you sure you want to delete this subject?")) {
       console.log("Delete", id);
       axios
         .delete(`${baseAPI}/subject/delete/${id}`)
         .then((res) => {
           console.log("Subject delete response", res);
-
-          alert("Subject deleted successfully, reload the page to see changes");
+          alert(
+            "Subject deleted successfully. Reload the page to see changes."
+          );
           fetchAllSubjects();
         })
         .catch((err) => {
           console.log("Error in deleting subject", err);
-
-          alert("Failed to delete subject");
+          alert(err.response?.data?.error || "Failed to delete subject");
         });
     }
   };
+
   const cancelEdit = () => {
     setEdit(false);
     setEditId(null);
-    Formik.setFieldValue("subject_name", "");
-    Formik.setFieldValue("subject_codename", "");
+    Formik.resetForm(); // Reset form after cancel
   };
 
   const Formik = useFormik({
@@ -67,69 +67,79 @@ const Subject = () => {
     validationSchema: subjectSchema,
     onSubmit: (values, { resetForm }) => {
       console.log("Submitting values:", values);
-      // Check if values.subject_name and values.subject_codename are populated
+      // Ensure both fields are populated
       if (!values.subject_name || !values.subject_codename) {
-        alert("Both fields are required.");
+        alert("Both subject name and codename are required.");
         return;
       }
 
+      const requestData = { ...values };
+      const token = localStorage.getItem("token"); // For authentication
+
       if (edit) {
         axios
-          .patch(
-            `${baseAPI}/subject/update/${editId}`,
-            { ...values },
-            {
-              headers: {
-                "Content-Type": "application/json", // Ensure the correct header is sent
-              },
-            }
-          )
+          .patch(`${baseAPI}/subject/update/${editId}`, requestData, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Add token to the headers
+            },
+          })
           .then((res) => {
             console.log("Subject update response", res);
             alert("Subject updated successfully");
-
             cancelEdit();
             fetchAllSubjects();
           })
           .catch((err) => {
             console.log(
               "Error in updating subject",
-              err.response ? err.response.data : err.message
+              err.response?.data || err.message
             );
-            alert("Failed to update subject");
+            alert(err.response?.data?.error || "Failed to update subject");
           });
       } else {
         axios
-          .post(`${baseAPI}/subject/create`, { ...values })
+          .post(`${baseAPI}/subject/create`, requestData, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Add token to the headers
+            },
+          })
           .then((res) => {
             console.log("Subject add response", res);
             alert("Subject added successfully");
-
             resetForm();
             fetchAllSubjects();
           })
           .catch((err) => {
             console.log(
               "Error in adding subject",
-              err.response ? err.response.data : err.message
+              err.response?.data || err.message
             );
-            alert("Failed to add subject");
+            alert(err.response?.data?.error || "Failed to add subject");
           });
       }
     },
   });
 
   const fetchAllSubjects = () => {
+    const token = localStorage.getItem("token"); // Add token for authentication
     axios
-      .get(`${baseAPI}/subject/all`)
+      .get(`${baseAPI}/subject/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add token to the request headers
+        },
+      })
       .then((res) => {
-        console.log("Subjects", res.data);
+        console.log("Fetched subjects", res.data);
         setSubjects(res.data.data);
       })
       .catch((err) => {
         console.log("Error in fetching all subjects", err);
+        alert("Failed to fetch subjects");
       });
   };
+
   useEffect(() => {
     fetchAllSubjects();
   }, []);

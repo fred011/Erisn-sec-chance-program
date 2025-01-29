@@ -57,6 +57,8 @@ export default function Examinations() {
     initialValues: initialValues,
     validationSchema: examinationSchema,
     onSubmit: async (value) => {
+      const token = localStorage.getItem("token");
+
       if (editId) {
         try {
           console.log("Examination", value);
@@ -67,6 +69,11 @@ export default function Examinations() {
               subjectId: value.subject,
               classId: selectedClass,
               examType: value.examType,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
           );
           alert("Exam Updated Successfully");
@@ -81,12 +88,20 @@ export default function Examinations() {
       } else {
         try {
           console.log("Examination", value);
-          const response = await axios.post(`${baseAPI}/examination/create`, {
-            date: value.date,
-            subjectId: value.subject,
-            classId: selectedClass,
-            examType: value.examType,
-          });
+          const response = await axios.post(
+            `${baseAPI}/examination/create`,
+            {
+              date: value.date,
+              subjectId: value.subject,
+              classId: selectedClass,
+              examType: value.examType,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           alert("New Exam Saved Successfully");
           formik.resetForm();
           fetchExaminations();
@@ -108,15 +123,23 @@ export default function Examinations() {
     formik.setFieldValue("subject", selectedExam[0].subject._id);
     formik.setFieldValue("examType", selectedExam[0].examType);
   };
+
   const handleEditCancel = () => {
     setEditId(null);
     formik.resetForm();
   };
+
   const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete class?")) {
+    if (confirm("Are you sure you want to delete exam?")) {
+      const token = localStorage.getItem("token");
       console.log("Delete", id);
+
       axios
-        .delete(`${baseAPI}/examination/delete/${id}`)
+        .delete(`${baseAPI}/examination/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           console.log("Exam delete response", res);
 
@@ -132,10 +155,17 @@ export default function Examinations() {
   };
 
   const fetchExaminations = async () => {
+    const token = localStorage.getItem("token");
+
     try {
       if (selectedClass) {
         const response = await axios.get(
-          `${baseAPI}/examination/class/${selectedClass}`
+          `${baseAPI}/examination/class/${selectedClass}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log("FETCHED EXAM:", response);
         setExaminations(response.data.examinations);
@@ -146,17 +176,30 @@ export default function Examinations() {
   };
 
   const fetchSubjects = async () => {
+    const token = localStorage.getItem("token");
+
     try {
-      const response = await axios.get(`${baseAPI}/subject/all`);
+      const response = await axios.get(`${baseAPI}/subject/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("EXAM SUBJECTS:", response);
       setSubjects(response.data.data);
     } catch (error) {
       console.log("Error fetching Subjects (Exam Comp)", error);
     }
   };
+
   const fetchClasses = async () => {
+    const token = localStorage.getItem("token");
+
     try {
-      const response = await axios.get(`${baseAPI}/class/all`);
+      const response = await axios.get(`${baseAPI}/class/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("EXAM Classes:", response);
       setClasses(response.data.data);
       setSelectedClass(response.data.data[0]._id);
@@ -164,6 +207,7 @@ export default function Examinations() {
       console.log("Error fetching classes (Exam Comp)", error);
     }
   };
+
   useEffect(() => {
     fetchExaminations();
   }, [selectedClass]);

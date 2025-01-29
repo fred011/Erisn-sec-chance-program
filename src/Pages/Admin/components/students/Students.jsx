@@ -58,23 +58,26 @@ export default function Students() {
   };
 
   const handleDelete = (id) => {
-    if (confirm("Are you sure you want to delete student?")) {
-      console.log("Delete", id);
+    if (confirm("Are you sure you want to delete this student?")) {
+      const token = localStorage.getItem("token"); // Get token for authentication
       axios
-        .delete(`${baseAPI}/student/delete/${id}`)
+        .delete(`${baseAPI}/student/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add token to headers
+          },
+        })
         .then((res) => {
           console.log("Student delete response", res);
-
           alert("Student deleted successfully");
           fetchStudents();
         })
         .catch((err) => {
           console.log("Error in deleting student", err);
-
-          alert("Failed to delete student");
+          alert(err.response?.data?.error || "Failed to delete student");
         });
     }
   };
+
   const cancelEdit = () => {
     setEdit(false);
     setEditId(null);
@@ -85,103 +88,89 @@ export default function Students() {
     setEdit(true);
     setEditId(id);
     const filteredStudent = students.filter((x) => x._id === id);
-    console.log("Filtered Student ", filteredStudent);
     const student = filteredStudent[0];
 
-    formik.setFieldValue("name", filteredStudent[0].name);
-    formik.setFieldValue("email", filteredStudent[0].email);
-    formik.setFieldValue(
-      "student_class",
-      student.student_class ? student.student_class._id : "" // Check if student_class exists
-    );
-    formik.setFieldValue("age", filteredStudent[0].age);
-    formik.setFieldValue("gender", filteredStudent[0].gender || "");
-    formik.setFieldValue("guardian", filteredStudent[0].guardian);
-    formik.setFieldValue("guardian_phone", filteredStudent[0].guardian_phone);
+    formik.setFieldValue("name", student.name);
+    formik.setFieldValue("email", student.email);
+    formik.setFieldValue("student_class", student.student_class?._id || "");
+    formik.setFieldValue("age", student.age);
+    formik.setFieldValue("gender", student.gender || "");
+    formik.setFieldValue("guardian", student.guardian);
+    formik.setFieldValue("guardian_phone", student.guardian_phone);
   };
 
-  // Formik setup for form state management, validation, and submission
   const formik = useFormik({
     initialValues, // Set initial values
     validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
     onSubmit: (values, { resetForm }) => {
+      const data = {
+        name: values.name,
+        email: values.email,
+        student_class: values.student_class,
+        age: values.age,
+        gender: values.gender,
+        guardian: values.guardian,
+        guardian_phone: values.guardian_phone,
+      };
+
+      // Add password only if it's not empty during editing
+      if (!edit && values.password) {
+        data.password = values.password;
+      }
+
+      const token = localStorage.getItem("token"); // Get token for authentication
+
       if (edit) {
-        const data = {
-          name: values.name,
-          email: values.email,
-          student_class: values.student_class,
-          age: values.age,
-          gender: values.gender,
-          guardian: values.guardian,
-          guardian_phone: values.guardian_phone,
-        };
-
-        if (values.password) {
-          const data = { password: values.password };
-        }
-
         axios
-          .patch(
-            `${baseAPI}/student/update/${editId}`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
-          .then((res) => {
-            // On successful registration
-            console.log("updated Students data : ", res.data.data);
-            alert(`Student updated successfully!`);
-
-            resetForm(); // Clear the form
-            fetchStudents();
+          .patch(`${baseAPI}/student/update/${editId}`, data, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in the request headers
+            },
           })
-          .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error updating Student");
-          });
-      } else {
-        // Prepare the data to be sent to the API
-        const data = {
-          name: values.name,
-          email: values.email,
-          student_class: values.student_class,
-          age: values.age,
-          gender: values.gender,
-          guardian: values.guardian,
-          guardian_phone: values.guardian_phone,
-          password: values.password,
-        };
-
-        // API call to register the user
-        axios
-          .post(
-            `${baseAPI}/student/register`, // API endpoint depends on the selected role
-            data,
-            { withCredentials: true } // Include credentials like cookies
-          )
           .then((res) => {
-            // On successful registration
-            console.log("Registered Students data : ", res.data.data);
-            alert(`Student registered successfully!`);
-
+            console.log("Updated student data: ", res.data.data);
+            alert("Student updated successfully!");
             resetForm();
             fetchStudents();
           })
           .catch((err) => {
-            // Handle errors
-            alert(err.response?.data?.error || "Error registering Student");
+            console.log("Error in updating student", err);
+            alert(err.response?.data?.error || "Failed to update student");
+          });
+      } else {
+        axios
+          .post(`${baseAPI}/student/register`, data, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in the request headers
+            },
+          })
+          .then((res) => {
+            console.log("Registered student data: ", res.data.data);
+            alert("Student registered successfully!");
+            resetForm();
+            fetchStudents();
+          })
+          .catch((err) => {
+            console.log("Error in registering student", err);
+            alert(err.response?.data?.error || "Failed to register student");
           });
       }
     },
   });
 
   const fetchClasses = () => {
+    const token = localStorage.getItem("token"); // Add token for authentication
     axios
-      .get(`${baseAPI}/class/all`)
+      .get(`${baseAPI}/class/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add token in the request headers
+        },
+      })
       .then((res) => {
         setClasses(res.data.data);
       })
       .catch((e) => {
-        console.log("Error in fetching class");
+        console.log("Error in fetching class", e);
       });
   };
 

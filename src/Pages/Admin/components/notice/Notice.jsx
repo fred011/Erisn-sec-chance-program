@@ -37,10 +37,15 @@ const Notice = () => {
   };
 
   const handleDelete = (id) => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
     if (confirm("Are you sure you want to delete notice?")) {
       console.log("Delete", id);
       axios
-        .delete(`${baseAPI}/notice/delete/${id}`)
+        .delete(`${baseAPI}/notice/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in the request header
+          },
+        })
         .then((res) => {
           console.log("Notice delete response", res);
           alert("Notice deleted successfully, reload the page to see changes");
@@ -63,6 +68,8 @@ const Notice = () => {
     initialValues: { title: "", message: "", audience: "" },
     validationSchema: noticeSchema,
     onSubmit: (values, { resetForm }) => {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+
       console.log(values);
 
       if (edit) {
@@ -73,6 +80,7 @@ const Notice = () => {
             {
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Include token in the request header
               },
             }
           )
@@ -91,7 +99,16 @@ const Notice = () => {
           });
       } else {
         axios
-          .post(`${baseAPI}/notice/create`, { ...values })
+          .post(
+            `${baseAPI}/notice/create`,
+            { ...values },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Include token in the request header
+              },
+            }
+          )
           .then((res) => {
             console.log("Notice add response", res);
             alert("Notice added successfully");
@@ -112,8 +129,14 @@ const Notice = () => {
   });
 
   const fetchAllNotices = () => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+
     axios
-      .get(`${baseAPI}/notice/all`)
+      .get(`${baseAPI}/notice/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in the request header
+        },
+      })
       .then((res) => {
         console.log("Notices", res.data);
         setNotices(res.data.data);
