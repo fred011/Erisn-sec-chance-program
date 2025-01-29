@@ -30,18 +30,24 @@ export default function Login() {
 
       axios
         .post(`${baseAPI}/${values.role}/login`, data, {
-          withCredentials: true,
+          withCredentials: true, // Ensure cookies are sent
         })
         .then((res) => {
+          // Assuming `login` handles user authentication in your app context or state
           login({ ...res.data, role: values.role });
           console.log("Logged in successfully");
           alert("Logged in successfully");
-          resetForm();
+          resetForm(); // Reset form after submission
+
+          // Redirect user to their respective role's page
           navigate(`/${values.role}`);
         })
         .catch((err) => {
-          console.log("Failed to login ", err);
-          alert(err.response?.data?.error || "Error logging in");
+          console.log("Failed to login", err);
+          // Improved error handling
+          const errorMessage =
+            err.response?.data?.error || err.message || "Error logging in";
+          alert(errorMessage);
         });
     },
   });
