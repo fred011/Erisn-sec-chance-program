@@ -2,9 +2,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { baseAPI } from "../../../../environment";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+} from "@mui/material";
 
 const AttendanceTeacher = () => {
   const [classes, setClasses] = useState([]);
+  const [selectedClass, setSelectedClass] = useState(null);
 
   const fetchAttendeeClass = async () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
@@ -16,6 +25,7 @@ const AttendanceTeacher = () => {
         },
       });
       console.log("Attendee class Res:", response);
+      setClasses(response.data.data);
     } catch (error) {
       console.log("Error in fetching all Teacher Attendee Data", error);
     }
@@ -28,6 +38,33 @@ const AttendanceTeacher = () => {
   return (
     <>
       <h1>Teacher Attendance</h1>
+      <Paper
+        sx={{
+          padding: "20px",
+          marginBottom: "20px",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        <Box>
+          <FormControl sx={{ minWidth: "250px" }}>
+            <InputLabel>Class</InputLabel>
+            <Select
+              value={selectedClass}
+              label="Class"
+              onChange={(e) => {
+                setSelectedClass(e.target.value);
+              }}
+            >
+              <MenuItem value={""}>Select Class</MenuItem>
+              {classes?.map((x) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.class_text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+      </Paper>
     </>
   );
 };
