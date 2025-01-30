@@ -21,7 +21,6 @@ export default function ScheduleTeacher() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
 
-  const [newPeriod, setNewPeriod] = useState(false);
   const date = new Date();
   const myEventsList = [
     {
@@ -32,19 +31,6 @@ export default function ScheduleTeacher() {
     },
   ];
   const [events, setEvents] = useState(myEventsList);
-
-  const handleEventClose = () => {
-    setNewPeriod(false);
-    setEdit(false);
-    setSelectedEventId(false);
-  };
-
-  const [edit, setEdit] = useState(false);
-  const [selectedEventId, setSelectedEventId] = useState(null);
-  const handleSelectEvent = (event) => {
-    setEdit(true);
-    setSelectedEventId(event.id);
-  };
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
@@ -109,11 +95,6 @@ export default function ScheduleTeacher() {
   }, [selectedClass]);
 
   // Function to handle adding new period
-  const handleAddNewPeriod = (newEvent) => {
-    // Add new event to the state
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
-    setNewPeriod(false); // Close the new period form
-  };
 
   return (
     <>
@@ -173,7 +154,6 @@ export default function ScheduleTeacher() {
           min={new Date(1970, 1, 1, 7, 0, 0)}
           startAccessor="start"
           endAccessor="end"
-          onSelectEvent={handleSelectEvent}
           max={new Date(1970, 1, 1, 17, 0, 0)}
           defaultDate={new Date()}
           showMultiDayTimes
