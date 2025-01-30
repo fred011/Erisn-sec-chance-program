@@ -8,8 +8,6 @@ import { baseAPI } from "../../../../environment";
 const NoticeTeacher = () => {
   const [notices, setNotices] = useState([]);
 
-  const [filterAudience, setFilterAudience] = useState("all");
-
   const fetchAllNotices = () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
 
@@ -32,11 +30,6 @@ const NoticeTeacher = () => {
     fetchAllNotices();
   }, []);
 
-  // Filter notices based on audience
-  const filteredNotices = notices.filter(
-    (notice) => filterAudience === "all" || notice.audience === filterAudience
-  );
-
   return (
     <>
       <Typography
@@ -52,80 +45,6 @@ const NoticeTeacher = () => {
       </Typography>
 
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: 2,
-          backgroundColor: "grey.100",
-          borderRadius: 2,
-          boxShadow: 1,
-          my: 2,
-        }}
-      >
-        <Box sx={{ mb: 2, textAlign: "center" }}>
-          <Typography
-            variant="h4"
-            sx={{
-              color: "text.primary",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            Notice For{" "}
-            <Box
-              component="span"
-              sx={{
-                ml: 1,
-                color: "primary.main",
-                textTransform: "uppercase",
-              }}
-            >
-              {filterAudience}
-            </Box>
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <Button
-            variant={filterAudience === "student" ? "contained" : "outlined"}
-            onClick={() => setFilterAudience("student")}
-            sx={{
-              minWidth: 150,
-              textTransform: "uppercase",
-            }}
-          >
-            Student Notices
-          </Button>
-          <Button
-            variant={filterAudience === "teacher" ? "contained" : "outlined"}
-            onClick={() => setFilterAudience("teacher")}
-            sx={{
-              minWidth: 150,
-              textTransform: "uppercase",
-            }}
-          >
-            Teacher Notices
-          </Button>
-          <Button
-            variant={filterAudience === "all" ? "contained" : "outlined"}
-            onClick={() => setFilterAudience("all")}
-            sx={{
-              minWidth: 150,
-              textTransform: "uppercase",
-            }}
-          >
-            All Notices
-          </Button>
-        </Box>
-      </Box>
-      <Box
         component="div"
         sx={{
           display: "flex",
@@ -135,7 +54,7 @@ const NoticeTeacher = () => {
           justifyContent: "center",
         }}
       >
-        {filteredNotices?.map((notice) => (
+        {notices.map((notice) => (
           <Paper
             key={notice._id}
             sx={{
