@@ -112,6 +112,18 @@ export default function ExaminationsTeacher() {
   return (
     <>
       {/* Class Selection Section */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "500",
+          color: "#1976d2",
+          marginBottom: 2,
+          textTransform: "uppercase",
+          textAlign: "center",
+        }}
+      >
+        Examinations
+      </Typography>
       <Paper
         sx={{
           padding: "20px",
@@ -153,12 +165,6 @@ export default function ExaminationsTeacher() {
               </TableCell>
               <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
                 Exam Type
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ color: "#fff", fontWeight: "bold" }}
-              >
-                Actions
               </TableCell>
             </TableRow>
           </TableHead>
