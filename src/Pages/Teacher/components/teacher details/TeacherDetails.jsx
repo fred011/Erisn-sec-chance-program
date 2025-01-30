@@ -5,14 +5,16 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
 import { AuthContext } from "../../../AuthPages/AuthContext";
 
 export default function TeacherDetails() {
   const { auth } = React.useContext(AuthContext);
-  const token = auth?.token; // Get token from context instead
-  console.log("Token from context:", token);
+  const token = auth?.token;
   const [teacherDetails, setTeacherDetails] = React.useState(null);
 
   const fetchTeacherDetails = async () => {
@@ -24,7 +26,6 @@ export default function TeacherDetails() {
         },
         withCredentials: true,
       });
-
       setTeacherDetails(response.data.teacher);
     } catch (error) {
       console.error(
@@ -38,44 +39,33 @@ export default function TeacherDetails() {
     fetchTeacherDetails();
   }, []);
 
-  if (!teacherDetails) return <div>Loading...</div>;
+  if (!teacherDetails) return <Typography variant="h6">Loading...</Typography>;
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <b>Name :</b>
-            </TableCell>
-            <TableCell align="right">{teacherDetails.name}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <b>Email :</b>
-            </TableCell>
-            <TableCell align="right">{teacherDetails.email}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <b>Age :</b>
-            </TableCell>
-            <TableCell align="right">{teacherDetails.age}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <b>Gender :</b>
-            </TableCell>
-            <TableCell align="right">{teacherDetails.gender}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <b>Qualification :</b>
-            </TableCell>
-            <TableCell align="right">{teacherDetails.qualification}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>
+      <CardContent>
+        <Typography variant="h4" fontWeight={600} align="center" gutterBottom>
+          Welcome, {teacherDetails.name}!
+        </Typography>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <Table>
+            <TableBody>
+              {[
+                ["Name", teacherDetails.name],
+                ["Email", teacherDetails.email],
+                ["Age", teacherDetails.age],
+                ["Gender", teacherDetails.gender],
+                ["Qualification", teacherDetails.qualification],
+              ].map(([label, value], index) => (
+                <TableRow key={index}>
+                  <TableCell sx={{ fontWeight: "bold" }}>{label}:</TableCell>
+                  <TableCell align="right">{value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
   );
 }
