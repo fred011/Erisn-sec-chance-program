@@ -2,14 +2,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { baseAPI } from "../../../../environment";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-} from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -101,6 +101,46 @@ const AttendanceTeacher = () => {
         </Paper>
       ) : (
         <Alert severity="error">You are not an Attendee on any class.</Alert>
+      )}
+
+      {students.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="exam table">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Student Name
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Action
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {students.map((student) => (
+                <TableRow key={student._id}>
+                  <TableCell>{student.name}</TableCell>
+                  <TableCell>
+                    <FormControl sx={{ minWidth: "250px" }}>
+                      <Select
+                        value={"present"}
+                        label="Attendence"
+                        // onChange={(e) => {
+                        //   setSelectedClass(e.target.value);
+                        // }}
+                      >
+                        <MenuItem value={"present"}>Present</MenuItem>
+                        <MenuItem value={"absent"}>Absent</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Alert severity="error">There are no students in this class.</Alert>
       )}
     </>
   );
