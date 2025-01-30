@@ -44,7 +44,13 @@ export default function TeacherDetails() {
   return (
     <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>
       <CardContent>
-        <Typography variant="h4" fontWeight={600} align="center" gutterBottom>
+        <Typography
+          variant="h4"
+          sx={{ color: "#1976d2" }}
+          fontWeight={600}
+          align="center"
+          gutterBottom
+        >
           Welcome, {teacherDetails.name}!
         </Typography>
         <TableContainer component={Paper} sx={{ mt: 2 }}>
