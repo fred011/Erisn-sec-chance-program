@@ -10,6 +10,8 @@ import {
   Paper,
   Select,
 } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 
 const AttendanceTeacher = () => {
   const [classes, setClasses] = useState([]);
@@ -26,6 +28,9 @@ const AttendanceTeacher = () => {
       });
       console.log("Attendee class Res:", response);
       setClasses(response.data.data);
+      if (response.data.data.length > 0) {
+        setSelectedClass(response.data.data[0]);
+      }
     } catch (error) {
       console.log("Error in fetching all Teacher Attendee Data", error);
     }
@@ -38,33 +43,37 @@ const AttendanceTeacher = () => {
   return (
     <>
       <h1>Teacher Attendance</h1>
-      <Paper
-        sx={{
-          padding: "20px",
-          marginBottom: "20px",
-          backgroundColor: "#f5f5f5",
-        }}
-      >
-        <Box>
-          <FormControl sx={{ minWidth: "250px" }}>
-            <InputLabel>Class</InputLabel>
-            <Select
-              value={selectedClass}
-              label="Class"
-              onChange={(e) => {
-                setSelectedClass(e.target.value);
-              }}
-            >
-              <MenuItem value={""}>Select Class</MenuItem>
-              {classes?.map((x) => (
-                <MenuItem key={x._id} value={x._id}>
-                  {x.class_text}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Paper>
+      {classes.length > 0 ? (
+        <Paper
+          sx={{
+            padding: "20px",
+            marginBottom: "20px",
+            backgroundColor: "#f5f5f5",
+          }}
+        >
+          <Box>
+            <FormControl sx={{ minWidth: "250px" }}>
+              <InputLabel>Class</InputLabel>
+              <Select
+                value={selectedClass}
+                label="Class"
+                onChange={(e) => {
+                  setSelectedClass(e.target.value);
+                }}
+              >
+                <MenuItem value={""}>Select Class</MenuItem>
+                {classes.map((x) => (
+                  <MenuItem key={x._id} value={x._id}>
+                    {x.class_text}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Paper>
+      ) : (
+        <Alert severity="error">You are not an Attendee on any class.</Alert>
+      )}
     </>
   );
 };
