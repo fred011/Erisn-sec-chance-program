@@ -199,6 +199,7 @@ export default function AttendanceStudentList() {
                   </InputLabel>
                   <Select
                     labelId="student_class"
+                    label="Select Class"
                     value={params.student_class || ""}
                     onChange={handleClass}
                     sx={{
