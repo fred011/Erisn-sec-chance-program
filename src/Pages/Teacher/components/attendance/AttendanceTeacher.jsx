@@ -29,7 +29,7 @@ const AttendanceTeacher = () => {
       console.log("Attendee class Res:", response);
       setClasses(response.data.data);
       if (response.data.data.length > 0) {
-        setSelectedClass(response.data.data[0]._id);
+        setSelectedClass(response.data.data[0]);
       }
     } catch (error) {
       console.log("Error in fetching all Teacher Attendee Data", error);
@@ -52,6 +52,9 @@ const AttendanceTeacher = () => {
           }}
         >
           <Box>
+            <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+              You are attende of {classes.length} classes.
+            </Alert>
             <FormControl sx={{ minWidth: "250px" }}>
               <InputLabel>Class</InputLabel>
               <Select
