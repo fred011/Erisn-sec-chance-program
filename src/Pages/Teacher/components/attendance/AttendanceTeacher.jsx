@@ -29,7 +29,7 @@ const AttendanceTeacher = () => {
       console.log("Attendee class Res:", response);
       setClasses(response.data.data);
       if (response.data.data.length > 0) {
-        setSelectedClass(response.data.data[0]);
+        setSelectedClass(response.data.data[0]._id);
       }
     } catch (error) {
       console.log("Error in fetching all Teacher Attendee Data", error);
