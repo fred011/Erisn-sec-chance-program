@@ -133,7 +133,7 @@ export default function ExaminationsTeacher() {
       >
         <Box>
           <FormControl sx={{ minWidth: "250px" }}>
-            <InputLabel>Select Class</InputLabel>
+            <InputLabel>Class</InputLabel>
             <Select
               value={selectedClass}
               label="Class"
