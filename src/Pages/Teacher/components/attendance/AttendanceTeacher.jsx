@@ -122,9 +122,10 @@ const AttendanceTeacher = () => {
                   <TableCell>{student.name}</TableCell>
                   <TableCell>
                     <FormControl sx={{ minWidth: "250px" }}>
+                      <InputLabel>Attendance</InputLabel>
                       <Select
                         value={"present"}
-                        label="Attendence"
+                        label="Attendance"
                         // onChange={(e) => {
                         //   setSelectedClass(e.target.value);
                         // }}
