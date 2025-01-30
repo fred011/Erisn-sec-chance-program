@@ -9,13 +9,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 
 const AttendanceTeacher = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
+
+  const handleAttendance = () => {};
 
   const fetchAttendeeClass = async () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
@@ -139,6 +148,9 @@ const AttendanceTeacher = () => {
               ))}
             </TableBody>
           </Table>
+          <Button varient="constained" onClick={handleAttendance}>
+            Take Attendance
+          </Button>
         </TableContainer>
       ) : (
         <Alert severity="error">There are no students in this class.</Alert>
