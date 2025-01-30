@@ -12,17 +12,17 @@ const NoticeTeacher = () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
 
     axios
-      .get(`${baseAPI}/notice/all`, {
+      .get(`${baseAPI}/notice/teacher-notice`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include token in the request header
         },
       })
       .then((res) => {
-        console.log("Notices", res.data);
+        console.log("Teacher Notices", res.data);
         setNotices(res.data.data);
       })
       .catch((err) => {
-        console.log("Error in fetching all notices", err);
+        console.log("Error in fetching all Teacher notices", err);
       });
   };
 
@@ -38,7 +38,7 @@ const NoticeTeacher = () => {
           textAlign: "center",
           fontWeight: "700",
           color: "primary.main",
-          mb: 3,
+          mb: 5,
         }}
       >
         Notices
