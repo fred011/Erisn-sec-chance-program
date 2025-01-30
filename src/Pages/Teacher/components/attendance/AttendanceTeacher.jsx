@@ -10,7 +10,7 @@ const AttendanceTeacher = () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
 
     try {
-      const response = await axios.get(`${baseAPI}/class/attende`, {
+      const response = await axios.get(`${baseAPI}/class/attendee`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include token in the request header
         },
