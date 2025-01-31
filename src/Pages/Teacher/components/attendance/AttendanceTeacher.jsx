@@ -26,7 +26,30 @@ const AttendanceTeacher = () => {
 
   const [attendanceStatus, setAttendanceStatus] = useState({});
 
-  const submitAttendance = () => {};
+  const submitAttendance = async () => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+    if (!token) {
+      console.log("No token found, authentication required.");
+      return;
+    }
+
+    try {
+      await Promise.all(
+        students.map((student) =>
+          singleStudentAttendance(
+            student._id,
+            attendanceStatus[student._id],
+            token
+          )
+        )
+      );
+      alert("Attendance marked successfully!");
+      fetchStudents(); // Refresh student data
+    } catch (error) {
+      console.error("Error in submitAttendance [marking attendance]", error);
+    }
+  };
 
   const handleAttendance = (studentId, status) => {
     setAttendanceStatus((prevStatus) => ({
@@ -35,7 +58,7 @@ const AttendanceTeacher = () => {
     }));
   };
 
-  const fetchSingleStudentAttendance = async (studentId, status) => {
+  const singleStudentAttendance = async (studentId, status) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
     try {
       // studentId, date, status, classId
@@ -50,7 +73,7 @@ const AttendanceTeacher = () => {
       );
       console.log("Marking Attendance", response);
     } catch (error) {
-      console.log("Error in marking attendee", error);
+      console.log("Error in marking attendence", error);
     }
   };
 
