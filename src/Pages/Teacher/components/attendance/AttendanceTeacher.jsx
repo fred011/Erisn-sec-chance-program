@@ -101,31 +101,44 @@ const AttendanceTeacher = () => {
   }, []);
 
   const [students, setStudents] = useState([]);
-
-  const fetchStudents = () => {
+  const [attendanceChecked, setAttendanceChecked] = useState(false);
+  const checkAttendanceAndFetchStudents = async () => {
     // Get the token from localStorage
     const token = localStorage.getItem("token");
+    try {
+      if (selectedClass) {
+        const responseStudent = await axios.get(
+          `${baseAPI}/student/fetch-with-query`,
+          {
+            params: { student_class: selectedClass },
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the token in the headers
+            },
+          }
+        );
+        const responseCheck = await axios.get(
+          `${baseAPI}/attendance/check/${selectedClass}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the token in the headers
+            },
+          }
+        );
+        console.log("Check Attendance:", responseCheck);
+        console.log("Response Students", responseStudent.data.students); // Inspect the response
 
-    axios
-      .get(`${baseAPI}/student/fetch-with-query`, {
-        params: { student_class: selectedClass },
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
-        },
-      })
-      .then((res) => {
-        console.log("Response Students", res.data.students); // Inspect the response
-        setStudents(res.data.students);
-        res.data.students.forEach((student) => {
+        setStudents(responseStudent.data.students);
+        responseStudent.data.students.forEach((student) => {
           handleAttendance(student._id, "present");
         });
-      })
-      .catch((e) => {
-        console.log("Error in fetching students", e.response || e.message);
-      });
+      }
+    } catch (error) {
+      console.log("Error in Check Attendance", error);
+    }
   };
+
   useEffect(() => {
-    fetchStudents();
+    checkAttendanceAndFetchStudents();
   }, [selectedClass]);
 
   return (
