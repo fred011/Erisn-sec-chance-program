@@ -220,7 +220,7 @@ const AttendanceTeacher = () => {
               ))}
             </TableBody>
           </Table>
-          <Button varient="contained" onClick={submitAttendance}>
+          <Button variant="contained" onClick={submitAttendance}>
             Take Attendance
           </Button>
         </TableContainer>
