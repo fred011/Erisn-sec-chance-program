@@ -26,8 +26,8 @@ const AttendanceTeacher = () => {
 
   const [attendanceStatus, setAttendanceStatus] = useState({});
 
-  const handleAttendance = () => {};
-  const submitAttendance = (studentId, status) => {
+  const submitAttendance = () => {};
+  const handleAttendance = (studentId, status) => {
     setAttendanceStatus((prevStatus) => ({
       ...prevStatus,
       [studentId]: status,
@@ -74,7 +74,7 @@ const AttendanceTeacher = () => {
         console.log("Response Students", res.data.students); // Inspect the response
         setStudents(res.data.students);
         res.data.students.forEach((student) => {
-          handleAttendance(student._id, "absent");
+          handleAttendance(student._id, "present");
         });
       })
       .catch((e) => {
