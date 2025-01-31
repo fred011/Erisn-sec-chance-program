@@ -24,7 +24,15 @@ const AttendanceTeacher = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
 
+  const [attendanceStatus, setAttendanceStatus] = useState();
+
   const handleAttendance = () => {};
+  const submitAttendance = (studentId, status) => {
+    setAttendanceStatus((prevStatus) => ({
+      ...prevStatus,
+      [studentId]: status,
+    }));
+  };
 
   const fetchAttendeeClass = async () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
@@ -65,6 +73,9 @@ const AttendanceTeacher = () => {
       .then((res) => {
         console.log("Response Students", res.data.students); // Inspect the response
         setStudents(res.data.students);
+        res.data.students.forEach((student) => {
+          handleAttendance(student._id, "present");
+        });
       })
       .catch((e) => {
         console.log("Error in fetching students", e.response || e.message);
@@ -133,11 +144,11 @@ const AttendanceTeacher = () => {
                     <FormControl sx={{ minWidth: "250px" }}>
                       <InputLabel>Attendance</InputLabel>
                       <Select
-                        value={"present"}
+                        value={attendanceStatus[student._id]}
                         label="Attendance"
-                        // onChange={(e) => {
-                        //   setSelectedClass(e.target.value);
-                        // }}
+                        onChange={(e) => {
+                          handleAttendance(student._id.e.target.value);
+                        }}
                       >
                         <MenuItem value={"present"}>Present</MenuItem>
                         <MenuItem value={"absent"}>Absent</MenuItem>
@@ -148,7 +159,7 @@ const AttendanceTeacher = () => {
               ))}
             </TableBody>
           </Table>
-          <Button varient="constained" onClick={handleAttendance}>
+          <Button varient="constained" onClick={submitAttendance}>
             Take Attendance
           </Button>
         </TableContainer>
