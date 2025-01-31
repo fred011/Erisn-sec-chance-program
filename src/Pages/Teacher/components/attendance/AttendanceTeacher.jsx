@@ -125,12 +125,14 @@ const AttendanceTeacher = () => {
           }
         );
         console.log("Check Attendance:", responseCheck);
-        console.log("Response Students", responseStudent.data.students); // Inspect the response
-
-        setStudents(responseStudent.data.students);
-        responseStudent.data.students.forEach((student) => {
-          handleAttendance(student._id, "present");
-        });
+        if (!responseCheck.data.attendanceTaken) {
+          setStudents(responseStudent.data.students);
+          responseStudent.data.students.forEach((student) => {
+            handleAttendance(student._id, "present");
+          });
+        } else {
+          setAttendanceChecked(true);
+        }
       }
     } catch (error) {
       console.log("Error in Check Attendance", error);
@@ -163,6 +165,7 @@ const AttendanceTeacher = () => {
                 label="Class"
                 onChange={(e) => {
                   setSelectedClass(e.target.value);
+                  setAttendanceChecked(false);
                 }}
               >
                 <MenuItem value={""}>Select Class</MenuItem>
@@ -176,7 +179,7 @@ const AttendanceTeacher = () => {
           </Box>
         </Paper>
       ) : (
-        <Alert severity="error">You are not an Attendee on any class.</Alert>
+        <Alert severity="error">You are not an Attendee of any class.</Alert>
       )}
 
       {students.length > 0 ? (
@@ -220,7 +223,13 @@ const AttendanceTeacher = () => {
           </Button>
         </TableContainer>
       ) : (
-        <Alert severity="error">There are no students in this class.</Alert>
+        <>
+          <Alert severity="error">
+            {attendanceChecked
+              ? "Attendance Already taken for this class today"
+              : "There are no students in this class."}
+          </Alert>
+        </>
       )}
     </>
   );
