@@ -208,7 +208,7 @@ const AttendanceTeacher = () => {
                         value={attendanceStatus[student._id]}
                         label="Attendance"
                         onChange={(e) => {
-                          handleAttendance(student._id.e.target.value);
+                          handleAttendance(student._id, e.target.value);
                         }}
                       >
                         <MenuItem value={"present"}>Present</MenuItem>
