@@ -27,11 +27,31 @@ const AttendanceTeacher = () => {
   const [attendanceStatus, setAttendanceStatus] = useState({});
 
   const submitAttendance = () => {};
+
   const handleAttendance = (studentId, status) => {
     setAttendanceStatus((prevStatus) => ({
       ...prevStatus,
       [studentId]: status,
     }));
+  };
+
+  const fetchSingleStudentAttendance = async (studentId, status) => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+    try {
+      // studentId, date, status, classId
+      const response = await axios.get(
+        `${baseAPI}/attendance/mark`,
+        { studentId, date: new Date(), classId: selectedClass, status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in the request header
+          },
+        }
+      );
+      console.log("Marking Attendance", response);
+    } catch (error) {
+      console.log("Error in marking attendee", error);
+    }
   };
 
   const fetchAttendeeClass = async () => {
