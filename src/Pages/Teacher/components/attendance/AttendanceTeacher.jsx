@@ -45,7 +45,6 @@ const AttendanceTeacher = () => {
         )
       );
       alert("Attendance marked successfully!");
-      fetchStudents(); // Refresh student data
     } catch (error) {
       console.error("Error in submitAttendance [marking attendance]", error);
     }
