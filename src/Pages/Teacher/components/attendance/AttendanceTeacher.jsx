@@ -24,7 +24,7 @@ const AttendanceTeacher = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
 
-  const [attendanceStatus, setAttendanceStatus] = useState();
+  const [attendanceStatus, setAttendanceStatus] = useState({});
 
   const handleAttendance = () => {};
   const submitAttendance = (studentId, status) => {
