@@ -74,7 +74,7 @@ const AttendanceTeacher = () => {
         console.log("Response Students", res.data.students); // Inspect the response
         setStudents(res.data.students);
         res.data.students.forEach((student) => {
-          handleAttendance(student._id, "present");
+          handleAttendance(student._id, "absent");
         });
       })
       .catch((e) => {
