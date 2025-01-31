@@ -78,7 +78,7 @@ const AttendanceTeacher = () => {
   };
 
   const fetchAttendeeClass = async () => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
     try {
       const response = await axios.get(`${baseAPI}/class/attendee`, {
@@ -86,10 +86,12 @@ const AttendanceTeacher = () => {
           Authorization: `Bearer ${token}`, // Include token in the request header
         },
       });
+
       console.log("Attendee class Res:", response);
       setClasses(response.data.data);
+
       if (response.data.data.length > 0) {
-        setSelectedClass(response.data.data[0]);
+        setSelectedClass(response.data.data[0]._id); // Set only the _id, not the whole object
       }
     } catch (error) {
       console.log("Error in fetching all Teacher Attendee Data", error);
@@ -161,14 +163,14 @@ const AttendanceTeacher = () => {
             <FormControl sx={{ minWidth: "250px" }}>
               <InputLabel>Class</InputLabel>
               <Select
-                value={selectedClass}
+                value={selectedClass || ""}
                 label="Class"
                 onChange={(e) => {
-                  setSelectedClass(e.target.value);
+                  setSelectedClass(e.target.value); // Ensure value is an _id
                   setAttendanceChecked(false);
                 }}
               >
-                <MenuItem value={""}>Select Class</MenuItem>
+                <MenuItem value="">Select Class</MenuItem>
                 {classes.map((x) => (
                   <MenuItem key={x._id} value={x._id}>
                     {x.class_text}
