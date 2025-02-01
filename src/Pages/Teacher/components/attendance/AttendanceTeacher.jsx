@@ -85,7 +85,7 @@ const AttendanceTeacher = () => {
           Authorization: `Bearer ${token}`, // Include token in the request header
         },
       });
-      const token = localStorage.getItem("token");
+
       if (token) {
         const payload = JSON.parse(atob(token.split(".")[1]));
         console.log("Decoded Token Payload:", payload);
