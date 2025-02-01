@@ -82,7 +82,7 @@ const AttendanceDetails = () => {
       }
     } catch (error) {
       console.error("Error in fetching student attendance:", error);
-      navigate("/admin/attendance");
+      navigate("/admin/attendance"); // Redirect on error
     } finally {
       setLoading(false); // Set loading to false after the API call
     }
@@ -96,12 +96,23 @@ const AttendanceDetails = () => {
   // Log loading state
   console.log("Loading state:", loading);
 
+  // Display loader while loading
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center">
-        <CircularProgress />
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <div>
+          <CircularProgress />
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            Loading Attendance Data...
+          </Typography>
+        </div>
       </Box>
-    ); // Show loader while loading
+    );
   }
 
   return (
