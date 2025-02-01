@@ -7,6 +7,8 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid2";
 import {
+  Box,
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -16,7 +18,6 @@ import {
   Typography,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
-import CircularIndeterminate from "@mui/material/CircularProgress"; // Import loader component
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -96,7 +97,11 @@ const AttendanceDetails = () => {
   console.log("Loading state:", loading);
 
   if (loading) {
-    return <CircularIndeterminate />; // Show loader while loading
+    return (
+      <Box display="flex" justifyContent="center">
+        <CircularProgress />
+      </Box>
+    ); // Show loader while loading
   }
 
   return (
