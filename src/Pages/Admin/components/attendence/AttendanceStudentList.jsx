@@ -58,15 +58,12 @@ export default function AttendanceStudentList() {
 
   const fetchAttendanceForStudent = async (studentId) => {
     try {
-      // Get the token from localStorage (or context if using state management)
       const token = localStorage.getItem("token");
-
-      // Include token in the Authorization header
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
+
+      console.log(response.data); // Add this to check the response data
 
       const attendanceRecords = response.data;
       const totalClasses = attendanceRecords.length;
@@ -80,7 +77,7 @@ export default function AttendanceStudentList() {
     } catch (error) {
       console.error(
         `Error fetching attendance for student ${studentId}`,
-        error.response || error.message
+        error
       );
       return { studentId, attendancePercentage: 0 };
     }
