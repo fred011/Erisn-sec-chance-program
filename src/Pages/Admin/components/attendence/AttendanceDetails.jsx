@@ -52,40 +52,28 @@ const AttendanceDetails = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error("Authorization token is missing");
+        console.error("Authorization token is missing");
+        return;
       }
 
       console.log(`Fetching attendance for student ID: ${studentId}`);
 
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("API Response:", response.data);
+      console.log("API Response:", response);
 
       if (!Array.isArray(response.data)) {
-        throw new Error("Invalid data format received from the server");
+        throw new Error("Invalid data format received");
       }
 
-      let presentCount = 0;
-      let absentCount = 0;
-
-      response.data.forEach((attendance) => {
-        if (attendance.status === "present") presentCount++;
-        else if (attendance.status === "absent") absentCount++;
-      });
-
       setAttendanceData(response.data);
-      setPresent(presentCount);
-      setAbsent(absentCount);
+      setPresent(response.data.filter((a) => a.status === "present").length);
+      setAbsent(response.data.filter((a) => a.status === "absent").length);
     } catch (err) {
-      console.error("Error fetching student attendance:", err);
-      setError(
-        err.response?.data?.message ||
-          "An error occurred while fetching attendance data."
-      );
+      console.error("Error fetching attendance:", err);
+      setError(err.message);
       navigate("/admin/attendance"); // Redirect on error
     } finally {
       setLoading(false);
@@ -112,7 +100,7 @@ const AttendanceDetails = () => {
         <div>
           <CircularProgress />
           <Typography variant="h6" sx={{ mt: 2 }}>
-            Loading Attendance Data...
+            Loading... Please wait
           </Typography>
         </div>
       </Box>
