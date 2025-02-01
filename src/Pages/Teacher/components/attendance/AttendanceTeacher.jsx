@@ -44,7 +44,12 @@ const AttendanceTeacher = () => {
           )
         )
       );
+
       alert("Attendance marked successfully!");
+
+      // Update state to immediately reflect attendance taken
+      setAttendanceChecked(true);
+      setStudents([]); // Clear students since attendance is already taken
     } catch (error) {
       console.error("Error in submitAttendance [marking attendance]", error);
     }
