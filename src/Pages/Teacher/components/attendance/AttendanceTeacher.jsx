@@ -10,6 +10,7 @@ import {
   TableRow,
   Paper,
   Box,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -23,41 +24,40 @@ const AttendanceTeacher = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [students, setStudents] = useState([]);
+  const [attendanceStatus, setAttendanceStatus] = useState({});
   const [loading, setLoading] = useState(false);
   const [attendanceChecked, setAttendanceChecked] = useState(false);
 
-  useEffect(() => {
-    const fetchAttendeeClass = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("token");
+  const fetchAttendeeClass = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("token");
 
-      try {
-        const response = await axios.get(`${baseAPI}/class/attendee`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+    try {
+      const response = await axios.get(`${baseAPI}/class/attendee`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-        setClasses(response.data.data);
-        if (response.data.data.length > 0) {
-          setSelectedClass(response.data.data[0]._id);
-        }
-      } catch (error) {
-        console.error("Error fetching classes", error);
-      } finally {
-        setLoading(false);
+      setClasses(response.data.data);
+      if (response.data.data.length > 0) {
+        setSelectedClass(response.data.data[0]._id);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching classes", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchAttendeeClass();
   }, []);
 
-  useEffect(() => {
-    if (!selectedClass) return;
+  const checkAttendanceAndFetchStudents = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("token");
 
-    const checkAttendanceAndFetchStudents = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-
-      try {
+    try {
+      if (selectedClass) {
         const [studentResponse, attendanceResponse] = await Promise.all([
           axios.get(`${baseAPI}/student/fetch-with-query`, {
             params: { student_class: selectedClass },
@@ -70,18 +70,59 @@ const AttendanceTeacher = () => {
 
         if (!attendanceResponse.data.attendanceTaken) {
           setStudents(studentResponse.data.students);
+          studentResponse.data.students.forEach((student) => {
+            setAttendanceStatus((prevStatus) => ({
+              ...prevStatus,
+              [student._id]: "present",
+            }));
+          });
         } else {
           setAttendanceChecked(true);
         }
-      } catch (error) {
-        console.error("Error fetching students", error);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching students", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    checkAttendanceAndFetchStudents();
+  useEffect(() => {
+    if (selectedClass) {
+      checkAttendanceAndFetchStudents();
+    }
   }, [selectedClass]);
+
+  const submitAttendance = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.log("No token found, authentication required.");
+      return;
+    }
+
+    try {
+      await Promise.all(
+        students.map((student) =>
+          axios.post(
+            `${baseAPI}/attendance/mark`,
+            {
+              studentId: student._id,
+              date: new Date(),
+              classId: selectedClass,
+              status: attendanceStatus[student._id],
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          )
+        )
+      );
+      alert("Attendance marked successfully!");
+      setAttendanceChecked(true); // Mark attendance as taken
+      setStudents([]); // Clear students since attendance is already taken
+    } catch (error) {
+      console.error("Error in submitAttendance", error);
+    }
+  };
 
   return (
     <>
@@ -132,26 +173,61 @@ const AttendanceTeacher = () => {
             <Alert severity="info">
               Attendance has already been taken for this class today.
             </Alert>
-          ) : students.length > 0 ? (
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }}>
-                <TableHead>
-                  <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                    <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                      Student Name
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {students.map((student) => (
-                    <TableRow key={student._id}>
-                      <TableCell>{student.name}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : null}
+          ) : (
+            <>
+              {students.length > 0 && (
+                <>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }}>
+                      <TableHead>
+                        <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                          <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                            Student Name
+                          </TableCell>
+                          <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                            Action
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {students.map((student) => (
+                          <TableRow key={student._id}>
+                            <TableCell>{student.name}</TableCell>
+                            <TableCell>
+                              <FormControl sx={{ minWidth: "150px" }}>
+                                <InputLabel>Attendance</InputLabel>
+                                <Select
+                                  value={
+                                    attendanceStatus[student._id] || "present"
+                                  }
+                                  label="Attendance"
+                                  onChange={(e) =>
+                                    setAttendanceStatus((prevStatus) => ({
+                                      ...prevStatus,
+                                      [student._id]: e.target.value,
+                                    }))
+                                  }
+                                >
+                                  <MenuItem value="present">Present</MenuItem>
+                                  <MenuItem value="absent">Absent</MenuItem>
+                                </Select>
+                              </FormControl>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+
+                  <Box display="flex" justifyContent="center" mt={2}>
+                    <Button variant="contained" onClick={submitAttendance}>
+                      Take Attendance
+                    </Button>
+                  </Box>
+                </>
+              )}
+            </>
+          )}
         </>
       )}
     </>
