@@ -61,12 +61,12 @@ const AttendanceTeacher = () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
     try {
       // studentId, date, status, classId
-      const response = await axios.get(
+      const response = await axios.post(
         `${baseAPI}/attendance/mark`,
         { studentId, date: new Date(), classId: selectedClass, status },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Include token in the request header
+            Authorization: `Bearer ${token}`, // Ensure the token is prefixed with 'Bearer'
           },
         }
       );
