@@ -59,6 +59,9 @@ const AttendanceDetails = () => {
 
       const respData = response.data;
 
+      // Log response data to check if it’s correct
+      console.log("Attendance Data Response:", respData);
+
       if (respData) {
         let presentCount = 0;
         let absentCount = 0;
@@ -67,6 +70,10 @@ const AttendanceDetails = () => {
           if (attendance.status === "present") presentCount++;
           else if (attendance.status === "absent") absentCount++;
         });
+
+        // Log present and absent counts
+        console.log("Present Count:", presentCount);
+        console.log("Absent Count:", absentCount);
 
         setAttendanceData(respData);
         setPresent(presentCount);
@@ -81,8 +88,12 @@ const AttendanceDetails = () => {
   };
 
   useEffect(() => {
+    console.log("Fetching attendance data for student:", studentId); // Log to check if useEffect runs
     fetchAttendanceData();
-  }, []);
+  }, [studentId]); // Added studentId dependency
+
+  // Log loading state
+  console.log("Loading state:", loading);
 
   if (loading) {
     return <CircularIndeterminate />; // Show loader while loading
