@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import {
@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Radio,
   FormLabel,
+  CircularProgress,
 } from "@mui/material";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -21,34 +22,33 @@ import { baseAPI } from "../../../environment";
 export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Loading state
 
   const formik = useFormik({
     initialValues: { email: "", password: "", role: "" },
     validationSchema: loginSchema,
     onSubmit: (values, { resetForm }) => {
+      setLoading(true); // Show loader
       const data = { email: values.email, password: values.password };
 
       axios
         .post(`${baseAPI}/${values.role}/login`, data, {
-          withCredentials: true, // Ensure cookies are sent
+          withCredentials: true,
         })
         .then((res) => {
-          // Assuming `login` handles user authentication in your app context or state
           login({ ...res.data, role: values.role });
           console.log("Logged in successfully");
           alert("Logged in successfully");
-          resetForm(); // Reset form after submission
-
-          // Redirect user to their respective role's page
+          resetForm();
           navigate(`/${values.role}`);
         })
         .catch((err) => {
           console.log("Failed to login", err);
-          // Improved error handling
           const errorMessage =
             err.response?.data?.error || err.message || "Error logging in";
           alert(errorMessage);
-        });
+        })
+        .finally(() => setLoading(false)); // Hide loader
     },
   });
 
@@ -118,9 +118,10 @@ export default function Login() {
         <p style={{ color: "red" }}>{formik.errors.role}</p>
       )}
 
-      <Button type="submit" variant="contained">
-        Log In
+      <Button type="submit" variant="contained" disabled={loading}>
+        {loading ? <CircularProgress size={24} /> : "Log In"}
       </Button>
+
       {/* <p>
         Dont have an account?{" "}
         <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
