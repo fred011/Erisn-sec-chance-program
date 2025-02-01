@@ -64,25 +64,33 @@ export default function AttendanceStudentList() {
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
-      console.log(response.data); // Logs the full response
-      const attendanceRecords = response.data;
+
+      console.log("Response Data for Attendance:", response.data); // Log the full response data
+
+      const attendanceRecords = response.data; // Check how the data is structured
+
+      // Check if attendanceRecords is an array and contains the necessary information
       const totalClasses = attendanceRecords.length;
       const presentCount = attendanceRecords.filter(
         (record) => record.status === "Present"
       ).length;
-  
-      const attendancePercentage = totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
-  
-      console.log(`Attendance for student ${studentId}: ${attendancePercentage}%`);
-  
+
+      const attendancePercentage =
+        totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
+
+      console.log(
+        `Attendance for student ${studentId}: ${attendancePercentage}%`
+      );
+
       return { studentId, attendancePercentage };
     } catch (error) {
-      console.error(`Error fetching attendance for student ${studentId}`, error);
+      console.error(
+        `Error fetching attendance for student ${studentId}`,
+        error
+      );
       return { studentId, attendancePercentage: 0 };
     }
   };
-  
 
   // Fetch all available classes
   const fetchClasses = () => {
