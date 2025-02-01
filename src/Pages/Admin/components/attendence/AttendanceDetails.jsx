@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { baseAPI } from "../../../../environment";
@@ -18,6 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
+import CircularIndeterminate from "./CircularIndeterminate"; // Import loader component
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -32,6 +31,7 @@ const AttendanceDetails = () => {
   const [present, setPresent] = useState(0);
   const [absent, setAbsent] = useState(0);
   const [attendanceData, setAttendanceData] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
   const { id: studentId } = useParams();
   const navigate = useNavigate();
 
@@ -75,13 +75,18 @@ const AttendanceDetails = () => {
     } catch (error) {
       console.error("Error in fetching student attendance:", error);
       navigate("/admin/attendance");
+    } finally {
+      setLoading(false); // Set loading to false after the API call
     }
   };
 
   useEffect(() => {
     fetchAttendanceData();
-    // Dependency array intentionally left empty to run only once on mount
   }, []);
+
+  if (loading) {
+    return <CircularIndeterminate />; // Show loader while loading
+  }
 
   return (
     <>
