@@ -85,9 +85,11 @@ const AttendanceTeacher = () => {
           Authorization: `Bearer ${token}`, // Include token in the request header
         },
       });
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      console.log("User role:", user?.role || "No role found");
-      console.log(token);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        console.log("Decoded Token Payload:", payload);
+      }
 
       console.log("Attendee class Res:", response);
       setClasses(response.data.data);
