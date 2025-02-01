@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
-import CircularIndeterminate from "./CircularIndeterminate"; // Import loader component
+import CircularIndeterminate from "@mui/material/CircularProgress"; // Import loader component
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
