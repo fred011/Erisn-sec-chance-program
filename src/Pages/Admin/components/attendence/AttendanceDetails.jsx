@@ -33,6 +33,7 @@ const AttendanceDetails = () => {
   const [absent, setAbsent] = useState(0);
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(true); // Added loading state
+  const [error, setError] = useState(null); // State for error handling
   const { id: studentId } = useParams();
   const navigate = useNavigate();
 
@@ -51,6 +52,13 @@ const AttendanceDetails = () => {
       // Get the token from localStorage or context
       const token = localStorage.getItem("token"); // Or use context if the token is stored there
 
+      // Check if token exists
+      if (!token) {
+        throw new Error("Authorization token is missing");
+      }
+
+      console.log("Token:", token); // Log token for debugging
+
       // Include the token in the Authorization header
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
         headers: {
@@ -60,10 +68,9 @@ const AttendanceDetails = () => {
 
       const respData = response.data;
 
-      // Log response data to check if it’s correct
-      console.log("Attendance Data Response:", respData);
+      console.log("Attendance Data Response:", respData); // Log response data for debugging
 
-      if (respData) {
+      if (Array.isArray(respData)) {
         let presentCount = 0;
         let absentCount = 0;
 
@@ -72,16 +79,17 @@ const AttendanceDetails = () => {
           else if (attendance.status === "absent") absentCount++;
         });
 
-        // Log present and absent counts
-        console.log("Present Count:", presentCount);
-        console.log("Absent Count:", absentCount);
-
         setAttendanceData(respData);
         setPresent(presentCount);
         setAbsent(absentCount);
+      } else {
+        throw new Error("Invalid data format received from the server");
       }
     } catch (error) {
-      console.error("Error in fetching student attendance:", error);
+      console.error("Error fetching student attendance:", error);
+      setError(
+        error.message || "An error occurred while fetching attendance data."
+      );
       navigate("/admin/attendance"); // Redirect on error
     } finally {
       setLoading(false); // Set loading to false after the API call
@@ -93,10 +101,6 @@ const AttendanceDetails = () => {
     fetchAttendanceData();
   }, [studentId]); // Added studentId dependency
 
-  // Log loading state
-  console.log("Loading state:", loading);
-
-  // Display loader while loading
   if (loading) {
     return (
       <Box
@@ -111,6 +115,22 @@ const AttendanceDetails = () => {
             Loading Attendance Data...
           </Typography>
         </div>
+      </Box>
+    );
+  }
+
+  // Show error message if there was an error during the fetch
+  if (error) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
       </Box>
     );
   }
