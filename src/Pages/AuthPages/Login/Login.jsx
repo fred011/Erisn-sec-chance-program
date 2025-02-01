@@ -40,20 +40,18 @@ export default function Login() {
         })
         .then((res) => {
           login({ ...res.data, role: values.role });
-          console.log("Logged in successfully");
           setSnackbarMessage("Logged in successfully");
           setSnackbarSeverity("success");
-          setSnackbarOpen(true);
+          setSnackbarOpen(true); // Open Snackbar for success
           resetForm();
           navigate(`/${values.role}`);
         })
         .catch((err) => {
-          console.log("Failed to login", err);
           const errorMessage =
             err.response?.data?.error || err.message || "Error logging in";
           setSnackbarMessage(errorMessage);
           setSnackbarSeverity("error");
-          setSnackbarOpen(true);
+          setSnackbarOpen(true); // Open Snackbar for error
         })
         .finally(() => setLoading(false)); // Hide loader
     },
