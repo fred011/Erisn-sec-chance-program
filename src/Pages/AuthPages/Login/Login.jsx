@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../Components/yupSchema/loginSchema";
 import {
@@ -13,16 +13,19 @@ import {
   FormLabel,
   CircularProgress,
 } from "@mui/material";
-
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { baseAPI } from "../../../environment";
+import SnackbarComponent from "../../../Components/SnackbarComponent"; // Import the SnackbarComponent
 
 export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // Default severity
 
   const formik = useFormik({
     initialValues: { email: "", password: "", role: "" },
@@ -38,7 +41,9 @@ export default function Login() {
         .then((res) => {
           login({ ...res.data, role: values.role });
           console.log("Logged in successfully");
-          alert("Logged in successfully");
+          setSnackbarMessage("Logged in successfully");
+          setSnackbarSeverity("success");
+          setSnackbarOpen(true);
           resetForm();
           navigate(`/${values.role}`);
         })
@@ -46,11 +51,17 @@ export default function Login() {
           console.log("Failed to login", err);
           const errorMessage =
             err.response?.data?.error || err.message || "Error logging in";
-          alert(errorMessage);
+          setSnackbarMessage(errorMessage);
+          setSnackbarSeverity("error");
+          setSnackbarOpen(true);
         })
         .finally(() => setLoading(false)); // Hide loader
     },
   });
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
     <Box
@@ -122,12 +133,12 @@ export default function Login() {
         {loading ? <CircularProgress size={24} /> : "Log In"}
       </Button>
 
-      {/* <p>
-        Dont have an account?{" "}
-        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
-          Register
-        </Link>
-      </p> */}
+      <SnackbarComponent
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </Box>
   );
 }
