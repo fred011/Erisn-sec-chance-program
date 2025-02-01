@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { baseAPI } from "../../../../environment";
@@ -129,7 +128,11 @@ const AttendanceTeacher = () => {
             </Alert>
           )}
 
-          {students.length > 0 && (
+          {attendanceChecked ? (
+            <Alert severity="info">
+              Attendance has already been taken for this class today.
+            </Alert>
+          ) : students.length > 0 ? (
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }}>
                 <TableHead>
@@ -148,7 +151,7 @@ const AttendanceTeacher = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-          )}
+          ) : null}
         </>
       )}
     </>
