@@ -42,8 +42,8 @@ export default function AttendanceStudentList() {
   const [students, setStudents] = useState([]);
   const [attendanceData, setAttendanceData] = useState({});
   const [params, setParams] = useState({});
-  const [selectedClass, setSelectedClass] = useState(null);
 
+  // Fetch attendance for all students
   const fetchAttendanceForStudents = async (studentsList) => {
     const attendancePromises = studentsList.map((student) =>
       fetchAttendanceForStudent(student._id)
@@ -57,6 +57,7 @@ export default function AttendanceStudentList() {
     console.log(updatedAttendanceData);
   };
 
+  // Fetch attendance for a specific student
   const fetchAttendanceForStudent = async (studentId) => {
     try {
       const token = localStorage.getItem("token");
@@ -84,6 +85,7 @@ export default function AttendanceStudentList() {
     }
   };
 
+  // Fetch all available classes
   const fetchClasses = () => {
     const token = localStorage.getItem("token");
 
@@ -101,6 +103,7 @@ export default function AttendanceStudentList() {
       });
   };
 
+  // Fetch students based on parameters (including selected class)
   const fetchStudents = () => {
     const token = localStorage.getItem("token");
 
@@ -118,14 +121,16 @@ export default function AttendanceStudentList() {
       });
   };
 
+  // Handle class selection
   const handleClass = (e) => {
-    setSelectedClass(e.target.value);
+    const selectedClassId = e.target.value;
     setParams((prevParams) => ({
       ...prevParams,
-      student_class: e.target.value || undefined,
+      student_class: selectedClassId || undefined,
     }));
   };
 
+  // Handle search input change
   const handleSearch = (e) => {
     setParams((prevParams) => ({
       ...prevParams,
@@ -218,7 +223,9 @@ export default function AttendanceStudentList() {
                     ))}
                   </Select>
                 </FormControl>
-                {selectedClass && <Attendee classId={selectedClass} />}
+                {params.student_class && (
+                  <Attendee classId={params.student_class} />
+                )}
               </Box>
             </Item>
           </Grid2>
