@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { baseAPI } from "../../../environment";
-import SnackbarComponent from "../../../Components/SnackbarComponent"; // Import the SnackbarComponent
+import SnackbarComponent from "../../../Components/SnackBar/SnackbarComponent"; // Import the SnackbarComponent
 
 export default function Login() {
   const { login } = useContext(AuthContext);
