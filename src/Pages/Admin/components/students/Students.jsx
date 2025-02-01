@@ -192,9 +192,6 @@ export default function Students() {
   const fetchStudents = () => {
     // Get the token from localStorage
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
-    console.log("User role:", user?.role);
-    console.log(token);
 
     axios
       .get(`${baseAPI}/student/fetch-with-query`, {
