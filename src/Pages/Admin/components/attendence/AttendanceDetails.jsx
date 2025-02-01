@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { baseAPI } from "../../../../environment";
+import { baseAPI } from "../../../../environment"; // Ensure this URL is correct
 import axios from "axios";
 
 import { styled } from "@mui/material/styles";
@@ -32,12 +32,13 @@ const AttendanceDetails = () => {
   const [present, setPresent] = useState(0);
   const [absent, setAbsent] = useState(0);
   const [attendanceData, setAttendanceData] = useState([]);
-  const [loading, setLoading] = useState(true); // Added loading state
-  const [error, setError] = useState(null); // State for error handling
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const { id: studentId } = useParams();
   const navigate = useNavigate();
 
-  // Utility to convert date into readable format
+  // Utility function to format date
   const convertDate = (dateString) => {
     const date = new Date(dateString);
     return `${date.getDate().toString().padStart(2, "0")}-${(
@@ -49,57 +50,56 @@ const AttendanceDetails = () => {
 
   const fetchAttendanceData = async () => {
     try {
-      // Get the token from localStorage or context
-      const token = localStorage.getItem("token"); // Or use context if the token is stored there
-
-      // Check if token exists
+      const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("Authorization token is missing");
       }
 
-      console.log("Token:", token); // Log token for debugging
+      console.log(`Fetching attendance for student ID: ${studentId}`);
 
-      // Include the token in the Authorization header
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Add token to the headers
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      const respData = response.data;
+      console.log("API Response:", response.data);
 
-      console.log("Attendance Data Response:", respData); // Log response data for debugging
-
-      if (Array.isArray(respData)) {
-        let presentCount = 0;
-        let absentCount = 0;
-
-        respData.forEach((attendance) => {
-          if (attendance.status === "present") presentCount++;
-          else if (attendance.status === "absent") absentCount++;
-        });
-
-        setAttendanceData(respData);
-        setPresent(presentCount);
-        setAbsent(absentCount);
-      } else {
+      if (!Array.isArray(response.data)) {
         throw new Error("Invalid data format received from the server");
       }
-    } catch (error) {
-      console.error("Error fetching student attendance:", error);
+
+      let presentCount = 0;
+      let absentCount = 0;
+
+      response.data.forEach((attendance) => {
+        if (attendance.status === "present") presentCount++;
+        else if (attendance.status === "absent") absentCount++;
+      });
+
+      setAttendanceData(response.data);
+      setPresent(presentCount);
+      setAbsent(absentCount);
+    } catch (err) {
+      console.error("Error fetching student attendance:", err);
       setError(
-        error.message || "An error occurred while fetching attendance data."
+        err.response?.data?.message ||
+          "An error occurred while fetching attendance data."
       );
       navigate("/admin/attendance"); // Redirect on error
     } finally {
-      setLoading(false); // Set loading to false after the API call
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log("Fetching attendance data for student:", studentId); // Log to check if useEffect runs
-    fetchAttendanceData();
-  }, [studentId]); // Added studentId dependency
+    if (studentId) {
+      fetchAttendanceData();
+    } else {
+      setError("Invalid student ID provided.");
+      setLoading(false);
+    }
+  }, [studentId]);
 
   if (loading) {
     return (
@@ -119,7 +119,6 @@ const AttendanceDetails = () => {
     );
   }
 
-  // Show error message if there was an error during the fetch
   if (error) {
     return (
       <Box
@@ -142,7 +141,6 @@ const AttendanceDetails = () => {
       </Typography>
 
       <Grid container spacing={3}>
-        {/* Pie Chart */}
         <Grid xs={12} md={6}>
           <Item>
             <Typography variant="h6" gutterBottom>
@@ -166,7 +164,6 @@ const AttendanceDetails = () => {
           </Item>
         </Grid>
 
-        {/* Attendance Table */}
         <Grid xs={12} md={6}>
           <Item>
             <Typography variant="h6" gutterBottom>
@@ -181,32 +178,40 @@ const AttendanceDetails = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {attendanceData.map((attendance) => (
-                    <TableRow
-                      key={attendance._id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                        backgroundColor:
-                          attendance.status === "present"
-                            ? "rgba(76, 175, 80, 0.1)"
-                            : "rgba(244, 67, 54, 0.1)",
-                      }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {convertDate(attendance.date)}
-                      </TableCell>
-                      <TableCell
-                        align="right"
+                  {attendanceData.length > 0 ? (
+                    attendanceData.map((attendance) => (
+                      <TableRow
+                        key={attendance._id}
                         sx={{
-                          fontWeight: "bold",
-                          color:
-                            attendance.status === "present" ? "green" : "red",
+                          "&:last-child td, &:last-child th": { border: 0 },
+                          backgroundColor:
+                            attendance.status === "present"
+                              ? "rgba(76, 175, 80, 0.1)"
+                              : "rgba(244, 67, 54, 0.1)",
                         }}
                       >
-                        {attendance.status}
+                        <TableCell component="th" scope="row">
+                          {convertDate(attendance.date)}
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          sx={{
+                            fontWeight: "bold",
+                            color:
+                              attendance.status === "present" ? "green" : "red",
+                          }}
+                        >
+                          {attendance.status}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={2} align="center">
+                        No attendance records found.
                       </TableCell>
                     </TableRow>
-                  ))}
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
