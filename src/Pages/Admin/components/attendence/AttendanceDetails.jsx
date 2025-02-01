@@ -64,8 +64,8 @@ const AttendanceDetails = () => {
         let absentCount = 0;
 
         respData.forEach((attendance) => {
-          if (attendance.status === "Present") presentCount++;
-          else if (attendance.status === "Absent") absentCount++;
+          if (attendance.status === "present") presentCount++;
+          else if (attendance.status === "absent") absentCount++;
         });
 
         setAttendanceData(respData);
@@ -140,7 +140,7 @@ const AttendanceDetails = () => {
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                         backgroundColor:
-                          attendance.status === "Present"
+                          attendance.status === "present"
                             ? "rgba(76, 175, 80, 0.1)"
                             : "rgba(244, 67, 54, 0.1)",
                       }}
@@ -153,7 +153,7 @@ const AttendanceDetails = () => {
                         sx={{
                           fontWeight: "bold",
                           color:
-                            attendance.status === "Present" ? "green" : "red",
+                            attendance.status === "present" ? "green" : "red",
                         }}
                       >
                         {attendance.status}
