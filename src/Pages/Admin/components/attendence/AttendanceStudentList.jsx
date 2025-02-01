@@ -72,7 +72,7 @@ export default function AttendanceStudentList() {
       // Check if attendanceRecords is an array and contains the necessary information
       const totalClasses = attendanceRecords.length;
       const presentCount = attendanceRecords.filter(
-        (record) => record.status === "Present"
+        (record) => record.status === "present"
       ).length;
 
       const attendancePercentage =
