@@ -54,6 +54,7 @@ export default function AttendanceStudentList() {
       updatedAttendanceData[studentId] = attendancePercentage;
     });
     setAttendanceData(updatedAttendanceData);
+    console.log(updatedAttendanceData);
   };
 
   const fetchAttendanceForStudent = async (studentId) => {
