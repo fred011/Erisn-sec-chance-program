@@ -12,6 +12,7 @@ import {
   FormLabel,
   CircularProgress,
   Typography,
+  Paper,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -71,84 +72,86 @@ export default function Login() {
   });
 
   return (
-    <Box
-      component="form"
-      sx={{
-        "& > :not(style)": { m: 1 },
-        display: "flex",
-        flexDirection: "column",
-        width: "60vw",
-        minWidth: "230px",
-        margin: "auto",
-        marginTop: "50px",
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={formik.handleSubmit}
-    >
-      <Typography
-        variant="h3"
+    <Paper sx={{ backgroundColor: "lightgray" }}>
+      <Box
+        component="form"
         sx={{
-          textAlign: "center",
-          fontWeight: "700",
-          color: "primary.main",
-          mb: 5,
+          "& > :not(style)": { m: 1 },
+          display: "flex",
+          flexDirection: "column",
+          width: "60vw",
+          minWidth: "230px",
+          margin: "auto",
+          marginTop: "50px",
         }}
+        noValidate
+        autoComplete="off"
+        onSubmit={formik.handleSubmit}
       >
-        Login
-      </Typography>
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: "center",
+            fontWeight: "700",
+            color: "primary.main",
+            mb: 5,
+          }}
+        >
+          Login
+        </Typography>
 
-      <TextField
-        name="email"
-        label="Email"
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.touched.email && formik.errors.email && (
-        <p style={{ color: "red" }}>{formik.errors.email}</p>
-      )}
-
-      <TextField
-        type="password"
-        name="password"
-        label="Password"
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.touched.password && formik.errors.password && (
-        <p style={{ color: "red" }}>{formik.errors.password}</p>
-      )}
-
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Log In As:</FormLabel>
-        <RadioGroup
-          name="role"
-          value={formik.values.role}
+        <TextField
+          name="email"
+          label="Email"
+          value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-        >
-          <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-          <FormControlLabel
-            value="teacher"
-            control={<Radio />}
-            label="Teacher"
-          />
-          <FormControlLabel
-            value="student"
-            control={<Radio />}
-            label="Student"
-          />
-        </RadioGroup>
-      </FormControl>
-      {formik.touched.role && formik.errors.role && (
-        <p style={{ color: "red" }}>{formik.errors.role}</p>
-      )}
+        />
+        {formik.touched.email && formik.errors.email && (
+          <p style={{ color: "red" }}>{formik.errors.email}</p>
+        )}
 
-      <Button type="submit" variant="contained" disabled={loading}>
-        {loading ? <CircularProgress size={24} /> : "Log In"}
-      </Button>
-    </Box>
+        <TextField
+          type="password"
+          name="password"
+          label="Password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.password && formik.errors.password && (
+          <p style={{ color: "red" }}>{formik.errors.password}</p>
+        )}
+
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Log In As:</FormLabel>
+          <RadioGroup
+            name="role"
+            value={formik.values.role}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+            <FormControlLabel
+              value="teacher"
+              control={<Radio />}
+              label="Teacher"
+            />
+            <FormControlLabel
+              value="student"
+              control={<Radio />}
+              label="Student"
+            />
+          </RadioGroup>
+        </FormControl>
+        {formik.touched.role && formik.errors.role && (
+          <p style={{ color: "red" }}>{formik.errors.role}</p>
+        )}
+
+        <Button type="submit" variant="contained" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : "Log In"}
+        </Button>
+      </Box>
+    </Paper>
   );
 }
