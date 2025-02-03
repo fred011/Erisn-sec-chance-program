@@ -45,11 +45,11 @@ function App() {
           <Route path="/admin-reg" element={<Register />} />
           <Route path="/logout" element={<SignOut />} />
 
-          {/* Admin Route */}
+          {/* Admin Routes */}
           <Route
             path="/admin/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="admin">
                 <Admin />
               </ProtectedRoute>
             }
@@ -68,11 +68,11 @@ function App() {
             <Route path="teachers" element={<Teachers />} />
           </Route>
 
-          {/* Teacher Route */}
+          {/* Teacher Routes */}
           <Route
             path="/teacher/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="teacher">
                 <Teacher />
               </ProtectedRoute>
             }
@@ -84,11 +84,11 @@ function App() {
             <Route path="notice" element={<NoticeTeacher />} />
           </Route>
 
-          {/* Student Route */}
+          {/* Student Routes */}
           <Route
             path="/student/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="student">
                 <Student />
               </ProtectedRoute>
             }
