@@ -12,7 +12,6 @@ import {
   FormLabel,
   CircularProgress,
   Typography,
-  Paper,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -72,7 +71,15 @@ export default function Login() {
   });
 
   return (
-    <Paper sx={{ backgroundColor: "lightgray" }}>
+    <Box
+      sx={{
+        backgroundColor: "#f5f5f5", // Light gray background
+        minHeight: "100vh", // Full page height
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Box
         component="form"
         sx={{
@@ -81,8 +88,10 @@ export default function Login() {
           flexDirection: "column",
           width: "60vw",
           minWidth: "230px",
-          margin: "auto",
-          marginTop: "50px",
+          backgroundColor: "white", // Keep form background white for contrast
+          padding: "30px",
+          borderRadius: "10px",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Soft shadow
         }}
         noValidate
         autoComplete="off"
@@ -152,6 +161,6 @@ export default function Login() {
           {loading ? <CircularProgress size={24} /> : "Log In"}
         </Button>
       </Box>
-    </Paper>
+    </Box>
   );
 }
