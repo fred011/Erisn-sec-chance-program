@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { baseAPI } from "../../environment";
 
 export const AuthContext = createContext();
 
@@ -9,16 +10,13 @@ export const AuthProvider = ({ children }) => {
   // Function to verify token
   const verifyToken = async (token) => {
     try {
-      const response = await fetch(
-        "https://your-backend-url/api/verify-token",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`https://${baseAPI}/verify-token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await response.json();
       if (data.success && data.valid) {
