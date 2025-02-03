@@ -187,12 +187,7 @@ export default function Admin() {
   };
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
@@ -315,6 +310,6 @@ export default function Admin() {
           <Outlet />
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }
