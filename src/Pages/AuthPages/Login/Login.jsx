@@ -31,16 +31,43 @@ export default function Login() {
       setLoading(true); // Show loader
       const data = { email: values.email, password: values.password };
 
+      // First, attempt login
       axios
         .post(`${baseAPI}/${values.role}/login`, data, {
           withCredentials: true,
         })
         .then((res) => {
+          // Save user data after successful login
           login({ ...res.data, role: values.role });
-          console.log("Logged in successfully");
-          alert("Logged in successfully");
-          resetForm();
-          navigate(`/${values.role}`);
+
+          // Now verify token
+          const token = res.data.token; // Assuming the token is returned in response data
+          axios
+            .post(
+              `${baseAPI}/verify-token`,
+              {},
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((verificationResponse) => {
+              console.log(
+                "Token verified successfully",
+                verificationResponse.data
+              );
+              console.log("Logged in successfully");
+              alert("Logged in successfully");
+              // Proceed to the user's role page after successful verification
+              resetForm();
+              navigate(`/${values.role}`);
+            })
+            .catch((verificationError) => {
+              console.error("Token verification failed:", verificationError);
+              alert("Token verification failed. Please try again.");
+            });
         })
         .catch((err) => {
           console.log("Failed to login", err);
@@ -121,13 +148,6 @@ export default function Login() {
       <Button type="submit" variant="contained" disabled={loading}>
         {loading ? <CircularProgress size={24} /> : "Log In"}
       </Button>
-
-      {/* <p>
-        Dont have an account?{" "}
-        <Link to="/register" style={{ textDecoration: "none", color: "blue" }}>
-          Register
-        </Link>
-      </p> */}
     </Box>
   );
 }
