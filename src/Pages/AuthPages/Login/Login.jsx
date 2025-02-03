@@ -64,6 +64,8 @@ export default function Login() {
               localStorage.setItem("auth", JSON.stringify(res.data)); // Store user data
 
               // Proceed to the user's role page after successful verification
+              console.log("Auth data:", res.data);
+              console.log("Token:", token);
               resetForm();
               navigate(`/${values.role}`);
             })

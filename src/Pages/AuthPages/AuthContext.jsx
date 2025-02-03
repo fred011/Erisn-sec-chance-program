@@ -38,9 +38,10 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     if (savedUser && token) {
+      // Ensure token exists before verifying
       verifyToken(token);
     } else {
-      setLoading(false); // No token, stop loading
+      setLoading(false); // No token or user data, stop loading
     }
   }, []);
 
