@@ -1,13 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react/prop-types */
 import React, { createContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
   const [auth, setAuth] = useState(() => {
     const savedUser = localStorage.getItem("auth");
     return savedUser ? JSON.parse(savedUser) : null;
@@ -16,25 +11,25 @@ export const AuthProvider = ({ children }) => {
   const login = (user) => {
     setAuth(user);
     localStorage.setItem("auth", JSON.stringify(user));
-    localStorage.setItem("token", user.token || "");
+
+    if (user.token) {
+      localStorage.setItem("token", user.token); // Store token separately
+    } else {
+      console.error("Login response does not include a token.");
+    }
   };
 
   const logout = () => {
     setAuth(null);
     localStorage.removeItem("auth");
-    localStorage.removeItem("token");
-    navigate("/login", { replace: true }); // Redirect to login page
+    localStorage.removeItem("token"); // Also clear the token from localStorage
   };
 
   useEffect(() => {
-    const checkToken = () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        logout(); // Log out if no token
-      }
-    };
-
-    checkToken();
+    const savedUser = localStorage.getItem("auth");
+    if (savedUser) {
+      setAuth(JSON.parse(savedUser));
+    }
   }, []);
 
   return (
