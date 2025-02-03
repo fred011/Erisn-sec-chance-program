@@ -117,8 +117,7 @@ export default function ExaminationsStudent() {
           textAlign: "center",
         }}
       >
-        Examinations for Class : [
-        {selectedClass ? selectedClass.class_text : "no class"}]
+        Examinations
       </Typography>
 
       {/* Exam Table */}
