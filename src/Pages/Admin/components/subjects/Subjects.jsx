@@ -144,171 +144,171 @@ const Subject = () => {
     fetchAllSubjects();
   }, []);
   return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
-        }}
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh", // Full page height
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Typography
+        variant="h3"
+        sx={{ textAlign: "center", fontWeight: "700", mb: 4 }}
       >
-        <Typography
-          variant="h3"
-          sx={{ textAlign: "center", fontWeight: "700", mb: 4 }}
-        >
-          Subjects
-        </Typography>
+        Subjects
+      </Typography>
 
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1 },
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            maxWidth: "600px",
-            margin: "auto",
-            background: "#fff",
-            padding: 3,
-            borderRadius: 2,
-            boxShadow: 2,
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={Formik.handleSubmit}
-        >
-          {edit ? (
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: "center",
-                fontWeight: "700",
-                mb: 2,
-                color: "#1976d2",
-              }}
-            >
-              Edit Subject
-            </Typography>
-          ) : (
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: "center",
-                fontWeight: "700",
-                mb: 2,
-                color: "#1976d2",
-              }}
-            >
-              Add New Subject
-            </Typography>
-          )}
-
-          <TextField
-            name="subject_name"
-            label="Subject Name"
-            value={Formik.values.subject_name}
-            onChange={Formik.handleChange}
-            onBlur={Formik.handleBlur}
-            sx={{ mb: 2 }}
-          />
-          {Formik.touched.subject_name && Formik.errors.subject_name && (
-            <Typography sx={{ color: "red", fontSize: "0.875rem", mb: 2 }}>
-              {Formik.errors.subject_name}
-            </Typography>
-          )}
-
-          <TextField
-            name="subject_codename"
-            label="Subject Codename"
-            value={Formik.values.subject_codename}
-            onChange={Formik.handleChange}
-            onBlur={Formik.handleBlur}
-            sx={{ mb: 2 }}
-          />
-          {Formik.touched.subject_codename &&
-            Formik.errors.subject_codename && (
-              <Typography sx={{ color: "red", fontSize: "0.875rem", mb: 2 }}>
-                {Formik.errors.subject_codename}
-              </Typography>
-            )}
-
-          <Button
-            sx={{ width: "120px", alignSelf: "center" }}
-            type="submit"
-            variant="contained"
-            color="primary"
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1 },
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          maxWidth: "600px",
+          margin: "auto",
+          background: "#fff",
+          padding: 3,
+          borderRadius: 2,
+          boxShadow: 2,
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={Formik.handleSubmit}
+      >
+        {edit ? (
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              fontWeight: "700",
+              mb: 2,
+              color: "#1976d2",
+            }}
           >
-            Submit
-          </Button>
+            Edit Subject
+          </Typography>
+        ) : (
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              fontWeight: "700",
+              mb: 2,
+              color: "#1976d2",
+            }}
+          >
+            Add New Subject
+          </Typography>
+        )}
 
-          {edit && (
-            <Button
-              sx={{ width: "120px", alignSelf: "center", mt: 2 }}
-              onClick={cancelEdit}
-              type="button"
-              variant="outlined"
-              color="secondary"
-            >
-              Cancel
-            </Button>
-          )}
-        </Box>
+        <TextField
+          name="subject_name"
+          label="Subject Name"
+          value={Formik.values.subject_name}
+          onChange={Formik.handleChange}
+          onBlur={Formik.handleBlur}
+          sx={{ mb: 2 }}
+        />
+        {Formik.touched.subject_name && Formik.errors.subject_name && (
+          <Typography sx={{ color: "red", fontSize: "0.875rem", mb: 2 }}>
+            {Formik.errors.subject_name}
+          </Typography>
+        )}
 
-        <Divider sx={{ my: 4 }} />
+        <TextField
+          name="subject_codename"
+          label="Subject Codename"
+          value={Formik.values.subject_codename}
+          onChange={Formik.handleChange}
+          onBlur={Formik.handleBlur}
+          sx={{ mb: 2 }}
+        />
+        {Formik.touched.subject_codename && Formik.errors.subject_codename && (
+          <Typography sx={{ color: "red", fontSize: "0.875rem", mb: 2 }}>
+            {Formik.errors.subject_codename}
+          </Typography>
+        )}
 
-        <TableContainer
-          component={Paper}
-          sx={{ marginTop: 3, borderRadius: 2, boxShadow: 2 }}
+        <Button
+          sx={{ width: "120px", alignSelf: "center" }}
+          type="submit"
+          variant="contained"
+          color="primary"
         >
-          <Table sx={{ minWidth: 650 }} aria-label="subjects table">
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Subject Name
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Subject Codename
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "#fff", fontWeight: "bold" }}
-                >
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {subjects &&
-                subjects.map((subject) => (
-                  <TableRow key={subject._id}>
-                    <TableCell>{subject.subject_name}</TableCell>
-                    <TableCell>{subject.subject_codename}</TableCell>
-                    <TableCell align="center">
-                      <Button
-                        onClick={() =>
-                          handleEdit(
-                            subject._id,
-                            subject.subject_name,
-                            subject.subject_codename
-                          )
-                        }
-                        sx={{ mr: 2 }}
-                      >
-                        <EditIcon />
-                      </Button>
-                      <Button
-                        onClick={() => handleDelete(subject._id)}
-                        sx={{ color: "red" }}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          Submit
+        </Button>
+
+        {edit && (
+          <Button
+            sx={{ width: "120px", alignSelf: "center", mt: 2 }}
+            onClick={cancelEdit}
+            type="button"
+            variant="outlined"
+            color="secondary"
+          >
+            Cancel
+          </Button>
+        )}
       </Box>
-    </>
+
+      <Divider sx={{ my: 4 }} />
+
+      <TableContainer
+        component={Paper}
+        sx={{ marginTop: 3, borderRadius: 2, boxShadow: 2 }}
+      >
+        <Table sx={{ minWidth: 650 }} aria-label="subjects table">
+          <TableHead>
+            <TableRow sx={{ backgroundColor: "#1976d2" }}>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Subject Name
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Subject Codename
+              </TableCell>
+              <TableCell
+                align="center"
+                sx={{ color: "#fff", fontWeight: "bold" }}
+              >
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {subjects &&
+              subjects.map((subject) => (
+                <TableRow key={subject._id}>
+                  <TableCell>{subject.subject_name}</TableCell>
+                  <TableCell>{subject.subject_codename}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                      onClick={() =>
+                        handleEdit(
+                          subject._id,
+                          subject.subject_name,
+                          subject.subject_codename
+                        )
+                      }
+                      sx={{ mr: 2 }}
+                    >
+                      <EditIcon />
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(subject._id)}
+                      sx={{ color: "red" }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

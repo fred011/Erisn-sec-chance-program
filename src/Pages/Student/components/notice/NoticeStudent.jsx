@@ -31,68 +31,66 @@ const NoticeStudent = () => {
   }, []);
 
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh",
+      }}
+    >
+      <Typography
+        variant="h3"
         sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
+          textAlign: "center",
+          fontWeight: "700",
+          color: "primary.main",
+          mb: 5,
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            textAlign: "center",
-            fontWeight: "700",
-            color: "primary.main",
-            mb: 5,
-          }}
-        >
-          Notices
-        </Typography>
+        Notices
+      </Typography>
 
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: 2,
-            justifyContent: "center",
-          }}
-        >
-          {notices.map((notice) => (
-            <Paper
-              key={notice._id}
-              sx={{
-                width: 300,
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                transition: "transform 0.3s ease",
-                "&:hover": {
-                  transform: "scale(1.02)",
-                  boxShadow: 3,
-                },
-              }}
-              elevation={2}
-            >
-              <Box>
-                <Typography variant="h5" color="primary" gutterBottom>
-                  {notice.title}
-                </Typography>
-                <Typography variant="body1" color="text.secondary" paragraph>
-                  {notice.message}
-                </Typography>
-                <Typography variant="subtitle2" color="text.disabled">
-                  Audience: {notice.audience.toUpperCase()}
-                </Typography>
-              </Box>
-            </Paper>
-          ))}
-        </Box>
+      <Box
+        component="div"
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 2,
+          justifyContent: "center",
+        }}
+      >
+        {notices.map((notice) => (
+          <Paper
+            key={notice._id}
+            sx={{
+              width: 300,
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.02)",
+                boxShadow: 3,
+              },
+            }}
+            elevation={2}
+          >
+            <Box>
+              <Typography variant="h5" color="primary" gutterBottom>
+                {notice.title}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" paragraph>
+                {notice.message}
+              </Typography>
+              <Typography variant="subtitle2" color="text.disabled">
+                Audience: {notice.audience.toUpperCase()}
+              </Typography>
+            </Box>
+          </Paper>
+        ))}
       </Box>
-    </>
+    </Box>
   );
 };
 

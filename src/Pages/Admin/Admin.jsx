@@ -187,104 +187,103 @@ export default function Admin() {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
-        }}
-      >
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <AppBar position="fixed" open={open}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                sx={[
-                  {
-                    marginRight: 5,
-                  },
-                  open && { display: "none" },
-                ]}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap component="div">
-                Erisn Student Management System
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Drawer variant="permanent" open={open}>
-            <DrawerHeader>
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === "rtl" ? (
-                  <ChevronRightIcon />
-                ) : (
-                  <ChevronLeftIcon />
-                )}
-              </IconButton>
-            </DrawerHeader>
-            <Divider />
-            <List>
-              {navArr.map((navItem, index) => (
-                <ListItem key={index} disablePadding sx={{ display: "block" }}>
-                  <ListItemButton
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh",
+      }}
+    >
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={[
+                {
+                  marginRight: 5,
+                },
+                open && { display: "none" },
+              ]}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Erisn Student Management System
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {navArr.map((navItem, index) => (
+              <ListItem key={index} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  sx={[
+                    {
+                      minHeight: 48,
+                      px: 2.5,
+                    },
+                    open
+                      ? {
+                          justifyContent: "initial",
+                        }
+                      : {
+                          justifyContent: "center",
+                        },
+                  ]}
+                  onClick={() => {
+                    handleNavigation(navItem.link);
+                  }}
+                >
+                  <ListItemIcon
                     sx={[
                       {
-                        minHeight: 48,
-                        px: 2.5,
+                        minWidth: 0,
+                        justifyContent: "center",
                       },
                       open
                         ? {
-                            justifyContent: "initial",
+                            mr: 3,
                           }
                         : {
-                            justifyContent: "center",
+                            mr: "auto",
                           },
                     ]}
-                    onClick={() => {
-                      handleNavigation(navItem.link);
-                    }}
                   >
-                    <ListItemIcon
-                      sx={[
-                        {
-                          minWidth: 0,
-                          justifyContent: "center",
-                        },
-                        open
-                          ? {
-                              mr: 3,
-                            }
-                          : {
-                              mr: "auto",
-                            },
-                      ]}
-                    >
-                      {<navItem.icon />}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={navItem.component}
-                      sx={[
-                        open
-                          ? {
-                              opacity: 1,
-                            }
-                          : {
-                              opacity: 0,
-                            },
-                      ]}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            {/* Logout Button */}
-            {/* <ListItem disablePadding sx={{ display: "block" }}>
+                    {<navItem.icon />}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={navItem.component}
+                    sx={[
+                      open
+                        ? {
+                            opacity: 1,
+                          }
+                        : {
+                            opacity: 0,
+                          },
+                    ]}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          {/* Logout Button */}
+          {/* <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -310,13 +309,12 @@ export default function Admin() {
               />
             </ListItemButton>
           </ListItem> */}
-          </Drawer>
-          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-            <DrawerHeader />
-            <Outlet />
-          </Box>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+          <Outlet />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }

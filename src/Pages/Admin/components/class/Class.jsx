@@ -134,143 +134,137 @@ const Class = () => {
   });
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh",
+      }}
+    >
+      <Typography
+        variant="h3"
+        sx={{ textAlign: "center", fontWeight: "700", mb: 3 }}
+      >
+        Classes
+      </Typography>
       <Box
+        component="form"
+        onSubmit={formik.handleSubmit}
         sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          width: { xs: "90%", sm: "60%" },
+          margin: "auto",
+          padding: 3,
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+          background: "#fff",
         }}
       >
         <Typography
-          variant="h3"
-          sx={{ textAlign: "center", fontWeight: "700", mb: 3 }}
-        >
-          Classes
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={formik.handleSubmit}
+          variant="h4"
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            width: { xs: "90%", sm: "60%" },
-            margin: "auto",
-            padding: 3,
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "#fff",
+            textAlign: "center",
+            fontWeight: "700",
+            mb: 2,
+            color: "#1976d2",
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              textAlign: "center",
-              fontWeight: "700",
-              mb: 2,
-              color: "#1976d2",
-            }}
-          >
-            {edit ? "Edit Class" : "Add New Class"}
-          </Typography>
+          {edit ? "Edit Class" : "Add New Class"}
+        </Typography>
 
-          <TextField
-            name="class_text"
-            label="Class Text"
-            value={formik.values.class_text}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.class_text && Boolean(formik.errors.class_text)
-            }
-            helperText={formik.touched.class_text && formik.errors.class_text}
-            fullWidth
-          />
+        <TextField
+          name="class_text"
+          label="Class Text"
+          value={formik.values.class_text}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.class_text && Boolean(formik.errors.class_text)}
+          helperText={formik.touched.class_text && formik.errors.class_text}
+          fullWidth
+        />
 
-          <TextField
-            name="class_num"
-            label="Class Number"
-            value={formik.values.class_num}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.class_num && Boolean(formik.errors.class_num)}
-            helperText={formik.touched.class_num && formik.errors.class_num}
-            fullWidth
-          />
+        <TextField
+          name="class_num"
+          label="Class Number"
+          value={formik.values.class_num}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.class_num && Boolean(formik.errors.class_num)}
+          helperText={formik.touched.class_num && formik.errors.class_num}
+          fullWidth
+        />
 
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: edit ? "space-between" : "center",
-              gap: 2,
-            }}
-          >
-            <Button type="submit" variant="contained" sx={{ width: "120px" }}>
-              Submit
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: edit ? "space-between" : "center",
+            gap: 2,
+          }}
+        >
+          <Button type="submit" variant="contained" sx={{ width: "120px" }}>
+            Submit
+          </Button>
+
+          {edit && (
+            <Button
+              onClick={cancelEdit}
+              variant="outlined"
+              color="secondary"
+              sx={{ width: "120px" }}
+            >
+              Cancel
             </Button>
-
-            {edit && (
-              <Button
-                onClick={cancelEdit}
-                variant="outlined"
-                color="secondary"
-                sx={{ width: "120px" }}
-              >
-                Cancel
-              </Button>
-            )}
-          </Box>
+          )}
         </Box>
+      </Box>
 
-        <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-          <Table>
-            <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
-              <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Class Text
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Class Number
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Actions
+      <TableContainer component={Paper} sx={{ marginTop: 4 }}>
+        <Table>
+          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableRow sx={{ backgroundColor: "#1976d2" }}>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Class Text
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Class Number
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {classes.map((x) => (
+              <TableRow
+                key={x._id}
+                sx={{
+                  "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
+                }}
+              >
+                <TableCell>{x.class_text}</TableCell>
+                <TableCell>{x.class_num}</TableCell>
+                <TableCell>
+                  <IconButton
+                    onClick={() => handleEdit(x._id, x.class_text, x.class_num)}
+                    aria-label="edit"
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => handleDelete(x._id)}
+                    aria-label="delete"
+                    sx={{ color: "red" }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {classes.map((x) => (
-                <TableRow
-                  key={x._id}
-                  sx={{
-                    "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
-                  }}
-                >
-                  <TableCell>{x.class_text}</TableCell>
-                  <TableCell>{x.class_num}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={() =>
-                        handleEdit(x._id, x.class_text, x.class_num)
-                      }
-                      aria-label="edit"
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDelete(x._id)}
-                      aria-label="delete"
-                      sx={{ color: "red" }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

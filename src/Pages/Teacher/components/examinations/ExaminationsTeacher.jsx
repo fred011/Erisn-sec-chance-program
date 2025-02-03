@@ -110,94 +110,92 @@ export default function ExaminationsTeacher() {
   }, []);
 
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh",
+      }}
+    >
+      {/* Class Selection Section */}
+      <Typography
+        variant="h4"
         sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
+          fontWeight: "500",
+          color: "#1976d2",
+          marginBottom: 2,
+          textTransform: "uppercase",
+          textAlign: "center",
         }}
       >
-        {/* Class Selection Section */}
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: "500",
-            color: "#1976d2",
-            marginBottom: 2,
-            textTransform: "uppercase",
-            textAlign: "center",
-          }}
-        >
-          Examinations
-        </Typography>
-        <Paper
-          sx={{
-            padding: "20px",
-            marginBottom: "20px",
-            backgroundColor: "#f5f5f5",
-          }}
-        >
-          <Box>
-            <FormControl sx={{ minWidth: "250px" }}>
-              <InputLabel>Class</InputLabel>
-              <Select
-                value={selectedClass}
-                label="Class"
-                onChange={(e) => {
-                  setSelectedClass(e.target.value);
-                }}
-              >
-                <MenuItem value={""}>Select Class</MenuItem>
-                {classes?.map((x) => (
-                  <MenuItem key={x._id} value={x._id}>
-                    {x.class_text}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </Paper>
+        Examinations
+      </Typography>
+      <Paper
+        sx={{
+          padding: "20px",
+          marginBottom: "20px",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        <Box>
+          <FormControl sx={{ minWidth: "250px" }}>
+            <InputLabel>Class</InputLabel>
+            <Select
+              value={selectedClass}
+              label="Class"
+              onChange={(e) => {
+                setSelectedClass(e.target.value);
+              }}
+            >
+              <MenuItem value={""}>Select Class</MenuItem>
+              {classes?.map((x) => (
+                <MenuItem key={x._id} value={x._id}>
+                  {x.class_text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+      </Paper>
 
-        {/* Exam Table */}
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="exam table">
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Exam Date
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Subject
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Exam Type
+      {/* Exam Table */}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="exam table">
+          <TableHead>
+            <TableRow sx={{ backgroundColor: "#1976d2" }}>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Exam Date
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Subject
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                Exam Type
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {examinations.length > 0 ? (
+              examinations.map((examination) => (
+                <TableRow key={examination._id}>
+                  <TableCell>{convertDate(examination.examDate)}</TableCell>
+                  <TableCell>
+                    {examination.subject
+                      ? examination.subject.subject_name
+                      : ""}
+                  </TableCell>
+                  <TableCell>{examination.examType}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  No Examinations Found
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {examinations.length > 0 ? (
-                examinations.map((examination) => (
-                  <TableRow key={examination._id}>
-                    <TableCell>{convertDate(examination.examDate)}</TableCell>
-                    <TableCell>
-                      {examination.subject
-                        ? examination.subject.subject_name
-                        : ""}
-                    </TableCell>
-                    <TableCell>{examination.examType}</TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4} align="center">
-                    No Examinations Found
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }

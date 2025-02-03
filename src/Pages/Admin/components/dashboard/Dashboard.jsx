@@ -40,43 +40,41 @@ const Dashboard = () => {
     }
   }, [token]); // This effect runs when the token is set
   return (
-    <>
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh",
+      }}
+    >
       <Box
         sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
+          height: "270px",
+          width: "100%",
+          background: `url(/images/BackG.jpg)`,
+          backgroundSize: "cover",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Box
           sx={{
-            height: "270px",
-            width: "100%",
-            background: `url(/images/BackG.jpg)`,
-            backgroundSize: "cover",
+            textAlign: "center",
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h3" color="lightgrey">
-              Welcome, {adminDetails ? adminDetails.name : "Admin"}
-            </Typography>
+          <Typography variant="h3" color="lightgrey">
+            Welcome, {adminDetails ? adminDetails.name : "Admin"}
+          </Typography>
 
-            <Typography variant="h5" color="grey">
-              To Erisn Africa`s Student Management System
-            </Typography>
-          </Box>
+          <Typography variant="h5" color="grey">
+            To Erisn Africa`s Student Management System
+          </Typography>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

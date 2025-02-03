@@ -190,338 +190,335 @@ export default function Teachers() {
   }, [params]);
 
   return (
-    <>
+    <Box
+      component={"div"}
+      sx={{
+        height: "100%",
+        paddingTop: "20px", // Increased padding for a cleaner look
+        paddingBottom: "20px",
+        backgroundColor: "#f4f6f9", // Light background color for the section
+      }}
+    >
+      <Typography
+        variant="h3"
+        sx={{
+          textAlign: "center",
+          fontWeight: "500",
+          marginBottom: "20px", // Add spacing below the title
+          color: "#333", // Darker color for the heading
+        }}
+      >
+        Teachers
+      </Typography>
+
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 2 }, // Add margin to child elements for spacing
+          display: "flex",
+          flexDirection: "column",
+          width: "60vw",
+          minWidth: "230px",
+          margin: "auto",
+          backgroundColor: "#fff", // White background for the form
+          borderRadius: "8px", // Rounded corners for the form
+          padding: "20px", // Padding inside the form
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Light shadow for form elevation
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={formik.handleSubmit}
+      >
+        {edit ? (
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              fontWeight: "500",
+              marginBottom: "15px", // Add spacing below the title
+              color: "#1976d2", // Highlight edit text with blue
+            }}
+          >
+            Edit Teacher
+          </Typography>
+        ) : (
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              fontWeight: "500",
+              marginBottom: "15px", // Add spacing below the title
+              color: "#1976d2", // Highlight add text with blue
+            }}
+          >
+            Add Teacher
+          </Typography>
+        )}
+
+        {/* Name Input */}
+        <TextField
+          name="name"
+          label="Name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          sx={{ marginBottom: "15px" }} // Add margin for spacing between fields
+        />
+        {formik.touched.name && formik.errors.name && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.name}
+          </Typography>
+        )}
+
+        {/* Email Input */}
+        <TextField
+          name="email"
+          label="Email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          sx={{ marginBottom: "15px" }}
+        />
+        {formik.touched.email && formik.errors.email && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.email}
+          </Typography>
+        )}
+
+        {/* Qualification Input */}
+        <TextField
+          name="qualification"
+          label="Qualification"
+          value={formik.values.qualification}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          sx={{ marginBottom: "15px" }}
+        />
+        {formik.touched.qualification && formik.errors.qualification && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.qualification}
+          </Typography>
+        )}
+
+        {/* Age Input */}
+        <TextField
+          name="age"
+          label="Age"
+          value={formik.values.age}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          sx={{ marginBottom: "15px" }}
+        />
+        {formik.touched.age && formik.errors.age && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.age}
+          </Typography>
+        )}
+
+        {/* Gender Input */}
+        <FormControl fullWidth sx={{ marginBottom: "15px" }}>
+          <InputLabel id="gender">Gender</InputLabel>
+          <Select
+            labelId="gender"
+            id="gender"
+            value={formik.values.gender}
+            label="Gender"
+            name="gender"
+            onChange={formik.handleChange}
+          >
+            <MenuItem value={"Male"}>Male</MenuItem>
+            <MenuItem value={"Female"}>Female</MenuItem>
+            <MenuItem value={"Other"}>Other</MenuItem>
+          </Select>
+        </FormControl>
+        {formik.touched.gender && formik.errors.gender && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.gender}
+          </Typography>
+        )}
+
+        {/* Phone Input */}
+        <TextField
+          name="phone_number"
+          label="Phone Number"
+          value={formik.values.phone_number}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          sx={{ marginBottom: "15px" }}
+        />
+        {formik.touched.phone_number && formik.errors.phone_number && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.phone_number}
+          </Typography>
+        )}
+
+        {/* Password Input */}
+        <TextField
+          type="password"
+          name="password"
+          label="Password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          sx={{ marginBottom: "15px" }}
+        />
+        {formik.touched.password && formik.errors.password && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.password}
+          </Typography>
+        )}
+
+        {/* Confirm Password Input */}
+        <TextField
+          type="password"
+          name="confirm_password"
+          label="Confirm Password"
+          value={formik.values.confirm_password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          sx={{ marginBottom: "15px" }}
+        />
+        {formik.touched.confirm_password && formik.errors.confirm_password && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ marginBottom: "15px" }}
+          >
+            {formik.errors.confirm_password}
+          </Typography>
+        )}
+
+        {/* Submit Button */}
+        <Button
+          sx={{ width: "120px", marginBottom: "15px" }}
+          type="submit"
+          variant="contained"
+        >
+          Submit
+        </Button>
+
+        {edit && (
+          <Button
+            sx={{ width: "120px", marginBottom: "15px" }}
+            onClick={() => cancelEdit()}
+            type="button"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+        )}
+      </Box>
+
       <Box
         component={"div"}
         sx={{
-          height: "100%",
-          paddingTop: "20px", // Increased padding for a cleaner look
-          paddingBottom: "20px",
-          backgroundColor: "#f4f6f9", // Light background color for the section
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: "30px",
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            textAlign: "center",
-            fontWeight: "500",
-            marginBottom: "20px", // Add spacing below the title
-            color: "#333", // Darker color for the heading
+        <TextField
+          label="Search"
+          value={params.search ? params.search : ""}
+          onChange={(e) => {
+            handleSearch(e);
           }}
-        >
-          Teachers
-        </Typography>
-
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 2 }, // Add margin to child elements for spacing
-            display: "flex",
-            flexDirection: "column",
-            width: "60vw",
-            minWidth: "230px",
-            margin: "auto",
-            backgroundColor: "#fff", // White background for the form
-            borderRadius: "8px", // Rounded corners for the form
-            padding: "20px", // Padding inside the form
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Light shadow for form elevation
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={formik.handleSubmit}
-        >
-          {edit ? (
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: "center",
-                fontWeight: "500",
-                marginBottom: "15px", // Add spacing below the title
-                color: "#1976d2", // Highlight edit text with blue
-              }}
-            >
-              Edit Teacher
-            </Typography>
-          ) : (
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: "center",
-                fontWeight: "500",
-                marginBottom: "15px", // Add spacing below the title
-                color: "#1976d2", // Highlight add text with blue
-              }}
-            >
-              Add Teacher
-            </Typography>
-          )}
-
-          {/* Name Input */}
-          <TextField
-            name="name"
-            label="Name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: "15px" }} // Add margin for spacing between fields
-          />
-          {formik.touched.name && formik.errors.name && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ marginBottom: "15px" }}
-            >
-              {formik.errors.name}
-            </Typography>
-          )}
-
-          {/* Email Input */}
-          <TextField
-            name="email"
-            label="Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: "15px" }}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ marginBottom: "15px" }}
-            >
-              {formik.errors.email}
-            </Typography>
-          )}
-
-          {/* Qualification Input */}
-          <TextField
-            name="qualification"
-            label="Qualification"
-            value={formik.values.qualification}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: "15px" }}
-          />
-          {formik.touched.qualification && formik.errors.qualification && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ marginBottom: "15px" }}
-            >
-              {formik.errors.qualification}
-            </Typography>
-          )}
-
-          {/* Age Input */}
-          <TextField
-            name="age"
-            label="Age"
-            value={formik.values.age}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: "15px" }}
-          />
-          {formik.touched.age && formik.errors.age && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ marginBottom: "15px" }}
-            >
-              {formik.errors.age}
-            </Typography>
-          )}
-
-          {/* Gender Input */}
-          <FormControl fullWidth sx={{ marginBottom: "15px" }}>
-            <InputLabel id="gender">Gender</InputLabel>
-            <Select
-              labelId="gender"
-              id="gender"
-              value={formik.values.gender}
-              label="Gender"
-              name="gender"
-              onChange={formik.handleChange}
-            >
-              <MenuItem value={"Male"}>Male</MenuItem>
-              <MenuItem value={"Female"}>Female</MenuItem>
-              <MenuItem value={"Other"}>Other</MenuItem>
-            </Select>
-          </FormControl>
-          {formik.touched.gender && formik.errors.gender && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ marginBottom: "15px" }}
-            >
-              {formik.errors.gender}
-            </Typography>
-          )}
-
-          {/* Phone Input */}
-          <TextField
-            name="phone_number"
-            label="Phone Number"
-            value={formik.values.phone_number}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: "15px" }}
-          />
-          {formik.touched.phone_number && formik.errors.phone_number && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ marginBottom: "15px" }}
-            >
-              {formik.errors.phone_number}
-            </Typography>
-          )}
-
-          {/* Password Input */}
-          <TextField
-            type="password"
-            name="password"
-            label="Password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: "15px" }}
-          />
-          {formik.touched.password && formik.errors.password && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ marginBottom: "15px" }}
-            >
-              {formik.errors.password}
-            </Typography>
-          )}
-
-          {/* Confirm Password Input */}
-          <TextField
-            type="password"
-            name="confirm_password"
-            label="Confirm Password"
-            value={formik.values.confirm_password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: "15px" }}
-          />
-          {formik.touched.confirm_password &&
-            formik.errors.confirm_password && (
-              <Typography
-                color="error"
-                variant="body2"
-                sx={{ marginBottom: "15px" }}
-              >
-                {formik.errors.confirm_password}
-              </Typography>
-            )}
-
-          {/* Submit Button */}
-          <Button
-            sx={{ width: "120px", marginBottom: "15px" }}
-            type="submit"
-            variant="contained"
-          >
-            Submit
-          </Button>
-
-          {edit && (
-            <Button
-              sx={{ width: "120px", marginBottom: "15px" }}
-              onClick={() => cancelEdit()}
-              type="button"
-              variant="outlined"
-            >
-              Cancel
-            </Button>
-          )}
-        </Box>
-
-        <Box
-          component={"div"}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "30px",
-          }}
-        >
-          <TextField
-            label="Search"
-            value={params.search ? params.search : ""}
-            onChange={(e) => {
-              handleSearch(e);
-            }}
-            sx={{ width: "300px" }} // Set a width for the search input
-          />
-        </Box>
-
-        {/* Table for Teachers */}
-        <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
-          <Table sx={{ minWidth: 650 }} aria-label="teacher table">
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  <strong>Name</strong>
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  <strong>Email</strong>
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  <strong>Qualification</strong>
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  <strong>Age</strong>
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  <strong>Gender</strong>
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  <strong>Phone Number</strong>
-                </TableCell>
-                <TableCell
-                  sx={{ color: "#fff", fontWeight: "bold" }}
-                  align="center"
-                >
-                  <strong>Actions</strong>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {teachers &&
-                teachers.map((teacher) => (
-                  <TableRow key={teacher._id}>
-                    <TableCell>{teacher.name}</TableCell>
-                    <TableCell>{teacher.email}</TableCell>
-                    <TableCell>{teacher.qualification}</TableCell>
-                    <TableCell>{teacher.age}</TableCell>
-                    <TableCell>{teacher.gender}</TableCell>
-                    <TableCell>{teacher.phone_number}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        onClick={() => {
-                          handleEdit(teacher._id);
-                        }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          handleDelete(teacher._id);
-                        }}
-                        sx={{ color: "red" }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          sx={{ width: "300px" }} // Set a width for the search input
+        />
       </Box>
-    </>
+
+      {/* Table for Teachers */}
+      <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="teacher table">
+          <TableHead>
+            <TableRow sx={{ backgroundColor: "#1976d2" }}>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                <strong>Name</strong>
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                <strong>Email</strong>
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                <strong>Qualification</strong>
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                <strong>Age</strong>
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                <strong>Gender</strong>
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                <strong>Phone Number</strong>
+              </TableCell>
+              <TableCell
+                sx={{ color: "#fff", fontWeight: "bold" }}
+                align="center"
+              >
+                <strong>Actions</strong>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {teachers &&
+              teachers.map((teacher) => (
+                <TableRow key={teacher._id}>
+                  <TableCell>{teacher.name}</TableCell>
+                  <TableCell>{teacher.email}</TableCell>
+                  <TableCell>{teacher.qualification}</TableCell>
+                  <TableCell>{teacher.age}</TableCell>
+                  <TableCell>{teacher.gender}</TableCell>
+                  <TableCell>{teacher.phone_number}</TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      onClick={() => {
+                        handleEdit(teacher._id);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleDelete(teacher._id);
+                      }}
+                      sx={{ color: "red" }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }

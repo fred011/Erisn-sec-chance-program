@@ -91,82 +91,78 @@ export default function Attendee({ classId }) {
   }, [classId]);
 
   return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
-        }}
-      >
-        <Box
-          sx={{ mt: 4, p: 3, border: "1px solid #ddd", borderRadius: "8px" }}
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh",
+      }}
+    >
+      <Box sx={{ mt: 4, p: 3, border: "1px solid #ddd", borderRadius: "8px" }}>
+        <Typography
+          variant="h5"
+          sx={{ mb: 3, fontWeight: "500", textAlign: "center" }}
         >
-          <Typography
-            variant="h5"
-            sx={{ mb: 3, fontWeight: "500", textAlign: "center" }}
-          >
-            Attendee Management
-          </Typography>
+          Attendee Management
+        </Typography>
 
-          {attendee && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 3,
-                p: 2,
-                backgroundColor: "#f9f9f9",
-                borderRadius: "8px",
-              }}
-            >
-              <Typography variant="h6" sx={{ fontWeight: "500" }}>
-                Current Attendee:
-              </Typography>
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: "600", color: "primary.main" }}
-              >
-                {attendee.name}
-              </Typography>
-            </Box>
-          )}
-
-          <FormControl fullWidth sx={{ mb: 3 }}>
-            <InputLabel>Select Teacher</InputLabel>
-            <Select
-              value={selectedTeacher}
-              onChange={(e) => setSelectedTeacher(e.target.value)}
-            >
-              <MenuItem value="">
-                <em>Select Teacher</em>
-              </MenuItem>
-              {teachers.map((teacher) => (
-                <MenuItem key={teacher._id} value={teacher._id}>
-                  {teacher.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <Button
-            variant="contained"
-            fullWidth
+        {attendee && (
+          <Box
             sx={{
-              py: 1.5,
-              fontWeight: "600",
-              backgroundColor: "primary.main",
-              "&:hover": {
-                backgroundColor: "primary.dark",
-              },
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 3,
+              p: 2,
+              backgroundColor: "#f9f9f9",
+              borderRadius: "8px",
             }}
-            onClick={handleSubmit}
           >
-            {attendee ? "Change Attendee" : "Select Attendee"}
-          </Button>
-        </Box>
+            <Typography variant="h6" sx={{ fontWeight: "500" }}>
+              Current Attendee:
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "600", color: "primary.main" }}
+            >
+              {attendee.name}
+            </Typography>
+          </Box>
+        )}
+
+        <FormControl fullWidth sx={{ mb: 3 }}>
+          <InputLabel>Select Teacher</InputLabel>
+          <Select
+            value={selectedTeacher}
+            onChange={(e) => setSelectedTeacher(e.target.value)}
+          >
+            <MenuItem value="">
+              <em>Select Teacher</em>
+            </MenuItem>
+            {teachers.map((teacher) => (
+              <MenuItem key={teacher._id} value={teacher._id}>
+                {teacher.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{
+            py: 1.5,
+            fontWeight: "600",
+            backgroundColor: "primary.main",
+            "&:hover": {
+              backgroundColor: "primary.dark",
+            },
+          }}
+          onClick={handleSubmit}
+        >
+          {attendee ? "Change Attendee" : "Select Attendee"}
+        </Button>
       </Box>
-    </>
+    </Box>
   );
 }
