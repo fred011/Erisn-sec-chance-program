@@ -193,10 +193,8 @@ export default function Teachers() {
     <Box
       component={"div"}
       sx={{
-        height: "100%",
-        paddingTop: "20px", // Increased padding for a cleaner look
-        paddingBottom: "20px",
-        backgroundColor: "#f4f6f9", // Light background color for the section
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh", // Light background color for the section
       }}
     >
       <Typography

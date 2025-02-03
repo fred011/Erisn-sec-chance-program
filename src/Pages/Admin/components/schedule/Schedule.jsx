@@ -117,12 +117,7 @@ export default function Schedule() {
   };
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Typography
         variant="h4"
         sx={{
@@ -222,6 +217,6 @@ export default function Schedule() {
           views={["week", "day", "agenda"]}
         />
       </Box>
-    </Box>
+    </>
   );
 }
