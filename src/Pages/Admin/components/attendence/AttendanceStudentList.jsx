@@ -300,7 +300,7 @@ export default function AttendanceStudentList() {
                           </TableCell>
                           <TableCell>
                             <Link
-                              to={`/school/attendance/${student._id}`}
+                              to={`/admin/attendance/${student._id}`}
                               style={{
                                 textDecoration: "none",
                                 color: "#1976d2",
