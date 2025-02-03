@@ -115,7 +115,6 @@ export default function ExaminationsStudent() {
           fontWeight: "500",
           color: "#1976d2",
           marginBottom: 2,
-          textTransform: "uppercase",
           textAlign: "center",
         }}
       >
