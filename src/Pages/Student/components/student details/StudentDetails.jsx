@@ -61,7 +61,7 @@ export default function StudentDetails() {
                 ["Email", studentDetails.email],
                 ["Age", studentDetails.age],
                 ["Gender", studentDetails.gender],
-                ["Qualification", studentDetails.qualification],
+                ["Class", studentDetails.class],
               ].map(([label, value], index) => (
                 <TableRow key={index}>
                   <TableCell sx={{ fontWeight: "bold" }}>{label}:</TableCell>
