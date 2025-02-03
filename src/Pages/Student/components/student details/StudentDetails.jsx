@@ -11,6 +11,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
+import { Box } from "@mui/material";
 
 export default function StudentDetails() {
   const [studentDetails, setStudentDetails] = React.useState(null);
