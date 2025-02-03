@@ -17,8 +17,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(`${baseAPI}/admin/fetch-single`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in the request header
         },
         withCredentials: true,
       });
