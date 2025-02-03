@@ -66,7 +66,7 @@ const LandingPage = () => {
               style={{
                 margin: "0 16px",
                 cursor: "pointer",
-                fontSize: "18px",
+                fontSize: "20px",
                 textDecoration: "none",
               }}
             >
