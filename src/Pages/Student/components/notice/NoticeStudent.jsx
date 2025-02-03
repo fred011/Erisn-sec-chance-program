@@ -18,11 +18,11 @@ const NoticeStudent = () => {
         },
       })
       .then((res) => {
-        console.log("Teacher Notices", res.data);
+        console.log("Student Notices", res.data);
         setNotices(res.data.data);
       })
       .catch((err) => {
-        console.log("Error in fetching all Teacher notices", err);
+        console.log("Error in fetching all Student notices", err);
       });
   };
 
