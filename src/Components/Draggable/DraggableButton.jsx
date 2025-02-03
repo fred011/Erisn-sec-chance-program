@@ -17,10 +17,16 @@ export default function DraggableButton() {
             background: "transparent",
             zIndex: "9999900000000",
             display: "flex",
+            position: "fixed",
+            top: "0",
           }}
           onClick={modeChange}
         >
-          {dark ? <DarkModeIcon /> : <LightModeIcon />}
+          {dark ? (
+            <DarkModeIcon sx={{ color: "black" }} />
+          ) : (
+            <LightModeIcon sx={{ color: "#fff" }} />
+          )}
         </Button>
       </Draggable>
     </>
