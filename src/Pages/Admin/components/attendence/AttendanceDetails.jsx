@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { baseAPI } from "../../../../environment"; // Ensure this URL is correct
+import { baseAPI } from "../../../../environment";
 import axios from "axios";
 
 import { styled } from "@mui/material/styles";
@@ -16,16 +16,18 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Alert,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   ...theme.typography.body2,
-  padding: theme.spacing(2),
+  padding: theme.spacing(3),
   textAlign: "center",
   color: theme.palette.text.secondary,
-  boxShadow: theme.shadows[3],
+  boxShadow: theme.shadows[4],
+  borderRadius: theme.shape.borderRadius,
 }));
 
 const AttendanceDetails = () => {
@@ -63,8 +65,6 @@ const AttendanceDetails = () => {
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      console.log("API Response:", response);
 
       if (!Array.isArray(response.data)) {
         console.error("Invalid data format:", response.data);
@@ -104,9 +104,6 @@ const AttendanceDetails = () => {
       >
         <div>
           <CircularProgress />
-          <Typography variant="h6" sx={{ mt: 2 }}>
-            Loading... Please wait
-          </Typography>
         </div>
       </Box>
     );
@@ -120,9 +117,7 @@ const AttendanceDetails = () => {
         alignItems="center"
         height="100vh"
       >
-        <Typography variant="h6" color="error">
-          {error}
-        </Typography>
+        <Alert severity="error">{error}</Alert>
       </Box>
     );
   }
@@ -130,20 +125,19 @@ const AttendanceDetails = () => {
   return (
     <>
       {attendanceData.length === 0 ? (
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" align="center">
           No attendance records found.
         </Typography>
       ) : (
-        // Render attendance records here
         <>
-          <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
+          <Typography variant="h4" gutterBottom sx={{ mb: 4, fontWeight: 600 }}>
             Attendance Details
           </Typography>
 
           <Grid container spacing={3}>
-            <Grid xs={12} md={6}>
+            <Grid item xs={12} md={6}>
               <Item>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom sx={{ fontWeight: 500 }}>
                   Attendance Overview
                 </Typography>
                 <PieChart
@@ -158,15 +152,19 @@ const AttendanceDetails = () => {
                   width={400}
                   height={250}
                 />
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
                   Total Attendance Records
                 </Typography>
               </Item>
             </Grid>
 
-            <Grid xs={12} md={6}>
+            <Grid item xs={12} md={6}>
               <Item>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom sx={{ fontWeight: 500 }}>
                   Attendance Records
                 </Typography>
                 <TableContainer component={Paper} elevation={1}>
@@ -188,6 +186,12 @@ const AttendanceDetails = () => {
                                 attendance.status === "present"
                                   ? "rgba(76, 175, 80, 0.1)"
                                   : "rgba(244, 67, 54, 0.1)",
+                              "&:hover": {
+                                backgroundColor:
+                                  attendance.status === "present"
+                                    ? "rgba(76, 175, 80, 0.2)"
+                                    : "rgba(244, 67, 54, 0.2)",
+                              },
                             }}
                           >
                             <TableCell component="th" scope="row">
