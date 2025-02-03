@@ -18,7 +18,8 @@ export default function DraggableButton() {
             zIndex: "9999900000000",
             display: "flex",
             position: "fixed",
-            top: "0",
+            top: "20px",
+            right: "20px",
           }}
           onClick={modeChange}
         >
