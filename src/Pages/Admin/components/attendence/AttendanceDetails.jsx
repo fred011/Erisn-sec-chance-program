@@ -34,6 +34,7 @@ const AttendanceDetails = () => {
   const [present, setPresent] = useState(0);
   const [absent, setAbsent] = useState(0);
   const [attendanceData, setAttendanceData] = useState([]);
+  const [studentName, setStudentName] = useState(""); // For student name
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -60,11 +61,22 @@ const AttendanceDetails = () => {
         return;
       }
 
-      console.log(`Fetching attendance for student ID: ${studentId}`);
-
+      // Fetch student information along with attendance data
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      // Fetch student name using studentId
+      const studentResponse = await axios.get(
+        `${baseAPI}/students/${studentId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (studentResponse.data) {
+        setStudentName(studentResponse.data.name); // Set student name
+      }
 
       if (!Array.isArray(response.data)) {
         console.error("Invalid data format:", response.data);
@@ -130,8 +142,17 @@ const AttendanceDetails = () => {
         </Typography>
       ) : (
         <>
-          <Typography variant="h4" gutterBottom sx={{ mb: 4, fontWeight: 600 }}>
-            Attendance Details
+          <Typography
+            variant="h4"
+            gutterBottom
+            sx={{
+              mb: 4,
+              fontWeight: 600,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            Attendance Details for: {studentName}
           </Typography>
 
           <Grid container spacing={3}>
