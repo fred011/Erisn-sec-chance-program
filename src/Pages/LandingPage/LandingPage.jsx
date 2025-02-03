@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef } from "react";
 import { Link } from "react-scroll";
 import {
   Button,
   Container,
   TextField,
-  Grid,
+  Grid2,
   Box,
   Typography,
 } from "@mui/material";
@@ -125,62 +126,66 @@ const LandingPage = () => {
         <Typography variant="h4" gutterBottom>
           Key Features
         </Typography>
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} sm={6} md={4}>
+        <Grid2 container spacing={4} justifyContent="center">
+          <Grid2 item xs={12} sm={6} md={4}>
             <Box
               sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
             >
               <Typography variant="h6">Student Records</Typography>
               <img src="" alt="Student Records" />
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6} md={4}>
             <Box
               sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
             >
               <Typography variant="h6">Admission Management</Typography>
               <img src="" alt="Admission Management" />
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6} md={4}>
             <Box
               sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
             >
               <Typography variant="h6">Fee Management</Typography>
               <img src="" alt="Fee Management" />
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6} md={4}>
             <Box
               sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
             >
               <Typography variant="h6">Students` Behavior Tracking</Typography>
               <img src="" alt="Students' Behavior Tracking" />
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6} md={4}>
             <Box
               sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
             >
               <Typography variant="h6">Library Management</Typography>
               <img src="" alt="Library Management" />
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6} md={4}>
             <Box
               sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
             >
               <Typography variant="h6">Alerts and Notifications</Typography>
               <img src="" alt="Alerts and Notifications" />
             </Box>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </section>
 
       <section
         id="contact"
         className="contact"
-        style={{ padding: "60px 0", background: "#f4f6f9" }}
+        style={{
+          padding: "60px 0",
+          background: "#f4f6f9",
+          textAlign: "center",
+        }}
       >
         <Container>
           <Typography variant="h4" gutterBottom>
