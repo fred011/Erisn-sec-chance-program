@@ -17,6 +17,7 @@ import {
   Select,
   Alert,
   CircularProgress,
+  Typography,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -126,7 +127,18 @@ const AttendanceTeacher = () => {
 
   return (
     <>
-      <h1>Teacher Attendance</h1>
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "500",
+          color: "#1976d2",
+          marginBottom: 2,
+
+          textAlign: "center",
+        }}
+      >
+        Attendance
+      </Typography>
 
       {loading ? (
         <Box display="flex" justifyContent="center">
