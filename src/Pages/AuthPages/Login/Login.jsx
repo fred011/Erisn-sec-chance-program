@@ -44,7 +44,7 @@ export default function Login() {
           const token = res.data.token; // Assuming the token is returned in response data
           axios
             .post(
-              `${baseAPI}/verify-token`,
+              `${baseAPI}/auth/verify-token`,
               {},
               {
                 headers: {
