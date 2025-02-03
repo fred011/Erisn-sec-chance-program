@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react/prop-types */
 import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,14 +23,18 @@ export const AuthProvider = ({ children }) => {
     setAuth(null);
     localStorage.removeItem("auth");
     localStorage.removeItem("token");
-    navigate("/login", { replace: true }); // Redirect to login
+    navigate("/login", { replace: true }); // Redirect to login page
   };
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("auth");
-    if (savedUser) {
-      setAuth(JSON.parse(savedUser));
-    }
+    const checkToken = () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        logout(); // Log out if no token
+      }
+    };
+
+    checkToken();
   }, []);
 
   return (

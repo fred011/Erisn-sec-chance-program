@@ -16,6 +16,11 @@ const Dashboard = () => {
 
   const fetchAdminDetails = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found, redirecting to login...");
+        return;
+      }
       const response = await API.get(`${baseAPI}/admin/fetch-single`, {
         headers: {
           Authorization: `Bearer ${token}`,

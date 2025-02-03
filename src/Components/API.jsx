@@ -3,16 +3,16 @@ import { useContext } from "react";
 import { AuthContext } from "../Pages/AuthPages/AuthContext";
 
 const API = axios.create({
-  baseURL: "https://erisn-api.onrender.com", // Replace with your actual API URL
+  baseURL: "https://erisn-api.onrender.coms", // Replace with actual API URL
 });
 
-// Add a response interceptor
+// Add an interceptor to handle token expiration
 API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.data.message === "Invalid token.") {
       const { logout } = useContext(AuthContext);
-      logout(); // Automatically logout if token is invalid
+      logout(); // Automatically logout on invalid token
     }
     return Promise.reject(error);
   }
