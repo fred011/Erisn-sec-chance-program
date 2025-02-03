@@ -18,6 +18,10 @@ export default function StudentDetails() {
   const [studentDetails, setStudentDetails] = React.useState(null);
 
   const fetchStudentDetails = async () => {
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
     try {
       const response = await axios.get(`${baseAPI}/student/fetch-single`, {
         headers: {
@@ -36,9 +40,11 @@ export default function StudentDetails() {
   };
 
   React.useEffect(() => {
-    fetchStudentDetails();
-  }, []);
-
+    if (token) {
+      console.log("Token is available, fetching admin details...");
+      fetchStudentDetails();
+    }
+  }, [token]);
   if (!studentDetails) return <Typography variant="h6">Loading...</Typography>;
 
   return (

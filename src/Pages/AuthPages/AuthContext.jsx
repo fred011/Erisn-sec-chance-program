@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 import { baseAPI } from "../../environment";
 
 export const AuthContext = createContext();
@@ -9,18 +10,18 @@ export const AuthProvider = ({ children }) => {
 
   const verifyToken = async (token) => {
     try {
-      const response = await fetch(`${baseAPI}/auth/verify-token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${baseAPI}/auth/verify-token`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      const data = await response.json();
-      if (data.success && data.valid) {
-        setAuth(data.user);
-        localStorage.setItem("auth", JSON.stringify(data.user));
+      if (response.data.success && response.data.valid) {
+        setAuth(response.data.user);
+        localStorage.setItem("auth", JSON.stringify(response.data.user));
+        localStorage.setItem("token", token);
       } else {
         logout();
       }
@@ -34,10 +35,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("auth");
-    const token = localStorage.getItem("token");
+    const savedToken = localStorage.getItem("token");
 
-    if (savedUser && token) {
-      verifyToken(token);
+    if (savedUser && savedToken) {
+      verifyToken(savedToken);
     } else {
       setLoading(false);
     }
