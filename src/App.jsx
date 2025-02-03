@@ -28,23 +28,16 @@ import ScheduleStudent from "./Pages/Student/components/schedule/ScheduleStudent
 import AttendanceStudent from "./Pages/Student/components/attendance/AttendanceStudent";
 import ExaminationsStudent from "./Pages/Student/components/examinations/ExaminationsStudent";
 import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent";
-import { AuthContext } from "./Pages/AuthPages/AuthContext";
+import { AuthProvider } from "./Pages/AuthPages/AuthContext";
 import ProtectedRoute from "./Pages/AuthPages/ProtectedRoute";
 import AttendanceStudentList from "./Pages/Admin/components/attendence/AttendanceStudentList";
 import AttendanceDetails from "./Pages/Admin/components/attendence/AttendanceDetails";
 
 import SignOut from "./Pages/AuthPages/LogOut/SignOut";
-import DraggableButton from "./Components/Draggable/DraggableButton";
-import { ThemeProvider } from "@emotion/react";
-import { useContext } from "react";
-import darkTheme from "./Components/darkTheme/darktheme";
-import lightTheme from "./Components/lightTheme/lightTheme";
 
 function App() {
-  const { dark } = useContext(AuthContext);
   return (
-    <ThemeProvider theme={dark ? darkTheme : lightTheme}>
-      <DraggableButton />
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -52,11 +45,11 @@ function App() {
           <Route path="/admin-reg" element={<Register />} />
           <Route path="/logout" element={<SignOut />} />
 
-          {/* Admin Routes */}
+          {/* Admin Route */}
           <Route
             path="/admin/*"
             element={
-              <ProtectedRoute requiredRole="admin">
+              <ProtectedRoute>
                 <Admin />
               </ProtectedRoute>
             }
@@ -75,11 +68,11 @@ function App() {
             <Route path="teachers" element={<Teachers />} />
           </Route>
 
-          {/* Teacher Routes */}
+          {/* Teacher Route */}
           <Route
             path="/teacher/*"
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedRoute>
                 <Teacher />
               </ProtectedRoute>
             }
@@ -91,11 +84,11 @@ function App() {
             <Route path="notice" element={<NoticeTeacher />} />
           </Route>
 
-          {/* Student Routes */}
+          {/* Student Route */}
           <Route
             path="/student/*"
             element={
-              <ProtectedRoute requiredRole="student">
+              <ProtectedRoute>
                 <Student />
               </ProtectedRoute>
             }
@@ -108,7 +101,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
-    </ThemeProvider>
+    </AuthProvider>
   );
 }
 
