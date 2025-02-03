@@ -8,9 +8,8 @@ import axios from "axios";
 import { baseAPI } from "../../../../environment";
 
 const Dashboard = () => {
-  const { auth } = useContext(AuthContext); // Get the user data from context
-  const token = auth?.token; // Get token from context after login
   const [adminDetails, setAdminDetails] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
 
   const fetchAdminDetails = async () => {
     if (!token) {
@@ -36,10 +35,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (token) {
-      console.log("the token is available");
+      console.log("Token is available, fetching admin details...");
       fetchAdminDetails();
     }
-  }, [token]);
+  }, [token]); // This effect runs when the token is set
   return (
     <>
       <Box
