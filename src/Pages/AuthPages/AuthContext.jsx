@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       if (data.success && data.valid) {
         setAuth(data.user); // Restore user info from token
+        localStorage.setItem("auth", JSON.stringify(data.user)); // Store user info in localStorage
       } else {
         logout(); // If token is invalid, force logout
       }

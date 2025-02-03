@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../../../Components/yupSchema/loginSchema";
@@ -13,8 +12,7 @@ import {
   FormLabel,
   CircularProgress,
 } from "@mui/material";
-
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { baseAPI } from "../../../environment";
@@ -60,6 +58,11 @@ export default function Login() {
               );
               console.log("Logged in successfully");
               alert("Logged in successfully");
+
+              // Store token in localStorage to persist across reloads
+              localStorage.setItem("token", token);
+              localStorage.setItem("auth", JSON.stringify(res.data)); // Store user data
+
               // Proceed to the user's role page after successful verification
               resetForm();
               navigate(`/${values.role}`);

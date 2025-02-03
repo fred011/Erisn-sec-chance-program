@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Box, Typography } from "@mui/material";
 import { AuthContext } from "../../../AuthPages/AuthContext";
@@ -8,12 +8,15 @@ import axios from "axios";
 import { baseAPI } from "../../../../environment";
 
 const Dashboard = () => {
-  const { auth } = React.useContext(AuthContext);
-  const token = auth?.token; // Get token from context instead
-  console.log("Token from context:", token);
-  const [adminDetails, setAdminDetails] = React.useState(null);
+  const { auth } = useContext(AuthContext); // Get the user data from context
+  const token = auth?.token; // Get token from context after login
+  const [adminDetails, setAdminDetails] = useState(null);
 
   const fetchAdminDetails = async () => {
+    if (!token) {
+      console.log("No token available, cannot fetch admin details");
+      return;
+    }
     try {
       const response = await axios.get(`${baseAPI}/admin/fetch-single`, {
         headers: {
@@ -31,14 +34,12 @@ const Dashboard = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
       console.log("the token is available");
       fetchAdminDetails();
-    } else {
-      console.log("No token available, cannot fetch admin details");
     }
-  }, [token]); // This will rerun when the token changes
+  }, [token]);
   return (
     <>
       <Box
