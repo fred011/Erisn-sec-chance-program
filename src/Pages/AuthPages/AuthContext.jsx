@@ -5,9 +5,8 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
-  // Function to verify token
   const verifyToken = async (token) => {
     try {
       const response = await fetch(`${baseAPI}/auth/verify-token`, {
@@ -20,10 +19,10 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json();
       if (data.success && data.valid) {
-        setAuth(data.user); // Restore user info from token
-        localStorage.setItem("auth", JSON.stringify(data.user)); // Store user info in localStorage
+        setAuth(data.user);
+        localStorage.setItem("auth", JSON.stringify(data.user));
       } else {
-        logout(); // If token is invalid, force logout
+        logout();
       }
     } catch (error) {
       console.error("Token verification failed:", error);
@@ -38,10 +37,9 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
 
     if (savedUser && token) {
-      // Ensure token exists before verifying
       verifyToken(token);
     } else {
-      setLoading(false); // No token or user data, stop loading
+      setLoading(false);
     }
   }, []);
 

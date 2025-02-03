@@ -20,67 +20,52 @@ import { baseAPI } from "../../../environment";
 export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: { email: "", password: "", role: "" },
     validationSchema: loginSchema,
     onSubmit: (values, { resetForm }) => {
-      setLoading(true); // Show loader
+      setLoading(true);
       const data = { email: values.email, password: values.password };
 
-      // First, attempt login
       axios
         .post(`${baseAPI}/${values.role}/login`, data, {
           withCredentials: true,
         })
         .then((res) => {
-          // Save user data after successful login
-          login({ ...res.data, role: values.role });
+          const token = res.data.token;
+          const user = { ...res.data, role: values.role };
 
-          // Now verify token
-          const token = res.data.token; // Assuming the token is returned in response data
-          axios
-            .post(
-              `${baseAPI}/auth/verify-token`,
-              {},
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-            .then((verificationResponse) => {
-              console.log(
-                "Token verified successfully",
-                verificationResponse.data
-              );
-              console.log("Logged in successfully");
-              alert("Logged in successfully");
+          // Store in localStorage
+          localStorage.setItem("token", token);
+          localStorage.setItem("auth", JSON.stringify(user));
 
-              // Store token in localStorage to persist across reloads
-              localStorage.setItem("token", token);
-              localStorage.setItem("auth", JSON.stringify(res.data)); // Store user data
+          login(user); // Update context state
 
-              // Proceed to the user's role page after successful verification
-              console.log("Auth data:", res.data);
-              console.log("Token:", token);
-              resetForm();
-              navigate(`/${values.role}`);
-            })
-            .catch((verificationError) => {
-              console.error("Token verification failed:", verificationError);
-              alert("Token verification failed. Please try again.");
-            });
+          // Verify token
+          return axios.post(
+            `${baseAPI}/auth/verify-token`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        })
+        .then((verificationResponse) => {
+          console.log("Token verified successfully", verificationResponse.data);
+          alert("Logged in successfully");
+
+          resetForm();
+          navigate(`/${formik.values.role}`);
         })
         .catch((err) => {
           console.log("Failed to login", err);
-          const errorMessage =
-            err.response?.data?.error || err.message || "Error logging in";
-          alert(errorMessage);
+          alert(err.response?.data?.error || "Login error");
         })
-        .finally(() => setLoading(false)); // Hide loader
+        .finally(() => setLoading(false));
     },
   });
 

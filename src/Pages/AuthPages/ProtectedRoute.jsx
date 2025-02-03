@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
@@ -7,17 +8,14 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
   if (loading) return <div>Loading...</div>; // Wait for auth check to complete
 
-  // If not authenticated, redirect to login
   if (!auth) {
     return <Navigate to="/login" replace />;
   }
 
-  // If authenticated but role doesn't match the required role, redirect to a forbidden page or another route
-  if (requiredRole && auth.role !== requiredRole) {
+  if (requiredRole && auth.role.toLowerCase() !== requiredRole.toLowerCase()) {
     return <Navigate to="/login" replace />;
   }
 
-  // If user is authenticated and has the correct role, render children
   return children;
 };
 
