@@ -28,17 +28,22 @@ import ScheduleStudent from "./Pages/Student/components/schedule/ScheduleStudent
 import AttendanceStudent from "./Pages/Student/components/attendance/AttendanceStudent";
 import ExaminationsStudent from "./Pages/Student/components/examinations/ExaminationsStudent";
 import NoticeStudent from "./Pages/Student/components/notice/NoticeStudent";
-import { AuthProvider } from "./Pages/AuthPages/AuthContext";
+import { AuthContext } from "./Pages/AuthPages/AuthContext";
 import ProtectedRoute from "./Pages/AuthPages/ProtectedRoute";
 import AttendanceStudentList from "./Pages/Admin/components/attendence/AttendanceStudentList";
 import AttendanceDetails from "./Pages/Admin/components/attendence/AttendanceDetails";
 
 import SignOut from "./Pages/AuthPages/LogOut/SignOut";
 import DraggableButton from "./Components/Draggable/DraggableButton";
+import { ThemeProvider } from "@emotion/react";
+import { useContext } from "react";
+import darkTheme from "./Components/darkTheme/darktheme";
+import lightTheme from "./Components/lightTheme/lightTheme";
 
 function App() {
+  const { dark } = useContext(AuthContext);
   return (
-    <AuthProvider>
+    <ThemeProvider theme={dark ? darkTheme : lightTheme}>
       <DraggableButton />
       <Router>
         <Routes>
@@ -103,7 +108,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
-    </AuthProvider>
+    </ThemeProvider>
   );
 }
 
