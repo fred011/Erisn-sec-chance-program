@@ -34,10 +34,12 @@ import AttendanceStudentList from "./Pages/Admin/components/attendence/Attendanc
 import AttendanceDetails from "./Pages/Admin/components/attendence/AttendanceDetails";
 
 import SignOut from "./Pages/AuthPages/LogOut/SignOut";
+import DraggableButton from "./Components/Draggable/DraggableButton";
 
 function App() {
   return (
     <AuthProvider>
+      <DraggableButton />
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
