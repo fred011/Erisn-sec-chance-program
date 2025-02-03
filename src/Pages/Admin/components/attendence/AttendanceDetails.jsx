@@ -138,7 +138,7 @@ const AttendanceDetails = () => {
               textAlign: "center",
               fontWeight: "700",
               color: "primary.main",
-              mb: 3,
+              mb: 5,
             }}
           >
             Attendance Details for: {studentName}
