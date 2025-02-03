@@ -126,137 +126,128 @@ const AttendanceTeacher = () => {
   };
 
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        backgroundColor: "#dedede", // Light gray background
+        minHeight: "100vh",
+      }}
+    >
+      <Typography
+        variant="h4"
         sx={{
-          backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh",
+          fontWeight: "500",
+          color: "#1976d2",
+          marginBottom: 2,
+
+          textAlign: "center",
         }}
       >
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: "500",
-            color: "#1976d2",
-            marginBottom: 2,
+        Attendance
+      </Typography>
 
-            textAlign: "center",
-          }}
-        >
-          Attendance
-        </Typography>
-
-        {loading ? (
-          <Box display="flex" justifyContent="center">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <>
-            {classes.length > 0 ? (
-              <Paper
-                sx={{
-                  padding: "20px",
-                  marginBottom: "20px",
-                  backgroundColor: "#f5f5f5",
-                }}
-              >
-                <Alert
-                  icon={<CheckIcon fontSize="inherit" />}
-                  severity="success"
+      {loading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          {classes.length > 0 ? (
+            <Paper
+              sx={{
+                padding: "20px",
+                marginBottom: "20px",
+                backgroundColor: "#f5f5f5",
+              }}
+            >
+              <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                You are an attendee of {classes.length} classes.
+              </Alert>
+              <FormControl sx={{ minWidth: "250px" }}>
+                <InputLabel>Class</InputLabel>
+                <Select
+                  value={selectedClass || ""}
+                  onChange={(e) => {
+                    setSelectedClass(e.target.value);
+                    setAttendanceChecked(false);
+                  }}
                 >
-                  You are an attendee of {classes.length} classes.
-                </Alert>
-                <FormControl sx={{ minWidth: "250px" }}>
-                  <InputLabel>Class</InputLabel>
-                  <Select
-                    value={selectedClass || ""}
-                    onChange={(e) => {
-                      setSelectedClass(e.target.value);
-                      setAttendanceChecked(false);
-                    }}
-                  >
-                    <MenuItem value="">Select Class</MenuItem>
-                    {classes.map((x) => (
-                      <MenuItem key={x._id} value={x._id}>
-                        {x.class_text}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Paper>
-            ) : (
-              <Alert severity="error">
-                You are not an attendee of any class.
-              </Alert>
-            )}
+                  <MenuItem value="">Select Class</MenuItem>
+                  {classes.map((x) => (
+                    <MenuItem key={x._id} value={x._id}>
+                      {x.class_text}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Paper>
+          ) : (
+            <Alert severity="error">
+              You are not an attendee of any class.
+            </Alert>
+          )}
 
-            {attendanceChecked ? (
-              <Alert severity="info">
-                Attendance has already been taken for this class today.
-              </Alert>
-            ) : (
-              <>
-                {students.length > 0 && (
-                  <>
-                    <TableContainer component={Paper}>
-                      <Table sx={{ minWidth: 650 }}>
-                        <TableHead>
-                          <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                            <TableCell
-                              sx={{ color: "#fff", fontWeight: "bold" }}
-                            >
-                              Student Name
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "#fff", fontWeight: "bold" }}
-                            >
-                              Action
+          {attendanceChecked ? (
+            <Alert severity="info">
+              Attendance has already been taken for this class today.
+            </Alert>
+          ) : (
+            <>
+              {students.length > 0 && (
+                <>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }}>
+                      <TableHead>
+                        <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                          <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                            Student Name
+                          </TableCell>
+                          <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                            Action
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {students.map((student) => (
+                          <TableRow key={student._id}>
+                            <TableCell>{student.name}</TableCell>
+                            <TableCell>
+                              <FormControl sx={{ minWidth: "150px" }}>
+                                <InputLabel>Attendance</InputLabel>
+                                <Select
+                                  value={
+                                    attendanceStatus[student._id] || "present"
+                                  }
+                                  label="Attendance"
+                                  onChange={(e) =>
+                                    setAttendanceStatus((prevStatus) => ({
+                                      ...prevStatus,
+                                      [student._id]: e.target.value,
+                                    }))
+                                  }
+                                >
+                                  <MenuItem value="present">Present</MenuItem>
+                                  <MenuItem value="absent">Absent</MenuItem>
+                                </Select>
+                              </FormControl>
                             </TableCell>
                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {students.map((student) => (
-                            <TableRow key={student._id}>
-                              <TableCell>{student.name}</TableCell>
-                              <TableCell>
-                                <FormControl sx={{ minWidth: "150px" }}>
-                                  <InputLabel>Attendance</InputLabel>
-                                  <Select
-                                    value={
-                                      attendanceStatus[student._id] || "present"
-                                    }
-                                    label="Attendance"
-                                    onChange={(e) =>
-                                      setAttendanceStatus((prevStatus) => ({
-                                        ...prevStatus,
-                                        [student._id]: e.target.value,
-                                      }))
-                                    }
-                                  >
-                                    <MenuItem value="present">Present</MenuItem>
-                                    <MenuItem value="absent">Absent</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
 
-                    <Box display="flex" justifyContent="center" mt={2}>
-                      <Button variant="contained" onClick={submitAttendance}>
-                        Take Attendance
-                      </Button>
-                    </Box>
-                  </>
-                )}
-              </>
-            )}
-          </>
-        )}
-      </Box>
-    </>
+                  <Box display="flex" justifyContent="center" mt={2}>
+                    <Button variant="contained" onClick={submitAttendance}>
+                      Take Attendance
+                    </Button>
+                  </Box>
+                </>
+              )}
+            </>
+          )}
+        </>
+      )}
+    </Box>
   );
 };
 
