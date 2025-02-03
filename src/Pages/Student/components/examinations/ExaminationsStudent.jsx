@@ -17,6 +17,7 @@ import {
   Select,
   TextField,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -37,15 +38,7 @@ export default function ExaminationsStudent() {
 
   const [editId, setEditId] = React.useState(null);
 
-  const convertDate = (dateData) => {
-    const date = new Date(dateData);
-
-    const day = date.getDate();
-    const month = date.toLocaleString("default", { month: "long" }); // Get the full month name
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  };
+  const [loading, setLoading] = React.useState(false); // Loader state
   const [token, setToken] = React.useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
 
   const [className, setClassName] = React.useState("");
@@ -55,6 +48,7 @@ export default function ExaminationsStudent() {
       return;
     }
     try {
+      setLoading(true); // Start loading
       const response = await axios.get(`${baseAPI}/student/fetch-single`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include token in the request header
@@ -72,8 +66,11 @@ export default function ExaminationsStudent() {
         "Error fetching student details:",
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
+
   useEffect(() => {
     if (token) {
       console.log("Token is available, fetching student details...");
@@ -85,6 +82,7 @@ export default function ExaminationsStudent() {
     const token = localStorage.getItem("token");
 
     try {
+      setLoading(true); // Start loading
       if (selectedClass) {
         const response = await axios.get(
           `${baseAPI}/examination/class/${selectedClass}`,
@@ -99,12 +97,22 @@ export default function ExaminationsStudent() {
       }
     } catch (error) {
       console.log("Error fetching Exam Data", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   useEffect(() => {
     fetchExaminations();
   }, [selectedClass]);
+
+  const convertDate = (dateData) => {
+    const date = new Date(dateData);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   return (
     <>
@@ -121,45 +129,61 @@ export default function ExaminationsStudent() {
         Examinations for your Class: [{className}]
       </Typography>
 
-      {/* Exam Table */}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="exam table">
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "#1976d2" }}>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Exam Date
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Subject
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Exam Type
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {examinations.length > 0 ? (
-              examinations.map((examination) => (
-                <TableRow key={examination._id}>
-                  <TableCell>{convertDate(examination.examDate)}</TableCell>
-                  <TableCell>
-                    {examination.subject
-                      ? examination.subject.subject_name
-                      : ""}
+      {/* Loader */}
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200px",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          {/* Exam Table */}
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="exam table">
+              <TableHead>
+                <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Exam Date
                   </TableCell>
-                  <TableCell>{examination.examType}</TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Subject
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Exam Type
+                  </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No Examinations Found
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableHead>
+              <TableBody>
+                {examinations.length > 0 ? (
+                  examinations.map((examination) => (
+                    <TableRow key={examination._id}>
+                      <TableCell>{convertDate(examination.examDate)}</TableCell>
+                      <TableCell>
+                        {examination.subject
+                          ? examination.subject.subject_name
+                          : ""}
+                      </TableCell>
+                      <TableCell>{examination.examType}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} align="center">
+                      No Examinations Found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      )}
     </>
   );
 }

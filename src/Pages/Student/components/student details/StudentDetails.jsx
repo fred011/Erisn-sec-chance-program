@@ -9,11 +9,14 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import CircularProgress from "@mui/material/CircularProgress"; // Import CircularProgress
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
+import { Box } from "@mui/material";
 
 export default function StudentDetails() {
   const [studentDetails, setStudentDetails] = React.useState(null);
+  const [loading, setLoading] = React.useState(true); // Loading state
   const [token, setToken] = React.useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
 
   const fetchStudentDetails = async () => {
@@ -35,6 +38,8 @@ export default function StudentDetails() {
         "Error fetching student details:",
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false); // Set loading to false once the request is complete
     }
   };
 
@@ -45,7 +50,28 @@ export default function StudentDetails() {
     }
   }, [token]); // Re-fetch if the token changes
 
-  if (!studentDetails) return <Typography variant="h6">Loading...</Typography>;
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "60vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!studentDetails) {
+    return (
+      <Typography variant="h6" align="center">
+        Failed to load student details. Please try again.
+      </Typography>
+    );
+  }
 
   return (
     <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>

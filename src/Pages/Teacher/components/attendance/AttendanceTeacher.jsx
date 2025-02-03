@@ -133,7 +133,6 @@ const AttendanceTeacher = () => {
           fontWeight: "500",
           color: "#1976d2",
           marginBottom: 2,
-
           textAlign: "center",
         }}
       >
@@ -141,7 +140,7 @@ const AttendanceTeacher = () => {
       </Typography>
 
       {loading ? (
-        <Box display="flex" justifyContent="center">
+        <Box display="flex" justifyContent="center" sx={{ marginTop: 5 }}>
           <CircularProgress />
         </Box>
       ) : (

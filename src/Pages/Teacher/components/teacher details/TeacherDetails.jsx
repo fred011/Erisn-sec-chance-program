@@ -11,10 +11,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
+import CircularProgress from "@mui/material/CircularProgress"; // Import the CircularProgress spinner
+import { Box } from "@mui/material";
 
 export default function TeacherDetails() {
   const [teacherDetails, setTeacherDetails] = React.useState(null);
-  const [token, setToken] = React.useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
+  const [token, setToken] = React.useState(localStorage.getItem("token") || "");
+  const [loading, setLoading] = React.useState(true); // Added loading state
 
   const fetchTeacherDetails = async () => {
     if (!token) {
@@ -22,6 +25,7 @@ export default function TeacherDetails() {
       return;
     }
     try {
+      setLoading(true); // Start loading before making the request
       const response = await axios.get(`${baseAPI}/teacher/fetch-single`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include token in the request header
@@ -30,11 +34,13 @@ export default function TeacherDetails() {
       });
 
       setTeacherDetails(response.data.teacher);
+      setLoading(false); // End loading once data is fetched
     } catch (error) {
       console.error(
         "Error fetching teacher details:",
         error.response?.data || error.message
       );
+      setLoading(false); // End loading in case of error
     }
   };
 
@@ -45,7 +51,24 @@ export default function TeacherDetails() {
     }
   }, [token]); // Re-fetch if the token changes
 
-  if (!teacherDetails) return <Typography variant="h6">Loading...</Typography>;
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    ); // Show spinner while loading
+  }
+
+  if (!teacherDetails) {
+    return <Typography variant="h6">No teacher details available.</Typography>;
+  }
 
   return (
     <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>

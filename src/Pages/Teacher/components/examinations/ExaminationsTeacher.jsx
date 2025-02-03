@@ -17,6 +17,7 @@ import {
   Select,
   TextField,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -34,7 +35,7 @@ export default function ExaminationsTeacher() {
   const [subjects, setSubjects] = React.useState([]);
   const [classes, setClasses] = React.useState([]);
   const [selectedClass, setSelectedClass] = React.useState("");
-
+  const [loading, setLoading] = React.useState(false); // State to manage loading
   const [editId, setEditId] = React.useState(null);
 
   const convertDate = (dateData) => {
@@ -48,6 +49,7 @@ export default function ExaminationsTeacher() {
   };
 
   const fetchExaminations = async () => {
+    setLoading(true); // Set loading to true before fetching data
     const token = localStorage.getItem("token");
 
     try {
@@ -65,6 +67,8 @@ export default function ExaminationsTeacher() {
       }
     } catch (error) {
       console.log("Error fetching Exam Data", error);
+    } finally {
+      setLoading(false); // Set loading to false after data is fetched
     }
   };
 
@@ -104,6 +108,7 @@ export default function ExaminationsTeacher() {
   useEffect(() => {
     fetchExaminations();
   }, [selectedClass]);
+
   useEffect(() => {
     fetchSubjects();
     fetchClasses();
@@ -152,45 +157,56 @@ export default function ExaminationsTeacher() {
         </Box>
       </Paper>
 
-      {/* Exam Table */}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="exam table">
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "#1976d2" }}>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Exam Date
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Subject
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Exam Type
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {examinations.length > 0 ? (
-              examinations.map((examination) => (
-                <TableRow key={examination._id}>
-                  <TableCell>{convertDate(examination.examDate)}</TableCell>
-                  <TableCell>
-                    {examination.subject
-                      ? examination.subject.subject_name
-                      : ""}
-                  </TableCell>
-                  <TableCell>{examination.examType}</TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No Examinations Found
+      {/* Loading Spinner */}
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="200px"
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="exam table">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Exam Date
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Subject
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Exam Type
                 </TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {examinations.length > 0 ? (
+                examinations.map((examination) => (
+                  <TableRow key={examination._id}>
+                    <TableCell>{convertDate(examination.examDate)}</TableCell>
+                    <TableCell>
+                      {examination.subject
+                        ? examination.subject.subject_name
+                        : ""}
+                    </TableCell>
+                    <TableCell>{examination.examType}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    No Examinations Found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 }

@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   Typography,
+  CircularProgress, // Import CircularProgress for the loading spinner
 } from "@mui/material";
 
 import axios from "axios";
@@ -20,6 +21,8 @@ const localizer = momentLocalizer(moment);
 export default function ScheduleTeacher() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false); // Added loading state
 
   const date = new Date();
   const myEventsList = [
@@ -30,9 +33,9 @@ export default function ScheduleTeacher() {
       end: new Date(date.setHours(11, 30)),
     },
   ];
-  const [events, setEvents] = useState(myEventsList);
 
   useEffect(() => {
+    setLoading(true); // Set loading to true before fetching data
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
     axios
       .get(`${baseAPI}/class/all`, {
@@ -45,14 +48,17 @@ export default function ScheduleTeacher() {
         setSelectedClass(res.data.data[0]._id);
         console.log("Fetched classes : ", res.data.data);
         console.log("Selected class : ", res.data.data[0]._id);
+        setLoading(false); // Set loading to false after the classes are fetched
       })
       .catch((e) => {
         console.log("Fetch class error", e);
+        setLoading(false); // Set loading to false in case of error
       });
   }, []);
 
   const fetchSchedule = (selectedClass) => {
     if (selectedClass) {
+      setLoading(true); // Set loading to true before fetching schedules
       const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
       console.log("Fetching schedules for class:", selectedClass);
 
@@ -80,12 +86,14 @@ export default function ScheduleTeacher() {
             });
             setEvents(resData); // Update with retrieved schedules
           }
+          setLoading(false); // Set loading to false once data is fetched
         })
         .catch((err) => {
           console.log(
             "Error in fetching schedule: ",
             err.response?.data || err
           );
+          setLoading(false); // Set loading to false in case of error
         });
     }
   };
@@ -93,8 +101,6 @@ export default function ScheduleTeacher() {
   useEffect(() => {
     fetchSchedule(selectedClass);
   }, [selectedClass]);
-
-  // Function to handle adding new period
 
   return (
     <>
@@ -144,28 +150,42 @@ export default function ScheduleTeacher() {
         </Select>
       </FormControl>
 
-      <Box sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}>
-        <Calendar
-          defaultView="week"
-          localizer={localizer}
-          events={events}
-          step={30}
-          timeslots={1}
-          min={new Date(1970, 1, 1, 7, 0, 0)}
-          startAccessor="start"
-          endAccessor="end"
-          max={new Date(1970, 1, 1, 17, 0, 0)}
-          defaultDate={new Date()}
-          showMultiDayTimes
-          style={{
-            height: "80vh", // Adjusting calendar height to make it more responsive
-            width: "100%",
-            borderRadius: "8px",
-            border: "1px solid #ddd",
+      {/* Loader */}
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
           }}
-          views={["week", "day", "agenda"]}
-        />
-      </Box>
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}>
+          <Calendar
+            defaultView="week"
+            localizer={localizer}
+            events={events}
+            step={30}
+            timeslots={1}
+            min={new Date(1970, 1, 1, 7, 0, 0)}
+            startAccessor="start"
+            endAccessor="end"
+            max={new Date(1970, 1, 1, 17, 0, 0)}
+            defaultDate={new Date()}
+            showMultiDayTimes
+            style={{
+              height: "80vh", // Adjusting calendar height to make it more responsive
+              width: "100%",
+              borderRadius: "8px",
+              border: "1px solid #ddd",
+            }}
+            views={["week", "day", "agenda"]}
+          />
+        </Box>
+      )}
     </>
   );
 }
