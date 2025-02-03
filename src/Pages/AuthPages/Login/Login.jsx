@@ -11,6 +11,7 @@ import {
   Radio,
   FormLabel,
   CircularProgress,
+  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -85,7 +86,17 @@ export default function Login() {
       autoComplete="off"
       onSubmit={formik.handleSubmit}
     >
-      <h1>Login</h1>
+      <Typography
+        variant="h3"
+        sx={{
+          textAlign: "center",
+          fontWeight: "700",
+          color: "primary.main",
+          mb: 5,
+        }}
+      >
+        Login
+      </Typography>
 
       <TextField
         name="email"
