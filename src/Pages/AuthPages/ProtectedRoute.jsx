@@ -3,14 +3,11 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { auth } = useContext(AuthContext);
-  const token = localStorage.getItem("token"); // Retrieve token
+  const { auth, loading } = useContext(AuthContext);
 
-  if (!auth || !token) {
-    return <Navigate to="/login" replace />;
-  }
+  if (loading) return <div>Loading...</div>; // Wait for auth check to complete
 
-  return children;
+  return auth ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

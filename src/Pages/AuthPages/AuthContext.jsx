@@ -1,60 +1,64 @@
 import React, { createContext, useState, useEffect } from "react";
-import { baseAPI } from "../../environment";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  // Function to verify token
+  const verifyToken = async (token) => {
+    try {
+      const response = await fetch(
+        "https://your-backend-url/api/verify-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (data.success && data.valid) {
+        setAuth(data.user); // Restore user info from token
+      } else {
+        logout(); // If token is invalid, force logout
+      }
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      logout();
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const savedUser = localStorage.getItem("auth");
     const token = localStorage.getItem("token");
 
     if (savedUser && token) {
-      try {
-        const parsedUser = JSON.parse(savedUser);
-
-        // Verify if token is still valid (Backend should provide a /verify-token endpoint)
-        fetch(`${baseAPI}/verify-token`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.valid) {
-              setAuth(parsedUser); // Token is valid, keep user logged in
-            } else {
-              logout(); // Token is invalid, log user out
-            }
-          })
-          .catch(() => logout()); // Handle errors by logging out
-      } catch (error) {
-        logout();
-      }
+      verifyToken(token);
+    } else {
+      setLoading(false); // No token, stop loading
     }
   }, []);
 
   const login = (user) => {
-    if (user.token) {
-      localStorage.setItem("auth", JSON.stringify(user));
-      localStorage.setItem("token", user.token);
-      setAuth(user);
-    } else {
-      console.error("Login response does not include a token.");
-    }
+    setAuth(user);
+    localStorage.setItem("auth", JSON.stringify(user));
+    localStorage.setItem("token", user.token);
   };
 
   const logout = () => {
+    setAuth(null);
     localStorage.removeItem("auth");
     localStorage.removeItem("token");
-    setAuth(null);
   };
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout }}>
+    <AuthContext.Provider value={{ auth, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
