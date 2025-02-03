@@ -48,6 +48,7 @@ export default function ExaminationsStudent() {
   };
   const [token, setToken] = React.useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
 
+  const [className, setClassName] = React.useState("");
   const fetchStudentDetails = async () => {
     if (!token) {
       console.error("No token available, cannot fetch student details");
@@ -62,6 +63,7 @@ export default function ExaminationsStudent() {
       });
       if (response.data.student && response.data.student._id) {
         setSelectedClass(response.data.student.student_class._id);
+        setClassName(response.data.student.student_class.class_text);
       } else {
         console.error("Student ID not found in response:", response.data);
       }
@@ -117,7 +119,7 @@ export default function ExaminationsStudent() {
           textAlign: "center",
         }}
       >
-        Examinations
+        Examinations for your Class: [{className}]
       </Typography>
 
       {/* Exam Table */}
