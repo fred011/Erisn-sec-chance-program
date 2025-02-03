@@ -1,13 +1,19 @@
+import React, { useRef } from "react";
 import { Link } from "react-scroll";
-import "./LandingPage.css";
-import logo from "../../Images/ERISN LOGO.png";
+import {
+  Button,
+  Container,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
-import { useRef } from "react";
+import logo from "../../Images/ERISN LOGO.png";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-
   const form = useRef();
 
   const sendEmail = (e) => {
@@ -32,144 +38,210 @@ const LandingPage = () => {
   const handleSignIn = () => {
     navigate("/login");
   };
-  // const handleRegister = () => {
-  //   navigate("/register");
-  // };
 
   return (
-    <div className="parent">
-      <header className="top-header">
-        <a href="/" className="logo">
-          <img src={logo} alt="" />
-        </a>
-
-        <nav className="navbar">
-          <Link
-            to="/"
-            spy={true}
-            smooth={true}
-            offset={-100}
-            duration={500}
-            href="/"
-          >
-            Home
-          </Link>
-
-          <Link
-            to="features"
-            spy={true}
-            smooth={true}
-            offset={0}
-            duration={500}
-            href="#features"
-          >
-            Key Features
-          </Link>
-          <Link
-            to="contact"
-            spy={true}
-            smooth={true}
-            offset={0}
-            duration={500}
-            href="#contact"
-          >
-            Contact us
-          </Link>
-        </nav>
-
-        <div className="btns">
-          {/* <button className="login" onClick={handleRegister}>
-            Register
-          </button> */}
-          <button className="login" onClick={handleSignIn}>
+    <Box sx={{ backgroundColor: "#f4f6f9", minHeight: "100vh" }}>
+      <header>
+        <Container
+          maxWidth="xl"
+          sx={{
+            padding: "16px 0",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <a href="/" className="logo">
+            <img src={logo} alt="Erisn Logo" style={{ height: "50px" }} />
+          </a>
+          <nav>
+            <Link
+              to="/"
+              spy={true}
+              smooth={true}
+              offset={-100}
+              duration={500}
+              href="/"
+              style={{ margin: "0 16px", cursor: "pointer" }}
+            >
+              Home
+            </Link>
+            <Link
+              to="features"
+              spy={true}
+              smooth={true}
+              offset={0}
+              duration={500}
+              href="#features"
+              style={{ margin: "0 16px", cursor: "pointer" }}
+            >
+              Key Features
+            </Link>
+            <Link
+              to="contact"
+              spy={true}
+              smooth={true}
+              offset={0}
+              duration={500}
+              href="#contact"
+              style={{ margin: "0 16px", cursor: "pointer" }}
+            >
+              Contact us
+            </Link>
+          </nav>
+          <Button variant="contained" color="primary" onClick={handleSignIn}>
             Log In
-          </button>
-        </div>
+          </Button>
+        </Container>
       </header>
-      <section id="hero" className="hero">
-        <div className="hero-content">
-          <h1>Welcome to the Erisn Empowerment Program`s</h1>
-          <span> Students Management System</span>
-          <button className="start-btn" onClick={handleSignIn}>
-            Get Started
-          </button>
-        </div>
-      </section>
-      <section id="features" className="key-features">
-        <div className="title">Key Features</div>
-        <div className="cards">
-          <div className="card one">
-            <div className="card-title">Student Records</div>
-            <img src="" alt="" />
-          </div>
-          <div className="card two">
-            <div className="card-title">Admission Management</div>
-            <img src="" alt="" />
-          </div>
-          <div className="card three">
-            <div className="card-title">Fee Management</div>
-            <img src="" alt="" />
-          </div>
-          <div className="card four">
-            <div className="card-title">Students` behaviour Tracking</div>
-            <img src="" alt="" />
-          </div>
-          <div className="card five">
-            <div className="card-title">Library Management</div>
-            <img src="" alt="" />
-          </div>
-          <div className="card six">
-            <div className="card-title">Alerts and Notifications</div>
-            <img src="" alt="" />
-          </div>
-        </div>
-      </section>
-      <section id="contact" className="contact">
-        <div className="title">Contact Us</div>
 
-        <div className="contact-form">
-          <form ref={form} onSubmit={sendEmail}>
-            <h2>Get In Touch</h2>
-            <div className="input-box">
-              <label>Full Name*</label>
-              <input
-                type="text"
-                className="field"
-                placeholder="Enter your name"
+      <section
+        id="hero"
+        style={{
+          background: "#003366",
+          color: "#fff",
+          padding: "100px 0",
+          textAlign: "center",
+        }}
+      >
+        <Container>
+          <Typography variant="h3" gutterBottom>
+            Welcome to the Erisn Empowerment Program’s
+          </Typography>
+          <Typography variant="h5" paragraph>
+            Students Management System
+          </Typography>
+          <Button variant="contained" color="secondary" onClick={handleSignIn}>
+            Get Started
+          </Button>
+        </Container>
+      </section>
+
+      <section
+        id="features"
+        className="key-features"
+        style={{ padding: "60px 0", textAlign: "center" }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Key Features
+        </Typography>
+        <Grid container spacing={4} justifyContent="center">
+          <Grid item xs={12} sm={6} md={4}>
+            <Box
+              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
+            >
+              <Typography variant="h6">Student Records</Typography>
+              <img src="" alt="Student Records" />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Box
+              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
+            >
+              <Typography variant="h6">Admission Management</Typography>
+              <img src="" alt="Admission Management" />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Box
+              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
+            >
+              <Typography variant="h6">Fee Management</Typography>
+              <img src="" alt="Fee Management" />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Box
+              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
+            >
+              <Typography variant="h6">Students' Behavior Tracking</Typography>
+              <img src="" alt="Students' Behavior Tracking" />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Box
+              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
+            >
+              <Typography variant="h6">Library Management</Typography>
+              <img src="" alt="Library Management" />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Box
+              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
+            >
+              <Typography variant="h6">Alerts and Notifications</Typography>
+              <img src="" alt="Alerts and Notifications" />
+            </Box>
+          </Grid>
+        </Grid>
+      </section>
+
+      <section
+        id="contact"
+        className="contact"
+        style={{ padding: "60px 0", background: "#f4f6f9" }}
+      >
+        <Container>
+          <Typography variant="h4" gutterBottom>
+            Contact Us
+          </Typography>
+          <Box sx={{ maxWidth: "600px", margin: "0 auto" }}>
+            <form ref={form} onSubmit={sendEmail}>
+              <TextField
+                fullWidth
+                label="Full Name"
+                variant="outlined"
+                margin="normal"
                 name="user_name"
                 required
               />
-            </div>
-            <div className="input-box">
-              <label>Email*</label>
-              <input
-                type="email"
-                className="field"
-                placeholder="Enter your email"
+              <TextField
+                fullWidth
+                label="Email"
+                variant="outlined"
+                margin="normal"
                 name="user_email"
+                type="email"
                 required
               />
-            </div>
-            <div className="input-box">
-              <label>Your Query*</label>
-              <textarea
-                id=""
-                className="field message"
-                placeholder="Enter your query"
+              <TextField
+                fullWidth
+                label="Your Query"
+                variant="outlined"
+                margin="normal"
                 name="user_message"
+                multiline
+                rows={4}
                 required
-              ></textarea>
-            </div>
-            <button type="submit" value="Send">
-              Send Query
-            </button>
-          </form>
-        </div>
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Send Query
+              </Button>
+            </form>
+          </Box>
+        </Container>
       </section>
-      <footer className="footer">
-        <p>© 2024 Erisn Empowerment Program | All rights reserved.</p>
+
+      <footer
+        className="footer"
+        style={{
+          background: "#003366",
+          color: "#fff",
+          textAlign: "center",
+          padding: "16px 0",
+        }}
+      >
+        <Typography variant="body2">
+          © 2024 Erisn Empowerment Program | All rights reserved.
+        </Typography>
       </footer>
-    </div>
+    </Box>
   );
 };
 
