@@ -1,8 +1,10 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [auth, setAuth] = useState(() => {
     const savedUser = localStorage.getItem("auth");
     return savedUser ? JSON.parse(savedUser) : null;
@@ -11,18 +13,14 @@ export const AuthProvider = ({ children }) => {
   const login = (user) => {
     setAuth(user);
     localStorage.setItem("auth", JSON.stringify(user));
-
-    if (user.token) {
-      localStorage.setItem("token", user.token); // Store token separately
-    } else {
-      console.error("Login response does not include a token.");
-    }
+    localStorage.setItem("token", user.token || "");
   };
 
   const logout = () => {
     setAuth(null);
     localStorage.removeItem("auth");
-    localStorage.removeItem("token"); // Also clear the token from localStorage
+    localStorage.removeItem("token");
+    navigate("/login", { replace: true }); // Redirect to login
   };
 
   useEffect(() => {

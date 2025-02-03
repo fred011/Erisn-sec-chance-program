@@ -6,6 +6,7 @@ import { Box, Typography } from "@mui/material";
 import { AuthContext } from "../../../AuthPages/AuthContext";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
+import API from "../../../../Components/API";
 
 const Dashboard = () => {
   const { auth } = React.useContext(AuthContext);
@@ -15,7 +16,7 @@ const Dashboard = () => {
 
   const fetchAdminDetails = async () => {
     try {
-      const response = await axios.get(`${baseAPI}/admin/fetch-single`, {
+      const response = await API.get(`${baseAPI}/admin/fetch-single`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
