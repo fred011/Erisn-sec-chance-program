@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../Pages/AuthPages/AuthContext";
 
 const API = axios.create({
   baseURL: "https://erisn-api.onrender.com", // Replace with your actual API URL
