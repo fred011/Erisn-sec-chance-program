@@ -34,6 +34,7 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     if (token) {
+      console.log("the token is available");
       fetchAdminDetails();
     } else {
       console.log("No token available, cannot fetch admin details");
