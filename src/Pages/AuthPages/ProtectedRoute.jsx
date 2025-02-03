@@ -1,13 +1,12 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 const ProtectedRoute = ({ children }) => {
   const { auth } = useContext(AuthContext);
+  const token = localStorage.getItem("token"); // Retrieve token
 
-  if (!auth) {
+  if (!auth || !token) {
     return <Navigate to="/login" replace />;
   }
 
