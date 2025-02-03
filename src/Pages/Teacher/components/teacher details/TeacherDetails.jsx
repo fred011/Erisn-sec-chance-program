@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,26 +11,24 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
-import { AuthContext } from "../../../AuthPages/AuthContext";
 
 export default function TeacherDetails() {
-  const { auth } = React.useContext(AuthContext);
-  const token = auth?.token;
   const [teacherDetails, setTeacherDetails] = React.useState(null);
+  const [token, setToken] = React.useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
 
   const fetchTeacherDetails = async () => {
     if (!token) {
-      console.error("No token found");
+      console.error("No token available, cannot fetch teacher details");
       return;
     }
     try {
       const response = await axios.get(`${baseAPI}/teacher/fetch-single`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in the request header
         },
         withCredentials: true,
       });
+
       setTeacherDetails(response.data.teacher);
     } catch (error) {
       console.error(
@@ -41,10 +40,10 @@ export default function TeacherDetails() {
 
   React.useEffect(() => {
     if (token) {
-      console.log("Token is available, fetching admin details...");
+      console.log("Token is available, fetching teacher details...");
       fetchTeacherDetails();
     }
-  }, [token]);
+  }, [token]); // Re-fetch if the token changes
 
   if (!teacherDetails) return <Typography variant="h6">Loading...</Typography>;
 

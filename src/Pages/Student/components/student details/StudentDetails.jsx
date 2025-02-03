@@ -10,26 +10,24 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
-import { AuthContext } from "../../../AuthPages/AuthContext";
 
 export default function StudentDetails() {
-  const { auth } = React.useContext(AuthContext);
-  const token = auth?.token;
   const [studentDetails, setStudentDetails] = React.useState(null);
+  const [token, setToken] = React.useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
 
   const fetchStudentDetails = async () => {
     if (!token) {
-      console.error("No token found");
+      console.error("No token available, cannot fetch student details");
       return;
     }
     try {
       const response = await axios.get(`${baseAPI}/student/fetch-single`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in the request header
         },
         withCredentials: true,
       });
+
       setStudentDetails(response.data.student);
     } catch (error) {
       console.error(
@@ -41,10 +39,11 @@ export default function StudentDetails() {
 
   React.useEffect(() => {
     if (token) {
-      console.log("Token is available, fetching admin details...");
+      console.log("Token is available, fetching student details...");
       fetchStudentDetails();
     }
-  }, [token]);
+  }, [token]); // Re-fetch if the token changes
+
   if (!studentDetails) return <Typography variant="h6">Loading...</Typography>;
 
   return (
