@@ -154,7 +154,7 @@ const LandingPage = () => {
             <Box
               sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
             >
-              <Typography variant="h6">Students' Behavior Tracking</Typography>
+              <Typography variant="h6">Students` Behavior Tracking</Typography>
               <img src="" alt="Students' Behavior Tracking" />
             </Box>
           </Grid>
