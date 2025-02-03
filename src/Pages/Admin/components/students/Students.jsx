@@ -218,349 +218,359 @@ export default function Students() {
   return (
     <>
       <Box
-        component={"div"}
         sx={{
-          height: "100%",
-          paddingTop: "20px",
-          paddingBottom: "20px",
-          backgroundColor: "#f4f6f8", // Light background color for the page
-          borderRadius: "8px",
+          backgroundColor: "#dedede", // Light gray background
+          minHeight: "100vh", // Full page height
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            textAlign: "center",
-            fontWeight: "500",
-            color: "#1976d2", // Primary color
-            marginBottom: "20px",
-          }}
-        >
-          Students
-        </Typography>
-
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 2 }, // Margin between form elements
-            display: "flex",
-            flexDirection: "column",
-            width: "60vw",
-            minWidth: "250px",
-            margin: "auto",
-            marginTop: "10px",
-            backgroundColor: "#fff", // White background for form
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: 2, // Adds a slight shadow for visual appeal
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={formik.handleSubmit}
-        >
-          {edit ? (
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: "center",
-                fontWeight: "500",
-                marginBottom: "20px",
-              }}
-            >
-              Edit Student
-            </Typography>
-          ) : (
-            <Typography
-              variant="h4"
-              sx={{
-                textAlign: "center",
-                fontWeight: "500",
-                marginBottom: "20px",
-              }}
-            >
-              Add Student
-            </Typography>
-          )}
-
-          {/* Name Input */}
-          <TextField
-            name="name"
-            label="Name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.name && formik.errors.name && (
-            <Typography color="error" variant="body2">
-              {formik.errors.name}
-            </Typography>
-          )}
-
-          {/* Email Input */}
-          <TextField
-            name="email"
-            label="Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <Typography color="error" variant="body2">
-              {formik.errors.email}
-            </Typography>
-          )}
-
-          {/* Student class Input */}
-          <FormControl fullWidth sx={{ marginBottom: 2 }}>
-            <InputLabel id="student_class">Student Class</InputLabel>
-            <Select
-              labelId="student_class"
-              id="student_class"
-              value={formik.values.student_class}
-              label="Student Class"
-              name="student_class"
-              onChange={formik.handleChange}
-            >
-              {classes &&
-                classes.map((x) => (
-                  <MenuItem key={x._id} value={x._id}>
-                    {x.class_text} ({x.class_num})
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          {formik.touched.student_class && formik.errors.student_class && (
-            <Typography color="error" variant="body2">
-              {formik.errors.student_class}
-            </Typography>
-          )}
-
-          {/* Age Input */}
-          <TextField
-            name="age"
-            label="Age"
-            value={formik.values.age}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.age && formik.errors.age && (
-            <Typography color="error" variant="body2">
-              {formik.errors.age}
-            </Typography>
-          )}
-
-          {/* Gender Input */}
-          <FormControl fullWidth sx={{ marginBottom: 2 }}>
-            <InputLabel id="gender">Gender</InputLabel>
-            <Select
-              labelId="gender"
-              id="gender"
-              value={formik.values.gender}
-              label="Gender"
-              name="gender"
-              onChange={formik.handleChange}
-            >
-              <MenuItem value={"Male"}>Male</MenuItem>
-              <MenuItem value={"Female"}>Female</MenuItem>
-              <MenuItem value={"Other"}>Other</MenuItem>
-            </Select>
-          </FormControl>
-          {formik.touched.gender && formik.errors.gender && (
-            <Typography color="error" variant="body2">
-              {formik.errors.gender}
-            </Typography>
-          )}
-
-          {/* Guardian Input */}
-          <TextField
-            name="guardian"
-            label="Guardian"
-            value={formik.values.guardian}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.guardian && formik.errors.guardian && (
-            <Typography color="error" variant="body2">
-              {formik.errors.guardian}
-            </Typography>
-          )}
-
-          {/* Guardian Phone Input */}
-          <TextField
-            name="guardian_phone"
-            label="Guardian Phone Number"
-            value={formik.values.guardian_phone}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.guardian_phone && formik.errors.guardian_phone && (
-            <Typography color="error" variant="body2">
-              {formik.errors.guardian_phone}
-            </Typography>
-          )}
-
-          {/* Password Input */}
-          <TextField
-            type="password"
-            name="password"
-            label="Password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.password && formik.errors.password && (
-            <Typography color="error" variant="body2">
-              {formik.errors.password}
-            </Typography>
-          )}
-
-          {/* Confirm Password Input */}
-          <TextField
-            type="password"
-            name="confirm_password"
-            label="Confirm Password"
-            value={formik.values.confirm_password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.confirm_password &&
-            formik.errors.confirm_password && (
-              <Typography color="error" variant="body2">
-                {formik.errors.confirm_password}
-              </Typography>
-            )}
-
-          {/* Submit Button */}
-          <Button
-            sx={{ width: "120px", marginBottom: 2 }}
-            type="submit"
-            variant="contained"
-            color="primary"
-          >
-            Submit
-          </Button>
-          {edit && (
-            <Button
-              sx={{ width: "120px", marginBottom: 2 }}
-              onClick={() => cancelEdit()}
-              type="button"
-              variant="outlined"
-              color="secondary"
-            >
-              Cancel
-            </Button>
-          )}
-        </Box>
-
-        {/* Search and Class Filter Section */}
         <Box
           component={"div"}
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "40px",
+            height: "100%",
+            paddingTop: "20px",
+            paddingBottom: "20px",
+            backgroundColor: "#f4f6f8", // Light background color for the page
+            borderRadius: "8px",
           }}
         >
-          <TextField
-            label="Search"
-            value={params.search || ""}
-            onChange={handleSearch}
-            sx={{ marginRight: "10px", width: "300px" }}
-          />
+          <Typography
+            variant="h3"
+            sx={{
+              textAlign: "center",
+              fontWeight: "500",
+              color: "#1976d2", // Primary color
+              marginBottom: "20px",
+            }}
+          >
+            Students
+          </Typography>
 
-          <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
-            <InputLabel id="student_class">Student Class</InputLabel>
-            <Select
-              labelId="student_class"
-              id="student_class"
-              value={params.student_class || ""}
-              onChange={handleClass}
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 2 }, // Margin between form elements
+              display: "flex",
+              flexDirection: "column",
+              width: "60vw",
+              minWidth: "250px",
+              margin: "auto",
+              marginTop: "10px",
+              backgroundColor: "#fff", // White background for form
+              padding: "20px",
+              borderRadius: "8px",
+              boxShadow: 2, // Adds a slight shadow for visual appeal
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={formik.handleSubmit}
+          >
+            {edit ? (
+              <Typography
+                variant="h4"
+                sx={{
+                  textAlign: "center",
+                  fontWeight: "500",
+                  marginBottom: "20px",
+                }}
+              >
+                Edit Student
+              </Typography>
+            ) : (
+              <Typography
+                variant="h4"
+                sx={{
+                  textAlign: "center",
+                  fontWeight: "500",
+                  marginBottom: "20px",
+                }}
+              >
+                Add Student
+              </Typography>
+            )}
+
+            {/* Name Input */}
+            <TextField
+              name="name"
+              label="Name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ marginBottom: 2 }}
+            />
+            {formik.touched.name && formik.errors.name && (
+              <Typography color="error" variant="body2">
+                {formik.errors.name}
+              </Typography>
+            )}
+
+            {/* Email Input */}
+            <TextField
+              name="email"
+              label="Email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ marginBottom: 2 }}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <Typography color="error" variant="body2">
+                {formik.errors.email}
+              </Typography>
+            )}
+
+            {/* Student class Input */}
+            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+              <InputLabel id="student_class">Student Class</InputLabel>
+              <Select
+                labelId="student_class"
+                id="student_class"
+                value={formik.values.student_class}
+                label="Student Class"
+                name="student_class"
+                onChange={formik.handleChange}
+              >
+                {classes &&
+                  classes.map((x) => (
+                    <MenuItem key={x._id} value={x._id}>
+                      {x.class_text} ({x.class_num})
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+            {formik.touched.student_class && formik.errors.student_class && (
+              <Typography color="error" variant="body2">
+                {formik.errors.student_class}
+              </Typography>
+            )}
+
+            {/* Age Input */}
+            <TextField
+              name="age"
+              label="Age"
+              value={formik.values.age}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ marginBottom: 2 }}
+            />
+            {formik.touched.age && formik.errors.age && (
+              <Typography color="error" variant="body2">
+                {formik.errors.age}
+              </Typography>
+            )}
+
+            {/* Gender Input */}
+            <FormControl fullWidth sx={{ marginBottom: 2 }}>
+              <InputLabel id="gender">Gender</InputLabel>
+              <Select
+                labelId="gender"
+                id="gender"
+                value={formik.values.gender}
+                label="Gender"
+                name="gender"
+                onChange={formik.handleChange}
+              >
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+                <MenuItem value={"Other"}>Other</MenuItem>
+              </Select>
+            </FormControl>
+            {formik.touched.gender && formik.errors.gender && (
+              <Typography color="error" variant="body2">
+                {formik.errors.gender}
+              </Typography>
+            )}
+
+            {/* Guardian Input */}
+            <TextField
+              name="guardian"
+              label="Guardian"
+              value={formik.values.guardian}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ marginBottom: 2 }}
+            />
+            {formik.touched.guardian && formik.errors.guardian && (
+              <Typography color="error" variant="body2">
+                {formik.errors.guardian}
+              </Typography>
+            )}
+
+            {/* Guardian Phone Input */}
+            <TextField
+              name="guardian_phone"
+              label="Guardian Phone Number"
+              value={formik.values.guardian_phone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ marginBottom: 2 }}
+            />
+            {formik.touched.guardian_phone && formik.errors.guardian_phone && (
+              <Typography color="error" variant="body2">
+                {formik.errors.guardian_phone}
+              </Typography>
+            )}
+
+            {/* Password Input */}
+            <TextField
+              type="password"
+              name="password"
+              label="Password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ marginBottom: 2 }}
+            />
+            {formik.touched.password && formik.errors.password && (
+              <Typography color="error" variant="body2">
+                {formik.errors.password}
+              </Typography>
+            )}
+
+            {/* Confirm Password Input */}
+            <TextField
+              type="password"
+              name="confirm_password"
+              label="Confirm Password"
+              value={formik.values.confirm_password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ marginBottom: 2 }}
+            />
+            {formik.touched.confirm_password &&
+              formik.errors.confirm_password && (
+                <Typography color="error" variant="body2">
+                  {formik.errors.confirm_password}
+                </Typography>
+              )}
+
+            {/* Submit Button */}
+            <Button
+              sx={{ width: "120px", marginBottom: 2 }}
+              type="submit"
+              variant="contained"
+              color="primary"
             >
-              <MenuItem value="">Select Class</MenuItem>
-              {classes &&
-                classes.map((x) => (
-                  <MenuItem key={x._id} value={x._id}>
-                    {x.class_text} ({x.class_num})
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        </Box>
+              Submit
+            </Button>
+            {edit && (
+              <Button
+                sx={{ width: "120px", marginBottom: 2 }}
+                onClick={() => cancelEdit()}
+                type="button"
+                variant="outlined"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+            )}
+          </Box>
 
-        {/* Students Table Section */}
-        <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
-          <Table>
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Name
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Email
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Class
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Age
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Gender
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Guardian
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Guardian Phone
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {students.map((student) => (
-                <TableRow key={student._id}>
-                  <TableCell>{student.name}</TableCell>
-                  <TableCell>{student.email}</TableCell>
-                  <TableCell>
-                    {student.student_class
-                      ? student.student_class.class_text
-                      : "Not Assigned"}
+          {/* Search and Class Filter Section */}
+          <Box
+            component={"div"}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: "40px",
+            }}
+          >
+            <TextField
+              label="Search"
+              value={params.search || ""}
+              onChange={handleSearch}
+              sx={{ marginRight: "10px", width: "300px" }}
+            />
+
+            <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
+              <InputLabel id="student_class">Student Class</InputLabel>
+              <Select
+                labelId="student_class"
+                id="student_class"
+                value={params.student_class || ""}
+                onChange={handleClass}
+              >
+                <MenuItem value="">Select Class</MenuItem>
+                {classes &&
+                  classes.map((x) => (
+                    <MenuItem key={x._id} value={x._id}>
+                      {x.class_text} ({x.class_num})
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          </Box>
+
+          {/* Students Table Section */}
+          <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Name
                   </TableCell>
-                  <TableCell>{student.age}</TableCell>
-                  <TableCell>{student.gender}</TableCell>
-                  <TableCell>{student.guardian}</TableCell>
-                  <TableCell>{student.guardian_phone}</TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => handleEdit(student._id)}
-                      startIcon={<EditIcon />}
-                      sx={{ marginRight: "10px" }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(student._id)}
-                      startIcon={<DeleteIcon />}
-                      color="error"
-                    >
-                      Delete
-                    </Button>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Email
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Class
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Age
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Gender
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Guardian
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Guardian Phone
+                  </TableCell>
+                  <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Actions
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {students.map((student) => (
+                  <TableRow key={student._id}>
+                    <TableCell>{student.name}</TableCell>
+                    <TableCell>{student.email}</TableCell>
+                    <TableCell>
+                      {student.student_class
+                        ? student.student_class.class_text
+                        : "Not Assigned"}
+                    </TableCell>
+                    <TableCell>{student.age}</TableCell>
+                    <TableCell>{student.gender}</TableCell>
+                    <TableCell>{student.guardian}</TableCell>
+                    <TableCell>{student.guardian_phone}</TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => handleEdit(student._id)}
+                        startIcon={<EditIcon />}
+                        sx={{ marginRight: "10px" }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(student._id)}
+                        startIcon={<DeleteIcon />}
+                        color="error"
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
     </>
   );

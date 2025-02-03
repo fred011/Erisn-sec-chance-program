@@ -92,71 +92,83 @@ export default function Attendee({ classId }) {
 
   return (
     <>
-      <Box sx={{ mt: 4, p: 3, border: "1px solid #ddd", borderRadius: "8px" }}>
-        <Typography
-          variant="h5"
-          sx={{ mb: 3, fontWeight: "500", textAlign: "center" }}
+      <Box
+        sx={{
+          backgroundColor: "#dedede", // Light gray background
+          minHeight: "100vh", // Full page height
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          sx={{ mt: 4, p: 3, border: "1px solid #ddd", borderRadius: "8px" }}
         >
-          Attendee Management
-        </Typography>
-
-        {attendee && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 3,
-              p: 2,
-              backgroundColor: "#f9f9f9",
-              borderRadius: "8px",
-            }}
+          <Typography
+            variant="h5"
+            sx={{ mb: 3, fontWeight: "500", textAlign: "center" }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "500" }}>
-              Current Attendee:
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: "600", color: "primary.main" }}
+            Attendee Management
+          </Typography>
+
+          {attendee && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+                p: 2,
+                backgroundColor: "#f9f9f9",
+                borderRadius: "8px",
+              }}
             >
-              {attendee.name}
-            </Typography>
-          </Box>
-        )}
+              <Typography variant="h6" sx={{ fontWeight: "500" }}>
+                Current Attendee:
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "600", color: "primary.main" }}
+              >
+                {attendee.name}
+              </Typography>
+            </Box>
+          )}
 
-        <FormControl fullWidth sx={{ mb: 3 }}>
-          <InputLabel>Select Teacher</InputLabel>
-          <Select
-            value={selectedTeacher}
-            onChange={(e) => setSelectedTeacher(e.target.value)}
-          >
-            <MenuItem value="">
-              <em>Select Teacher</em>
-            </MenuItem>
-            {teachers.map((teacher) => (
-              <MenuItem key={teacher._id} value={teacher._id}>
-                {teacher.name}
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <InputLabel>Select Teacher</InputLabel>
+            <Select
+              value={selectedTeacher}
+              onChange={(e) => setSelectedTeacher(e.target.value)}
+            >
+              <MenuItem value="">
+                <em>Select Teacher</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {teachers.map((teacher) => (
+                <MenuItem key={teacher._id} value={teacher._id}>
+                  {teacher.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            py: 1.5,
-            fontWeight: "600",
-            backgroundColor: "primary.main",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
-          }}
-          onClick={handleSubmit}
-        >
-          {attendee ? "Change Attendee" : "Select Attendee"}
-        </Button>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              py: 1.5,
+              fontWeight: "600",
+              backgroundColor: "primary.main",
+              "&:hover": {
+                backgroundColor: "primary.dark",
+              },
+            }}
+            onClick={handleSubmit}
+          >
+            {attendee ? "Change Attendee" : "Select Attendee"}
+          </Button>
+        </Box>
       </Box>
     </>
   );

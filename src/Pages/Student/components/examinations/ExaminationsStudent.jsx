@@ -108,58 +108,68 @@ export default function ExaminationsStudent() {
 
   return (
     <>
-      {/* Class Selection Section */}
-      <Typography
-        variant="h4"
+      <Box
         sx={{
-          fontWeight: "500",
-          color: "#1976d2",
-          marginBottom: 2,
-          textAlign: "center",
+          backgroundColor: "#dedede", // Light gray background
+          minHeight: "100vh", // Full page height
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Examinations for your Class: [{className}]
-      </Typography>
+        {/* Class Selection Section */}
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "500",
+            color: "#1976d2",
+            marginBottom: 2,
+            textAlign: "center",
+          }}
+        >
+          Examinations for your Class: [{className}]
+        </Typography>
 
-      {/* Exam Table */}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="exam table">
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "#1976d2" }}>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Exam Date
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Subject
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Exam Type
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {examinations.length > 0 ? (
-              examinations.map((examination) => (
-                <TableRow key={examination._id}>
-                  <TableCell>{convertDate(examination.examDate)}</TableCell>
-                  <TableCell>
-                    {examination.subject
-                      ? examination.subject.subject_name
-                      : ""}
-                  </TableCell>
-                  <TableCell>{examination.examType}</TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No Examinations Found
+        {/* Exam Table */}
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="exam table">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Exam Date
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Subject
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Exam Type
                 </TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {examinations.length > 0 ? (
+                examinations.map((examination) => (
+                  <TableRow key={examination._id}>
+                    <TableCell>{convertDate(examination.examDate)}</TableCell>
+                    <TableCell>
+                      {examination.subject
+                        ? examination.subject.subject_name
+                        : ""}
+                    </TableCell>
+                    <TableCell>{examination.examType}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    No Examinations Found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </>
   );
 }

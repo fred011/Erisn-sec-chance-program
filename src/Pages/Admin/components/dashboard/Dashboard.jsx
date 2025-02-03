@@ -43,10 +43,8 @@ const Dashboard = () => {
     <>
       <Box
         sx={{
-          height: "270px",
-          width: "100%",
-          background: `url(/images/BackG.jpg)`,
-          backgroundSize: "cover",
+          backgroundColor: "#dedede", // Light gray background
+          minHeight: "100vh", // Full page height
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -54,19 +52,31 @@ const Dashboard = () => {
       >
         <Box
           sx={{
-            textAlign: "center",
+            height: "270px",
+            width: "100%",
+            background: `url(/images/BackG.jpg)`,
+            backgroundSize: "cover",
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Typography variant="h3" color="lightgrey">
-            Welcome, {adminDetails ? adminDetails.name : "Admin"}
-          </Typography>
+          <Box
+            sx={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h3" color="lightgrey">
+              Welcome, {adminDetails ? adminDetails.name : "Admin"}
+            </Typography>
 
-          <Typography variant="h5" color="grey">
-            To Erisn Africa`s Student Management System
-          </Typography>
+            <Typography variant="h5" color="grey">
+              To Erisn Africa`s Student Management System
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </>

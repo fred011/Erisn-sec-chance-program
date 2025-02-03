@@ -41,7 +41,7 @@ const LandingPage = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: "#d7e4f7", minHeight: "100vh" }}>
+    <Box sx={{ backgroundColor: "#dedede", minHeight: "100vh" }}>
       <header>
         <Container
           maxWidth="xl"

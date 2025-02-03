@@ -157,266 +157,276 @@ const Notice = () => {
 
   return (
     <>
-      <Typography
-        variant="h3"
-        sx={{
-          textAlign: "center",
-          fontWeight: "700",
-          color: "primary.main",
-          mb: 3,
-        }}
-      >
-        Notices
-      </Typography>
-
       <Box
-        component="form"
         sx={{
+          backgroundColor: "#dedede", // Light gray background
+          minHeight: "100vh", // Full page height
           display: "flex",
-          flexDirection: "column",
-          width: { xs: "90vw", sm: "70vw", md: "60vw" },
-          maxWidth: 600,
-          margin: "auto",
-          background: "white",
-          p: 3,
-          borderRadius: 2,
-          boxShadow: 2,
-          gap: 2,
+          justifyContent: "center",
+          alignItems: "center",
         }}
-        noValidate
-        autoComplete="off"
-        onSubmit={formik.handleSubmit}
       >
         <Typography
-          variant="h4"
+          variant="h3"
           sx={{
             textAlign: "center",
             fontWeight: "700",
-            color: edit ? "warning.main" : "primary.main",
+            color: "primary.main",
+            mb: 3,
           }}
         >
-          {edit ? "Edit Notice" : "Add New Notice"}
+          Notices
         </Typography>
 
-        <TextField
-          fullWidth
-          name="title"
-          label="Title"
-          variant="outlined"
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.title && Boolean(formik.errors.title)}
-          helperText={formik.touched.title && formik.errors.title}
-        />
-
-        <TextField
-          fullWidth
-          multiline
-          rows={5}
-          name="message"
-          label="Message"
-          variant="outlined"
-          value={formik.values.message}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.message && Boolean(formik.errors.message)}
-          helperText={formik.touched.message && formik.errors.message}
-        />
-
-        <FormControl
-          fullWidth
-          variant="outlined"
-          error={formik.touched.audience && Boolean(formik.errors.audience)}
+        <Box
+          component="form"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: { xs: "90vw", sm: "70vw", md: "60vw" },
+            maxWidth: 600,
+            margin: "auto",
+            background: "white",
+            p: 3,
+            borderRadius: 2,
+            boxShadow: 2,
+            gap: 2,
+          }}
+          noValidate
+          autoComplete="off"
+          onSubmit={formik.handleSubmit}
         >
-          <InputLabel>Audience</InputLabel>
-          <Select
-            value={formik.values.audience}
-            name="audience"
-            label="Audience"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          >
-            <MenuItem value={""}>Select Audience</MenuItem>
-            <MenuItem value={"teacher"}>Teacher</MenuItem>
-            <MenuItem value={"student"}>Student</MenuItem>
-          </Select>
-          {formik.touched.audience && formik.errors.audience && (
-            <Typography color="error" variant="caption">
-              {formik.errors.audience}
-            </Typography>
-          )}
-        </FormControl>
-
-        <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ minWidth: 120 }}
-          >
-            {edit ? "Update" : "Submit"}
-          </Button>
-
-          {edit && (
-            <Button
-              type="button"
-              variant="outlined"
-              color="secondary"
-              sx={{ minWidth: 120 }}
-              onClick={cancelEdit}
-            >
-              Cancel
-            </Button>
-          )}
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: 2,
-          backgroundColor: "grey.100",
-          borderRadius: 2,
-          boxShadow: 1,
-          my: 2,
-        }}
-      >
-        <Box sx={{ mb: 2, textAlign: "center" }}>
           <Typography
             variant="h4"
             sx={{
-              color: "text.primary",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              textAlign: "center",
+              fontWeight: "700",
+              color: edit ? "warning.main" : "primary.main",
             }}
           >
-            Notice For{" "}
-            <Box
-              component="span"
-              sx={{
-                ml: 1,
-                color: "primary.main",
-                textTransform: "uppercase",
-              }}
-            >
-              {filterAudience}
-            </Box>
+            {edit ? "Edit Notice" : "Add New Notice"}
           </Typography>
+
+          <TextField
+            fullWidth
+            name="title"
+            label="Title"
+            variant="outlined"
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.title && Boolean(formik.errors.title)}
+            helperText={formik.touched.title && formik.errors.title}
+          />
+
+          <TextField
+            fullWidth
+            multiline
+            rows={5}
+            name="message"
+            label="Message"
+            variant="outlined"
+            value={formik.values.message}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.message && Boolean(formik.errors.message)}
+            helperText={formik.touched.message && formik.errors.message}
+          />
+
+          <FormControl
+            fullWidth
+            variant="outlined"
+            error={formik.touched.audience && Boolean(formik.errors.audience)}
+          >
+            <InputLabel>Audience</InputLabel>
+            <Select
+              value={formik.values.audience}
+              name="audience"
+              label="Audience"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              <MenuItem value={""}>Select Audience</MenuItem>
+              <MenuItem value={"teacher"}>Teacher</MenuItem>
+              <MenuItem value={"student"}>Student</MenuItem>
+            </Select>
+            {formik.touched.audience && formik.errors.audience && (
+              <Typography color="error" variant="caption">
+                {formik.errors.audience}
+              </Typography>
+            )}
+          </FormControl>
+
+          <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ minWidth: 120 }}
+            >
+              {edit ? "Update" : "Submit"}
+            </Button>
+
+            {edit && (
+              <Button
+                type="button"
+                variant="outlined"
+                color="secondary"
+                sx={{ minWidth: 120 }}
+                onClick={cancelEdit}
+              >
+                Cancel
+              </Button>
+            )}
+          </Box>
         </Box>
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
-            gap: 2,
+            flexDirection: "column",
+            alignItems: "center",
+            padding: 2,
+            backgroundColor: "grey.100",
+            borderRadius: 2,
+            boxShadow: 1,
+            my: 2,
           }}
         >
-          <Button
-            variant={filterAudience === "student" ? "contained" : "outlined"}
-            onClick={() => setFilterAudience("student")}
-            sx={{
-              minWidth: 150,
-              textTransform: "uppercase",
-            }}
-          >
-            Student Notices
-          </Button>
-          <Button
-            variant={filterAudience === "teacher" ? "contained" : "outlined"}
-            onClick={() => setFilterAudience("teacher")}
-            sx={{
-              minWidth: 150,
-              textTransform: "uppercase",
-            }}
-          >
-            Teacher Notices
-          </Button>
-          <Button
-            variant={filterAudience === "all" ? "contained" : "outlined"}
-            onClick={() => setFilterAudience("all")}
-            sx={{
-              minWidth: 150,
-              textTransform: "uppercase",
-            }}
-          >
-            All Notices
-          </Button>
-        </Box>
-      </Box>
-      <Box
-        component="div"
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 2,
-          justifyContent: "center",
-        }}
-      >
-        {filteredNotices?.map((notice) => (
-          <Paper
-            key={notice._id}
-            sx={{
-              width: 300,
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              transition: "transform 0.3s ease",
-              "&:hover": {
-                transform: "scale(1.02)",
-                boxShadow: 3,
-              },
-            }}
-            elevation={2}
-          >
-            <Box>
-              <Typography variant="h5" color="primary" gutterBottom>
-                {notice.title}
-              </Typography>
-              <Typography variant="body1" color="text.secondary" paragraph>
-                {notice.message}
-              </Typography>
-              <Typography variant="subtitle2" color="text.disabled">
-                Audience: {notice.audience.toUpperCase()}
-              </Typography>
-            </Box>
-            <Box
+          <Box sx={{ mb: 2, textAlign: "center" }}>
+            <Typography
+              variant="h4"
               sx={{
+                color: "text.primary",
                 display: "flex",
-                justifyContent: "flex-end",
-                mt: 2,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                sx={{ mr: 1 }}
-                onClick={() =>
-                  handleEdit(
-                    notice._id,
-                    notice.title,
-                    notice.message,
-                    notice.audience
-                  )
-                }
+              Notice For{" "}
+              <Box
+                component="span"
+                sx={{
+                  ml: 1,
+                  color: "primary.main",
+                  textTransform: "uppercase",
+                }}
               >
-                Edit
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                size="small"
-                onClick={() => handleDelete(notice._id)}
+                {filterAudience}
+              </Box>
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 2,
+            }}
+          >
+            <Button
+              variant={filterAudience === "student" ? "contained" : "outlined"}
+              onClick={() => setFilterAudience("student")}
+              sx={{
+                minWidth: 150,
+                textTransform: "uppercase",
+              }}
+            >
+              Student Notices
+            </Button>
+            <Button
+              variant={filterAudience === "teacher" ? "contained" : "outlined"}
+              onClick={() => setFilterAudience("teacher")}
+              sx={{
+                minWidth: 150,
+                textTransform: "uppercase",
+              }}
+            >
+              Teacher Notices
+            </Button>
+            <Button
+              variant={filterAudience === "all" ? "contained" : "outlined"}
+              onClick={() => setFilterAudience("all")}
+              sx={{
+                minWidth: 150,
+                textTransform: "uppercase",
+              }}
+            >
+              All Notices
+            </Button>
+          </Box>
+        </Box>
+        <Box
+          component="div"
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 2,
+            justifyContent: "center",
+          }}
+        >
+          {filteredNotices?.map((notice) => (
+            <Paper
+              key={notice._id}
+              sx={{
+                width: 300,
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.02)",
+                  boxShadow: 3,
+                },
+              }}
+              elevation={2}
+            >
+              <Box>
+                <Typography variant="h5" color="primary" gutterBottom>
+                  {notice.title}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" paragraph>
+                  {notice.message}
+                </Typography>
+                <Typography variant="subtitle2" color="text.disabled">
+                  Audience: {notice.audience.toUpperCase()}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  mt: 2,
+                }}
               >
-                Delete
-              </Button>
-            </Box>
-          </Paper>
-        ))}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                  sx={{ mr: 1 }}
+                  onClick={() =>
+                    handleEdit(
+                      notice._id,
+                      notice.title,
+                      notice.message,
+                      notice.audience
+                    )
+                  }
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  onClick={() => handleDelete(notice._id)}
+                >
+                  Delete
+                </Button>
+              </Box>
+            </Paper>
+          ))}
+        </Box>
       </Box>
     </>
   );

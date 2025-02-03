@@ -108,41 +108,51 @@ export default function ScheduleStudent() {
 
   return (
     <>
-      <Typography
-        variant="h4"
+      <Box
         sx={{
-          fontWeight: "500",
-          color: "#1976d2",
-          marginBottom: 2,
-          textTransform: "uppercase",
-          textAlign: "center",
+          backgroundColor: "#dedede", // Light gray background
+          minHeight: "100vh", // Full page height
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Schedule for Your Class: [
-        {selectedClass ? selectedClass.class_text : "no class"}]
-      </Typography>
-
-      <Box sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}>
-        <Calendar
-          defaultView="week"
-          localizer={localizer}
-          events={events}
-          step={30}
-          timeslots={1}
-          min={new Date(1970, 1, 1, 7, 0, 0)}
-          startAccessor="start"
-          endAccessor="end"
-          max={new Date(1970, 1, 1, 17, 0, 0)}
-          defaultDate={new Date()}
-          showMultiDayTimes
-          style={{
-            height: "80vh", // Adjusting calendar height to make it more responsive
-            width: "100%",
-            borderRadius: "8px",
-            border: "1px solid #ddd",
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "500",
+            color: "#1976d2",
+            marginBottom: 2,
+            textTransform: "uppercase",
+            textAlign: "center",
           }}
-          views={["week", "day", "agenda"]}
-        />
+        >
+          Schedule for Your Class: [
+          {selectedClass ? selectedClass.class_text : "no class"}]
+        </Typography>
+
+        <Box sx={{ marginTop: 4, display: "flex", justifyContent: "center" }}>
+          <Calendar
+            defaultView="week"
+            localizer={localizer}
+            events={events}
+            step={30}
+            timeslots={1}
+            min={new Date(1970, 1, 1, 7, 0, 0)}
+            startAccessor="start"
+            endAccessor="end"
+            max={new Date(1970, 1, 1, 17, 0, 0)}
+            defaultDate={new Date()}
+            showMultiDayTimes
+            style={{
+              height: "80vh", // Adjusting calendar height to make it more responsive
+              width: "100%",
+              borderRadius: "8px",
+              border: "1px solid #ddd",
+            }}
+            views={["week", "day", "agenda"]}
+          />
+        </Box>
       </Box>
     </>
   );
