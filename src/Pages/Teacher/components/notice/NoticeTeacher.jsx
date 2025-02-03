@@ -35,10 +35,7 @@ const NoticeTeacher = () => {
       <Box
         sx={{
           backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh", // Full page height
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          minHeight: "100vh",
         }}
       >
         <Typography

@@ -53,10 +53,7 @@ export default function TeacherDetails() {
       <Box
         sx={{
           backgroundColor: "#dedede", // Light gray background
-          minHeight: "100vh", // Full page height
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          minHeight: "100vh",
         }}
       >
         <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>
