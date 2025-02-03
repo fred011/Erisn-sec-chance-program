@@ -155,7 +155,7 @@ export default function AttendanceStudentList() {
 
   return (
     <>
-      <Box
+      <Paper
         sx={{ padding: "20px", backgroundColor: "#f5f5f5", borderRadius: 2 }}
       >
         <Typography
@@ -325,7 +325,7 @@ export default function AttendanceStudentList() {
             </Item>
           </Grid2>
         </Grid2>
-      </Box>
+      </Paper>
     </>
   );
 }
