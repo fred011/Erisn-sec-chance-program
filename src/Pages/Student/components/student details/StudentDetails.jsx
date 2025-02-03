@@ -11,7 +11,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
-import { Box } from "@mui/material";
 
 export default function StudentDetails() {
   const [studentDetails, setStudentDetails] = React.useState(null);
@@ -49,52 +48,42 @@ export default function StudentDetails() {
   if (!studentDetails) return <Typography variant="h6">Loading...</Typography>;
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh", // Full page height
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>
-        <CardContent>
-          <Typography
-            variant="h4"
-            sx={{ color: "#1976d2" }}
-            fontWeight={600}
-            align="center"
-            gutterBottom
-          >
-            Welcome, {studentDetails.name}!
-          </Typography>
-          <TableContainer component={Paper} sx={{ mt: 2 }}>
-            <Table>
-              <TableBody>
-                {[
-                  ["Name", studentDetails.name],
-                  ["Email", studentDetails.email],
-                  [
-                    "Class",
-                    studentDetails.student_class
-                      ? studentDetails.student_class.class_text
-                      : "Not Assigned",
-                  ],
-                  ["Age", studentDetails.age],
-                  ["Gender", studentDetails.gender],
-                  ["Guardian", studentDetails.guardian],
-                ].map(([label, value], index) => (
-                  <TableRow key={index}>
-                    <TableCell sx={{ fontWeight: "bold" }}>{label}:</TableCell>
-                    <TableCell align="right">{value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
-    </Box>
+    <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>
+      <CardContent>
+        <Typography
+          variant="h4"
+          sx={{ color: "#1976d2" }}
+          fontWeight={600}
+          align="center"
+          gutterBottom
+        >
+          Welcome, {studentDetails.name}!
+        </Typography>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <Table>
+            <TableBody>
+              {[
+                ["Name", studentDetails.name],
+                ["Email", studentDetails.email],
+                [
+                  "Class",
+                  studentDetails.student_class
+                    ? studentDetails.student_class.class_text
+                    : "Not Assigned",
+                ],
+                ["Age", studentDetails.age],
+                ["Gender", studentDetails.gender],
+                ["Guardian", studentDetails.guardian],
+              ].map(([label, value], index) => (
+                <TableRow key={index}>
+                  <TableCell sx={{ fontWeight: "bold" }}>{label}:</TableCell>
+                  <TableCell align="right">{value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
   );
 }

@@ -156,12 +156,7 @@ const Notice = () => {
   );
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Typography
         variant="h3"
         sx={{
@@ -423,7 +418,7 @@ const Notice = () => {
           </Paper>
         ))}
       </Box>
-    </Box>
+    </>
   );
 };
 

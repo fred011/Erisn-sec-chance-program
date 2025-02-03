@@ -134,12 +134,7 @@ const Class = () => {
   });
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Typography
         variant="h3"
         sx={{ textAlign: "center", fontWeight: "700", mb: 3 }}
@@ -264,7 +259,7 @@ const Class = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+    </>
   );
 };
 

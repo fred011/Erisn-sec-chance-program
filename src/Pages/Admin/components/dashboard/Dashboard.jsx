@@ -40,12 +40,7 @@ const Dashboard = () => {
     }
   }, [token]); // This effect runs when the token is set
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Box
         sx={{
           height: "270px",
@@ -74,7 +69,7 @@ const Dashboard = () => {
           </Typography>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

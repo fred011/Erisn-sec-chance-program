@@ -11,7 +11,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
-import { Box } from "@mui/material";
 
 export default function TeacherDetails() {
   const [teacherDetails, setTeacherDetails] = React.useState(null);
@@ -49,43 +48,36 @@ export default function TeacherDetails() {
   if (!teacherDetails) return <Typography variant="h6">Loading...</Typography>;
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
-      <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>
-        <CardContent>
-          <Typography
-            variant="h4"
-            sx={{ color: "#1976d2" }}
-            fontWeight={600}
-            align="center"
-            gutterBottom
-          >
-            Welcome, {teacherDetails.name}!
-          </Typography>
-          <TableContainer component={Paper} sx={{ mt: 2 }}>
-            <Table>
-              <TableBody>
-                {[
-                  ["Name", teacherDetails.name],
-                  ["Email", teacherDetails.email],
-                  ["Age", teacherDetails.age],
-                  ["Gender", teacherDetails.gender],
-                  ["Qualification", teacherDetails.qualification],
-                ].map(([label, value], index) => (
-                  <TableRow key={index}>
-                    <TableCell sx={{ fontWeight: "bold" }}>{label}:</TableCell>
-                    <TableCell align="right">{value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
-    </Box>
+    <Card sx={{ maxWidth: 600, mx: "auto", mt: 4, boxShadow: 3 }}>
+      <CardContent>
+        <Typography
+          variant="h4"
+          sx={{ color: "#1976d2" }}
+          fontWeight={600}
+          align="center"
+          gutterBottom
+        >
+          Welcome, {teacherDetails.name}!
+        </Typography>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <Table>
+            <TableBody>
+              {[
+                ["Name", teacherDetails.name],
+                ["Email", teacherDetails.email],
+                ["Age", teacherDetails.age],
+                ["Gender", teacherDetails.gender],
+                ["Qualification", teacherDetails.qualification],
+              ].map(([label, value], index) => (
+                <TableRow key={index}>
+                  <TableCell sx={{ fontWeight: "bold" }}>{label}:</TableCell>
+                  <TableCell align="right">{value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
   );
 }

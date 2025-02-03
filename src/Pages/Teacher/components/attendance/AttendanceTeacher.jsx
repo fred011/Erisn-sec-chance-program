@@ -126,12 +126,7 @@ const AttendanceTeacher = () => {
   };
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Typography
         variant="h4"
         sx={{
@@ -247,7 +242,7 @@ const AttendanceTeacher = () => {
           )}
         </>
       )}
-    </Box>
+    </>
   );
 };
 

@@ -270,138 +270,142 @@ export default function ScheduleEvent({
   }, [selectedEventId]);
 
   return (
-    <Card
-      sx={{
-        width: "70vw",
-        maxWidth: 600,
-        margin: "20px auto",
-        boxShadow: 3,
-        borderRadius: 2,
-      }}
-    >
-      <CardContent>
-        <Typography
-          variant="h5"
-          sx={{ textAlign: "center", marginBottom: 2, fontWeight: "600" }}
-        >
-          {edit ? "Edit Period" : "Add New Period"}
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={formik.handleSubmit}
-          sx={{ display: "flex", flexDirection: "column", gap: 3 }}
-        >
-          <FormControl fullWidth>
-            <InputLabel>Teacher</InputLabel>
-            <Select
-              value={formik.values.teacher}
-              name="teacher"
-              label="Teacher"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              {teachers.map((x) => (
-                <MenuItem key={x._id} value={x._id}>
-                  {x.name}
-                </MenuItem>
-              ))}
-            </Select>
-            {formik.touched.teacher && formik.errors.teacher && (
-              <Typography color="error" variant="caption">
-                {formik.errors.teacher}
-              </Typography>
-            )}
-          </FormControl>
-
-          <FormControl fullWidth>
-            <InputLabel>Subject</InputLabel>
-            <Select
-              value={formik.values.subject}
-              name="subject"
-              label="Subject"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              {subjects.map((x) => (
-                <MenuItem key={x._id} value={x._id}>
-                  {x.subject_name}
-                </MenuItem>
-              ))}
-            </Select>
-            {formik.touched.subject && formik.errors.subject && (
-              <Typography color="error" variant="caption">
-                {formik.errors.subject}
-              </Typography>
-            )}
-          </FormControl>
-
-          <FormControl fullWidth>
-            <InputLabel>Period</InputLabel>
-            <Select
-              value={formik.values.period}
-              name="period"
-              label="Period"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              {periods.map((x) => (
-                <MenuItem key={x.id} value={`${x.startTime},${x.endTime}`}>
-                  {x.label}
-                </MenuItem>
-              ))}
-            </Select>
-            {formik.touched.period && formik.errors.period && (
-              <Typography color="error" variant="caption">
-                {formik.errors.period}
-              </Typography>
-            )}
-          </FormControl>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date"
-              value={formik.values.date ? dayjs(formik.values.date) : null}
-              onChange={(value) => formik.setFieldValue("date", value.toDate())}
-            />
-          </LocalizationProvider>
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 2,
-              marginTop: 2,
-            }}
+    <>
+      <Card
+        sx={{
+          width: "70vw",
+          maxWidth: 600,
+          margin: "20px auto",
+          boxShadow: 3,
+          borderRadius: 2,
+        }}
+      >
+        <CardContent>
+          <Typography
+            variant="h5"
+            sx={{ textAlign: "center", marginBottom: 2, fontWeight: "600" }}
           >
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ background: "green", flex: 1 }}
+            {edit ? "Edit Period" : "Add New Period"}
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
+            sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+          >
+            <FormControl fullWidth>
+              <InputLabel>Teacher</InputLabel>
+              <Select
+                value={formik.values.teacher}
+                name="teacher"
+                label="Teacher"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                {teachers.map((x) => (
+                  <MenuItem key={x._id} value={x._id}>
+                    {x.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              {formik.touched.teacher && formik.errors.teacher && (
+                <Typography color="error" variant="caption">
+                  {formik.errors.teacher}
+                </Typography>
+              )}
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel>Subject</InputLabel>
+              <Select
+                value={formik.values.subject}
+                name="subject"
+                label="Subject"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                {subjects.map((x) => (
+                  <MenuItem key={x._id} value={x._id}>
+                    {x.subject_name}
+                  </MenuItem>
+                ))}
+              </Select>
+              {formik.touched.subject && formik.errors.subject && (
+                <Typography color="error" variant="caption">
+                  {formik.errors.subject}
+                </Typography>
+              )}
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel>Period</InputLabel>
+              <Select
+                value={formik.values.period}
+                name="period"
+                label="Period"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                {periods.map((x) => (
+                  <MenuItem key={x.id} value={`${x.startTime},${x.endTime}`}>
+                    {x.label}
+                  </MenuItem>
+                ))}
+              </Select>
+              {formik.touched.period && formik.errors.period && (
+                <Typography color="error" variant="caption">
+                  {formik.errors.period}
+                </Typography>
+              )}
+            </FormControl>
+
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Date"
+                value={formik.values.date ? dayjs(formik.values.date) : null}
+                onChange={(value) =>
+                  formik.setFieldValue("date", value.toDate())
+                }
+              />
+            </LocalizationProvider>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 2,
+                marginTop: 2,
+              }}
             >
-              {edit ? "Update Event" : "Add Event"}
-            </Button>
-            {edit && (
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ background: "green", flex: 1 }}
+              >
+                {edit ? "Update Event" : "Add Event"}
+              </Button>
+              {edit && (
+                <Button
+                  type="button"
+                  variant="contained"
+                  sx={{ background: "red", flex: 1 }}
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+              )}
               <Button
                 type="button"
-                variant="contained"
-                sx={{ background: "red", flex: 1 }}
-                onClick={handleDelete}
+                variant="outlined"
+                color="secondary"
+                sx={{ flex: 1 }}
+                onClick={handleCancel}
               >
-                Delete
+                Cancel
               </Button>
-            )}
-            <Button
-              type="button"
-              variant="outlined"
-              color="secondary"
-              sx={{ flex: 1 }}
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
+            </Box>
           </Box>
-        </Box>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </>
   );
 }

@@ -107,12 +107,7 @@ export default function ScheduleStudent() {
   // Function to handle adding new period
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Typography
         variant="h4"
         sx={{
@@ -149,6 +144,6 @@ export default function ScheduleStudent() {
           views={["week", "day", "agenda"]}
         />
       </Box>
-    </Box>
+    </>
   );
 }

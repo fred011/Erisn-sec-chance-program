@@ -144,12 +144,7 @@ const Subject = () => {
     fetchAllSubjects();
   }, []);
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <Typography
         variant="h3"
         sx={{ textAlign: "center", fontWeight: "700", mb: 4 }}
@@ -305,7 +300,7 @@ const Subject = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+    </>
   );
 };
 

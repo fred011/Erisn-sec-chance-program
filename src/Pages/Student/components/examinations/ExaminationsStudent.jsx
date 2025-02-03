@@ -107,12 +107,7 @@ export default function ExaminationsStudent() {
   }, [selectedClass]);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#dedede", // Light gray background
-        minHeight: "100vh",
-      }}
-    >
+    <>
       {/* Class Selection Section */}
       <Typography
         variant="h4"
@@ -165,6 +160,6 @@ export default function ExaminationsStudent() {
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+    </>
   );
 }
