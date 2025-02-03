@@ -64,7 +64,11 @@ const AttendanceStudent = () => {
         },
         withCredentials: true,
       });
-      setStudentId(response.data.student._id);
+      if (response.data.student && response.data.student._id) {
+        setStudentId(response.data.student._id);
+      } else {
+        console.error("Student ID not found in response:", response.data);
+      }
     } catch (error) {
       console.error(
         "Error fetching student details:",
@@ -117,9 +121,6 @@ const AttendanceStudent = () => {
   useEffect(() => {
     if (studentId) {
       fetchAttendanceData();
-    } else {
-      setError("Invalid student ID provided.");
-      setLoading(false);
     }
   }, [studentId]);
 
