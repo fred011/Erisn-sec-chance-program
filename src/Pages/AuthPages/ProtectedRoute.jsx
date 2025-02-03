@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
   // If authenticated but role doesn't match the required role, redirect to a forbidden page or another route
   if (requiredRole && auth.role !== requiredRole) {
-    return <Navigate to="/forbidden" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // If user is authenticated and has the correct role, render children
