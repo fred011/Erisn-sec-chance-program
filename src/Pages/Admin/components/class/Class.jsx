@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
@@ -27,27 +28,27 @@ const Class = () => {
   const [editId, setEditId] = useState(null);
   const [classes, setClasses] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state for fetching data
+  const [submitting, setSubmitting] = useState(false); // Loading state for form submission
 
-  const fetchAllClasses = () => {
-    // Get the token from storage or context
-    const token = localStorage.getItem("token"); // Or use context if the token is stored there
-
-    axios
-      .get(`${baseAPI}/class/all`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-        },
-      })
-      .then((res) => {
-        console.log("Classes", res.data);
-        setClasses(res.data.data); // Assuming response contains data in this format
-      })
-      .catch((err) => {
-        console.error(
-          "Error in fetching all classes",
-          err.response?.data || err.message
-        );
+  // Fetch all classes
+  const fetchAllClasses = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${baseAPI}/class/all`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
+
+      setClasses(res.data.data || []);
+    } catch (err) {
+      console.error(
+        "Error fetching classes",
+        err.response?.data || err.message
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -61,25 +62,23 @@ const Class = () => {
     formik.setFieldValue("class_num", class_num);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this class?")) {
-      const token = localStorage.getItem("token");
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this class?")) return;
 
-      axios
-        .delete(`${baseAPI}/class/delete/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          console.log("Class delete response", res);
-          alert("Class deleted successfully.");
-          fetchAllClasses();
-        })
-        .catch((err) => {
-          console.error("Error in deleting class", err);
-          alert("Failed to delete class.");
-        });
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${baseAPI}/class/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      alert("Class deleted successfully.");
+      fetchAllClasses();
+    } catch (err) {
+      console.error("Error deleting class", err);
+      alert("Failed to delete class.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,43 +91,33 @@ const Class = () => {
   const formik = useFormik({
     initialValues: { class_text: "", class_num: "" },
     validationSchema: classSchema,
-    onSubmit: (values, { resetForm }) => {
-      const token = localStorage.getItem("token");
+    onSubmit: async (values, { resetForm }) => {
+      setSubmitting(true);
+      try {
+        const token = localStorage.getItem("token");
 
-      if (edit) {
-        axios
-          .patch(`${baseAPI}/class/update/${editId}`, values, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((res) => {
-            console.log("Class update response", res);
-            alert("Class updated successfully.");
-            cancelEdit();
-            fetchAllClasses();
-          })
-          .catch((err) => {
-            console.error("Error in updating class", err);
-            alert("Failed to update class.");
+        if (edit) {
+          await axios.patch(`${baseAPI}/class/update/${editId}`, values, {
+            headers: { Authorization: `Bearer ${token}` },
           });
-      } else {
-        axios
-          .post(`${baseAPI}/class/create`, values, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((res) => {
-            console.log("Class add response", res);
-            alert("Class added successfully.");
-            resetForm();
-            fetchAllClasses();
-          })
-          .catch((err) => {
-            console.error("Error in adding class", err);
-            alert("Failed to add class.");
+
+          alert("Class updated successfully.");
+          cancelEdit();
+        } else {
+          await axios.post(`${baseAPI}/class/create`, values, {
+            headers: { Authorization: `Bearer ${token}` },
           });
+
+          alert("Class added successfully.");
+          resetForm();
+        }
+
+        fetchAllClasses();
+      } catch (err) {
+        console.error("Error processing class", err);
+        alert("Operation failed. Please try again.");
+      } finally {
+        setSubmitting(false);
       }
     },
   });
@@ -141,6 +130,7 @@ const Class = () => {
       >
         Classes
       </Typography>
+
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
@@ -197,8 +187,13 @@ const Class = () => {
             gap: 2,
           }}
         >
-          <Button type="submit" variant="contained" sx={{ width: "120px" }}>
-            Submit
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ width: "120px" }}
+            disabled={submitting}
+          >
+            {submitting ? <CircularProgress size={24} /> : "Submit"}
           </Button>
 
           {edit && (
@@ -214,51 +209,58 @@ const Class = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-        <Table>
-          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
-            <TableRow sx={{ backgroundColor: "#1976d2" }}>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Class Text
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Class Number
-              </TableCell>
-              <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                Actions
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {classes.map((x) => (
-              <TableRow
-                key={x._id}
-                sx={{
-                  "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" },
-                }}
-              >
-                <TableCell>{x.class_text}</TableCell>
-                <TableCell>{x.class_num}</TableCell>
-                <TableCell>
-                  <IconButton
-                    onClick={() => handleEdit(x._id, x.class_text, x.class_num)}
-                    aria-label="edit"
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => handleDelete(x._id)}
-                    aria-label="delete"
-                    sx={{ color: "red" }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+      {/* Loader for Fetching Classes */}
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <TableContainer component={Paper} sx={{ marginTop: 4 }}>
+          <Table>
+            <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+              <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Class Text
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Class Number
+                </TableCell>
+                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+                  Actions
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {classes.map((x) => (
+                <TableRow
+                  key={x._id}
+                  sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f9f9f9" } }}
+                >
+                  <TableCell>{x.class_text}</TableCell>
+                  <TableCell>{x.class_num}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() =>
+                        handleEdit(x._id, x.class_text, x.class_num)
+                      }
+                      aria-label="edit"
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleDelete(x._id)}
+                      aria-label="delete"
+                      sx={{ color: "red" }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 };

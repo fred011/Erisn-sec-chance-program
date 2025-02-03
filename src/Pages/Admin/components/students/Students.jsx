@@ -31,6 +31,7 @@ import {
   Paper,
 } from "@mui/material";
 import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress"; // Import the CircularProgress component
 
 import {
   studentEditSchema,
@@ -44,6 +45,8 @@ export default function Students() {
   const [editId, setEditId] = useState(null);
 
   const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(false); // State for loading indicator
+
   // Define initial form field values
   const initialValues = {
     name: "",
@@ -60,6 +63,7 @@ export default function Students() {
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete this student?")) {
       const token = localStorage.getItem("token"); // Get token for authentication
+      setLoading(true); // Start loading before making API call
       axios
         .delete(`${baseAPI}/student/delete/${id}`, {
           headers: {
@@ -74,6 +78,9 @@ export default function Students() {
         .catch((err) => {
           console.log("Error in deleting student", err);
           alert(err.response?.data?.error || "Failed to delete student");
+        })
+        .finally(() => {
+          setLoading(false); // Stop loading after API call is done
         });
     }
   };
@@ -119,6 +126,7 @@ export default function Students() {
       }
 
       const token = localStorage.getItem("token"); // Get token for authentication
+      setLoading(true); // Start loading before making API call
 
       if (edit) {
         axios
@@ -136,6 +144,9 @@ export default function Students() {
           .catch((err) => {
             console.log("Error in updating student", err);
             alert(err.response?.data?.error || "Failed to update student");
+          })
+          .finally(() => {
+            setLoading(false); // Stop loading after API call is done
           });
       } else {
         axios
@@ -153,6 +164,9 @@ export default function Students() {
           .catch((err) => {
             console.log("Error in registering student", err);
             alert(err.response?.data?.error || "Failed to register student");
+          })
+          .finally(() => {
+            setLoading(false); // Stop loading after API call is done
           });
       }
     },
@@ -160,6 +174,7 @@ export default function Students() {
 
   const fetchClasses = () => {
     const token = localStorage.getItem("token"); // Add token for authentication
+    setLoading(true); // Start loading before making API call
     axios
       .get(`${baseAPI}/class/all`, {
         headers: {
@@ -171,6 +186,9 @@ export default function Students() {
       })
       .catch((e) => {
         console.log("Error in fetching class", e);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading after API call is done
       });
   };
 
@@ -192,6 +210,7 @@ export default function Students() {
   const fetchStudents = () => {
     // Get the token from localStorage
     const token = localStorage.getItem("token");
+    setLoading(true); // Start loading before making API call
 
     axios
       .get(`${baseAPI}/student/fetch-with-query`, {
@@ -206,6 +225,9 @@ export default function Students() {
       })
       .catch((e) => {
         console.log("Error in fetching students", e.response || e.message);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading after API call is done
       });
   };
 
@@ -215,6 +237,7 @@ export default function Students() {
   React.useEffect(() => {
     fetchStudents();
   }, [params]);
+
   return (
     <>
       <Box
@@ -238,6 +261,18 @@ export default function Students() {
         >
           Students
         </Typography>
+
+        {loading && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "20px",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
 
         <Box
           component="form"
@@ -374,10 +409,10 @@ export default function Students() {
             </Typography>
           )}
 
-          {/* Guardian Input */}
+          {/* Guardian Name */}
           <TextField
             name="guardian"
-            label="Guardian"
+            label="Guardian Name"
             value={formik.values.guardian}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -389,10 +424,10 @@ export default function Students() {
             </Typography>
           )}
 
-          {/* Guardian Phone Input */}
+          {/* Guardian Phone */}
           <TextField
             name="guardian_phone"
-            label="Guardian Phone Number"
+            label="Guardian Phone"
             value={formik.values.guardian_phone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -404,126 +439,75 @@ export default function Students() {
             </Typography>
           )}
 
-          {/* Password Input */}
-          <TextField
-            type="password"
-            name="password"
-            label="Password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.password && formik.errors.password && (
-            <Typography color="error" variant="body2">
-              {formik.errors.password}
-            </Typography>
+          {!edit && (
+            <>
+              {/* Password Input */}
+              <TextField
+                name="password"
+                type="password"
+                label="Password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ marginBottom: 2 }}
+              />
+              {formik.touched.password && formik.errors.password && (
+                <Typography color="error" variant="body2">
+                  {formik.errors.password}
+                </Typography>
+              )}
+
+              {/* Confirm Password */}
+              <TextField
+                name="confirm_password"
+                type="password"
+                label="Confirm Password"
+                value={formik.values.confirm_password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ marginBottom: 2 }}
+              />
+              {formik.touched.confirm_password &&
+                formik.errors.confirm_password && (
+                  <Typography color="error" variant="body2">
+                    {formik.errors.confirm_password}
+                  </Typography>
+                )}
+            </>
           )}
 
-          {/* Confirm Password Input */}
-          <TextField
-            type="password"
-            name="confirm_password"
-            label="Confirm Password"
-            value={formik.values.confirm_password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            sx={{ marginBottom: 2 }}
-          />
-          {formik.touched.confirm_password &&
-            formik.errors.confirm_password && (
-              <Typography color="error" variant="body2">
-                {formik.errors.confirm_password}
-              </Typography>
-            )}
-
           {/* Submit Button */}
-          <Button
-            sx={{ width: "120px", marginBottom: 2 }}
-            type="submit"
-            variant="contained"
-            color="primary"
-          >
-            Submit
-          </Button>
-          {edit && (
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Button
-              sx={{ width: "120px", marginBottom: 2 }}
-              onClick={() => cancelEdit()}
-              type="button"
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={{ width: "48%" }}
+              disabled={loading} // Disable the button while loading
+            >
+              {edit ? "Update Student" : "Add Student"}
+            </Button>
+            <Button
               variant="outlined"
               color="secondary"
+              sx={{ width: "48%" }}
+              onClick={cancelEdit}
+              disabled={loading} // Disable the button while loading
             >
               Cancel
             </Button>
-          )}
+          </Box>
         </Box>
 
-        {/* Search and Class Filter Section */}
-        <Box
-          component={"div"}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "40px",
-          }}
-        >
-          <TextField
-            label="Search"
-            value={params.search || ""}
-            onChange={handleSearch}
-            sx={{ marginRight: "10px", width: "300px" }}
-          />
-
-          <FormControl sx={{ width: "180px", marginLeft: "5px" }}>
-            <InputLabel id="student_class">Student Class</InputLabel>
-            <Select
-              labelId="student_class"
-              id="student_class"
-              value={params.student_class || ""}
-              onChange={handleClass}
-            >
-              <MenuItem value="">Select Class</MenuItem>
-              {classes &&
-                classes.map((x) => (
-                  <MenuItem key={x._id} value={x._id}>
-                    {x.class_text} ({x.class_num})
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        </Box>
-
-        {/* Students Table Section */}
-        <TableContainer component={Paper} sx={{ marginTop: "40px" }}>
+        {/* Table to show students */}
+        <TableContainer component={Paper}>
           <Table>
             <TableHead>
-              <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Name
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Email
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Class
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Age
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Gender
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Guardian
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Guardian Phone
-                </TableCell>
-                <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
-                  Actions
-                </TableCell>
+              <TableRow>
+                <TableCell>Full Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Class</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -531,27 +515,17 @@ export default function Students() {
                 <TableRow key={student._id}>
                   <TableCell>{student.name}</TableCell>
                   <TableCell>{student.email}</TableCell>
-                  <TableCell>
-                    {student.student_class
-                      ? student.student_class.class_text
-                      : "Not Assigned"}
-                  </TableCell>
-                  <TableCell>{student.age}</TableCell>
-                  <TableCell>{student.gender}</TableCell>
-                  <TableCell>{student.guardian}</TableCell>
-                  <TableCell>{student.guardian_phone}</TableCell>
+                  <TableCell>{student.student_class?.class_text}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => handleEdit(student._id)}
                       startIcon={<EditIcon />}
-                      sx={{ marginRight: "10px" }}
                     >
                       Edit
                     </Button>
                     <Button
                       onClick={() => handleDelete(student._id)}
                       startIcon={<DeleteIcon />}
-                      color="error"
                     >
                       Delete
                     </Button>

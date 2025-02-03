@@ -9,15 +9,15 @@ import {
   Select,
   TextField,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
-
 import React, { useEffect, useState } from "react";
 import { noticeSchema } from "../../../../Components/yupSchema/noticeSchema";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
 
-//Icons
+// Icons
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -26,6 +26,8 @@ const Notice = () => {
   const [notices, setNotices] = useState([]);
   const [edit, setEdit] = useState(false);
   const [filterAudience, setFilterAudience] = useState("all");
+  const [loading, setLoading] = useState(false); // State for loader
+  const [submitLoading, setSubmitLoading] = useState(false); // State for form submission loader
 
   const handleEdit = (id, title, message, audience) => {
     console.log("Edit", id);
@@ -38,8 +40,9 @@ const Notice = () => {
 
   const handleDelete = (id) => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
-    if (confirm("Are you sure you want to delete notice?")) {
+    if (confirm("Are you sure you want to delete this notice?")) {
       console.log("Delete", id);
+      setLoading(true); // Show loader while deleting
       axios
         .delete(`${baseAPI}/notice/delete/${id}`, {
           headers: {
@@ -54,7 +57,8 @@ const Notice = () => {
         .catch((err) => {
           console.log("Error in deleting notice", err);
           alert("Failed to delete notice");
-        });
+        })
+        .finally(() => setLoading(false)); // Hide loader after request
     }
   };
 
@@ -69,8 +73,9 @@ const Notice = () => {
     validationSchema: noticeSchema,
     onSubmit: (values, { resetForm }) => {
       const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
-
       console.log(values);
+
+      setSubmitLoading(true); // Show loader during form submission
 
       if (edit) {
         axios
@@ -96,7 +101,8 @@ const Notice = () => {
               err.response ? err.response.data : err.message
             );
             alert("Failed to update notice");
-          });
+          })
+          .finally(() => setSubmitLoading(false)); // Hide loader after request
       } else {
         axios
           .post(
@@ -121,7 +127,8 @@ const Notice = () => {
               err.response ? err.response.data : err.message
             );
             alert("Failed to add notice");
-          });
+          })
+          .finally(() => setSubmitLoading(false)); // Hide loader after request
 
         resetForm();
       }
@@ -130,6 +137,7 @@ const Notice = () => {
 
   const fetchAllNotices = () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage or context
+    setLoading(true); // Show loader while fetching notices
 
     axios
       .get(`${baseAPI}/notice/all`, {
@@ -143,7 +151,8 @@ const Notice = () => {
       })
       .catch((err) => {
         console.log("Error in fetching all notices", err);
-      });
+      })
+      .finally(() => setLoading(false)); // Hide loader after request
   };
 
   useEffect(() => {
@@ -168,6 +177,12 @@ const Notice = () => {
       >
         Notices
       </Typography>
+
+      {loading && (
+        <Box sx={{ textAlign: "center", my: 4 }}>
+          <CircularProgress />
+        </Box>
+      )}
 
       <Box
         component="form"
@@ -255,7 +270,13 @@ const Notice = () => {
             color="primary"
             sx={{ minWidth: 120 }}
           >
-            {edit ? "Update" : "Submit"}
+            {submitLoading ? (
+              <CircularProgress size={24} />
+            ) : edit ? (
+              "Update"
+            ) : (
+              "Submit"
+            )}
           </Button>
 
           {edit && (
@@ -271,6 +292,7 @@ const Notice = () => {
           )}
         </Box>
       </Box>
+
       <Box
         sx={{
           display: "flex",
@@ -345,6 +367,7 @@ const Notice = () => {
           </Button>
         </Box>
       </Box>
+
       <Box
         component="div"
         sx={{

@@ -18,7 +18,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Grid2,
+  CircularProgress, // Import the loader
 } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
@@ -42,6 +42,7 @@ export default function AttendanceStudentList() {
   const [students, setStudents] = useState([]);
   const [attendanceData, setAttendanceData] = useState({});
   const [params, setParams] = useState({});
+  const [loading, setLoading] = useState(false); // Loader state
 
   // Fetch attendance for all students
   const fetchAttendanceForStudents = async (studentsList) => {
@@ -65,22 +66,13 @@ export default function AttendanceStudentList() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Response Data for Attendance:", response.data); // Log the full response data
-
-      const attendanceRecords = response.data; // Check how the data is structured
-
-      // Check if attendanceRecords is an array and contains the necessary information
+      const attendanceRecords = response.data;
       const totalClasses = attendanceRecords.length;
       const presentCount = attendanceRecords.filter(
         (record) => record.status === "present"
       ).length;
-
       const attendancePercentage =
         totalClasses > 0 ? (presentCount / totalClasses) * 100 : 0;
-
-      console.log(
-        `Attendance for student ${studentId}: ${attendancePercentage}%`
-      );
 
       return { studentId, attendancePercentage };
     } catch (error) {
@@ -93,39 +85,45 @@ export default function AttendanceStudentList() {
   };
 
   // Fetch all available classes
-  const fetchClasses = () => {
+  const fetchClasses = async () => {
+    setLoading(true); // Start loading
     const token = localStorage.getItem("token");
 
-    axios
-      .get(`${baseAPI}/class/all`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        setClasses(res.data.data);
-      })
-      .catch((e) => {
-        console.error("Error in fetching classes", e.response || e.message);
+    try {
+      const res = await axios.get(`${baseAPI}/class/all`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
+      setClasses(res.data.data);
+    } catch (error) {
+      console.error(
+        "Error in fetching classes",
+        error.response || error.message
+      );
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
   // Fetch students based on parameters (including selected class)
-  const fetchStudents = () => {
+  const fetchStudents = async () => {
+    setLoading(true); // Start loading
     const token = localStorage.getItem("token");
 
-    axios
-      .get(`${baseAPI}/student/fetch-with-query`, {
+    try {
+      const res = await axios.get(`${baseAPI}/student/fetch-with-query`, {
         params,
         headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        setStudents(res.data.students);
-        fetchAttendanceForStudents(res.data.students);
-      })
-      .catch((e) => {
-        console.error("Error in fetching students", e.response || e.message);
       });
+      setStudents(res.data.students);
+      fetchAttendanceForStudents(res.data.students);
+    } catch (error) {
+      console.error(
+        "Error in fetching students",
+        error.response || error.message
+      );
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
   // Handle class selection
@@ -172,159 +170,101 @@ export default function AttendanceStudentList() {
           Students Attendance
         </Typography>
 
-        <Grid2 container spacing={3}>
-          {/* Filters Section */}
-          <Grid2 item xs={12} md={4}>
-            <Item
-              sx={{
-                padding: "20px",
-                backgroundColor: "#ffffff",
-                borderRadius: "8px",
-                boxShadow: 2,
-              }}
-            >
-              <Typography variant="h6" gutterBottom sx={{ color: "#1976d2" }}>
-                Filter Students
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <TextField
-                  label="Search by Name"
-                  value={params.search || ""}
-                  onChange={handleSearch}
-                  variant="outlined"
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#ffffff",
-                    borderRadius: 1,
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#1976d2",
-                      },
-                    },
-                  }}
-                />
-                <FormControl fullWidth>
-                  <InputLabel id="student_class" sx={{ color: "#1976d2" }}>
-                    Select Class
-                  </InputLabel>
-                  <Select
-                    labelId="student_class"
-                    label="Select Class"
-                    value={params.student_class || ""}
-                    onChange={handleClass}
-                    sx={{
-                      backgroundColor: "#ffffff",
-                      borderRadius: 1,
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#1976d2",
-                        },
-                      },
-                    }}
-                  >
-                    <MenuItem value="">All Classes</MenuItem>
-                    {classes.map((cls) => (
-                      <MenuItem key={cls._id} value={cls._id}>
-                        {cls.class_text} ({cls.class_num})
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                {params.student_class && (
-                  <Attendee classId={params.student_class} />
-                )}
-              </Box>
-            </Item>
-          </Grid2>
+        {loading ? ( // Show loader while fetching data
+          <Box display="flex" justifyContent="center" my={5}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            {/* Filters Section */}
+            <Box mb={3}>
+              <FormControl fullWidth>
+                <InputLabel id="student_class" sx={{ color: "#1976d2" }}>
+                  Select Class
+                </InputLabel>
+                <Select
+                  labelId="student_class"
+                  value={params.student_class || ""}
+                  onChange={handleClass}
+                >
+                  <MenuItem value="">All Classes</MenuItem>
+                  {classes.map((cls) => (
+                    <MenuItem key={cls._id} value={cls._id}>
+                      {cls.class_text} ({cls.class_num})
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
 
-          {/* Students Table Section */}
-          <Grid2 item xs={12} md={8}>
-            <Item
-              sx={{
-                padding: "20px",
-                backgroundColor: "#ffffff",
-                borderRadius: "8px",
-                boxShadow: 2,
-              }}
-            >
-              <Typography variant="h6" gutterBottom sx={{ color: "#1976d2" }}>
-                Students List
-              </Typography>
-              <TableContainer component={Paper} elevation={0}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                        Name
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                        Gender
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                        Guardian Phone
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                        Class
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                        Attendance %
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                        Action
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {students.length > 0 ? (
-                      students.map((student) => (
-                        <TableRow
-                          key={student._id}
-                          sx={{
-                            "&:nth-of-type(odd)": {
-                              backgroundColor: "#f9f9f9",
-                            },
-                          }}
-                        >
-                          <TableCell>{student.name}</TableCell>
-                          <TableCell>{student.gender}</TableCell>
-                          <TableCell>{student.guardian_phone}</TableCell>
-                          <TableCell>
-                            {student.student_class
-                              ? student.student_class.class_text
-                              : "Not Assigned"}
-                          </TableCell>
-                          <TableCell>
-                            {attendanceData[student._id] !== undefined
-                              ? `${attendanceData[student._id].toFixed(2)}%`
-                              : "No Data"}
-                          </TableCell>
-                          <TableCell>
-                            <Link
-                              to={`/admin/attendance/${student._id}`}
-                              style={{
-                                textDecoration: "none",
-                                color: "#1976d2",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              View
-                            </Link>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={6} align="center">
-                          No students found.
+            {/* Students Table Section */}
+            <TableContainer component={Paper} elevation={0}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Name
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Gender
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Guardian Phone
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Class
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Attendance %
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                      Action
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {students.length > 0 ? (
+                    students.map((student) => (
+                      <TableRow key={student._id}>
+                        <TableCell>{student.name}</TableCell>
+                        <TableCell>{student.gender}</TableCell>
+                        <TableCell>{student.guardian_phone}</TableCell>
+                        <TableCell>
+                          {student.student_class
+                            ? student.student_class.class_text
+                            : "Not Assigned"}
+                        </TableCell>
+                        <TableCell>
+                          {attendanceData[student._id] !== undefined
+                            ? `${attendanceData[student._id].toFixed(2)}%`
+                            : "No Data"}
+                        </TableCell>
+                        <TableCell>
+                          <Link
+                            to={`/admin/attendance/${student._id}`}
+                            style={{
+                              textDecoration: "none",
+                              color: "#1976d2",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            View
+                          </Link>
                         </TableCell>
                       </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Item>
-          </Grid2>
-        </Grid2>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} align="center">
+                        No students found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        )}
       </Box>
     </>
   );

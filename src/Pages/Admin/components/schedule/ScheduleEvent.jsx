@@ -11,14 +11,11 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
-
 import { useFormik } from "formik";
 import { periodSchema } from "../../../../Components/yupSchema/periodSchema";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 import { baseAPI } from "../../../../environment";
-
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -29,6 +26,7 @@ export default function ScheduleEvent({
   handleEventClose,
   edit,
   selectedEventId,
+  setEvents, // Ensure setEvents is passed as a prop from the parent component
 }) {
   const initialValues = {
     teacher: "",
@@ -38,6 +36,7 @@ export default function ScheduleEvent({
   };
   const [teachers, setTeachers] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(false); // Loader state
 
   const periods = [
     {
@@ -83,18 +82,20 @@ export default function ScheduleEvent({
       endTime: "15:00",
     },
   ];
+
   const handleCancel = () => {
     formik.resetForm();
     handleEventClose();
   };
 
-  const handleDelete = (setEvents) => {
+  const handleDelete = () => {
     if (confirm("Are you sure you want to delete this period?")) {
       const token = localStorage.getItem("token"); // Include token for authentication
+      setLoading(true); // Start loader
       axios
         .delete(`${baseAPI}/schedule/delete/${selectedEventId}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Add the token to headers
+            Authorization: `Bearer ${token}`, // Add token to headers
           },
         })
         .then((res) => {
@@ -109,17 +110,17 @@ export default function ScheduleEvent({
         .catch((e) => {
           alert("Failed to delete Event");
           console.log("Failed to delete Event", e);
-        });
+        })
+        .finally(() => setLoading(false)); // Stop loader
     }
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: periodSchema,
-    onSubmit: (values, { resetForm, setEvents }) => {
+    onSubmit: (values, { resetForm }) => {
       const { date, period } = values;
       const [startTime, endTime] = period.split(",");
-
       const selectedDate = dayjs(date);
 
       if (!selectedDate.isValid()) {
@@ -145,6 +146,7 @@ export default function ScheduleEvent({
       };
 
       const token = localStorage.getItem("token"); // Include token for authentication
+      setLoading(true); // Start loader
       if (edit) {
         axios
           .post(
@@ -161,11 +163,24 @@ export default function ScheduleEvent({
             alert("Period Updated successfully");
             resetForm();
             handleEventClose();
+            setEvents((prevEvents) =>
+              prevEvents.map((event) =>
+                event.id === selectedEventId
+                  ? {
+                      ...event,
+                      title: `Subject: ${values.subject.subject_name}, Teacher: ${values.teacher.name}`,
+                      start: formattedStartTime,
+                      end: formattedEndTime,
+                    }
+                  : event
+              )
+            );
           })
           .catch((e) => {
             console.error("Error updating period:", e);
             alert("Failed to update period");
-          });
+          })
+          .finally(() => setLoading(false)); // Stop loader
       } else {
         axios
           .post(`${baseAPI}/schedule/create`, formattedData, {
@@ -178,25 +193,22 @@ export default function ScheduleEvent({
             alert("Period created successfully");
             resetForm();
             handleEventClose();
+            setEvents((prevEvents) => [
+              ...prevEvents,
+              {
+                id: res.data.id,
+                title: `Subject: ${values.subject.subject_name}, Teacher: ${values.teacher.name}`,
+                start: formattedStartTime,
+                end: formattedEndTime,
+              },
+            ]);
           })
           .catch((e) => {
             console.error("Error creating period:", e);
             alert("Failed to create period");
-          });
+          })
+          .finally(() => setLoading(false)); // Stop loader
       }
-
-      const updatedEvent = {
-        id: selectedEventId,
-        title: `Subject: ${values.subject.subject_name}, Teacher: ${values.teacher.name}`,
-        start: formattedStartTime,
-        end: formattedEndTime,
-      };
-
-      setEvents((prevEvents) =>
-        prevEvents.map((event) =>
-          event.id === selectedEventId ? updatedEvent : event
-        )
-      );
     },
   });
 

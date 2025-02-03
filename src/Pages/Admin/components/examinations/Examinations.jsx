@@ -17,6 +17,7 @@ import {
   Select,
   TextField,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -34,16 +35,14 @@ export default function Examinations() {
   const [subjects, setSubjects] = React.useState([]);
   const [classes, setClasses] = React.useState([]);
   const [selectedClass, setSelectedClass] = React.useState("");
-
   const [editId, setEditId] = React.useState(null);
+  const [loading, setLoading] = React.useState(false); // Add a loading state
 
   const convertDate = (dateData) => {
     const date = new Date(dateData);
-
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "long" }); // Get the full month name
     const year = date.getFullYear();
-
     return `${day}-${month}-${year}`;
   };
 
@@ -156,6 +155,7 @@ export default function Examinations() {
 
   const fetchExaminations = async () => {
     const token = localStorage.getItem("token");
+    setLoading(true); // Set loading to true before fetching
 
     try {
       if (selectedClass) {
@@ -172,6 +172,8 @@ export default function Examinations() {
       }
     } catch (error) {
       console.log("Error fetching Exam Data", error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
     }
   };
 
@@ -211,6 +213,7 @@ export default function Examinations() {
   useEffect(() => {
     fetchExaminations();
   }, [selectedClass]);
+
   useEffect(() => {
     fetchSubjects();
     fetchClasses();
@@ -384,7 +387,13 @@ export default function Examinations() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {examinations.length > 0 ? (
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  <CircularProgress />
+                </TableCell>
+              </TableRow>
+            ) : examinations.length > 0 ? (
               examinations.map((examination) => (
                 <TableRow key={examination._id}>
                   <TableCell>{convertDate(examination.examDate)}</TableCell>
