@@ -39,7 +39,7 @@ const AttendanceStudent = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { studentId, setStudentId } = useState(null);
+  const [studentId, setStudentId] = useState(null);
 
   // Utility function to format date
   const convertDate = (dateString) => {
