@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   // Function to verify token
   const verifyToken = async (token) => {
     try {
-      const response = await fetch(`https://${baseAPI}/verify-token`, {
+      const response = await fetch(`${baseAPI}/verify-token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
