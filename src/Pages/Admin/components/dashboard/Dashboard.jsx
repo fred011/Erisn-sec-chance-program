@@ -33,8 +33,12 @@ const Dashboard = () => {
   };
 
   React.useEffect(() => {
-    fetchAdminDetails();
-  }, []);
+    if (token) {
+      fetchAdminDetails();
+    } else {
+      console.log("No token available, cannot fetch admin details");
+    }
+  }, [token]); // This will rerun when the token changes
   return (
     <>
       <Box
