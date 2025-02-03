@@ -133,13 +133,12 @@ const AttendanceDetails = () => {
       ) : (
         <>
           <Typography
-            variant="h4"
-            gutterBottom
+            variant="h3"
             sx={{
-              mb: 4,
-              fontWeight: 600,
-              display: "flex",
-              justifyContent: "center",
+              textAlign: "center",
+              fontWeight: "700",
+              color: "primary.main",
+              mb: 3,
             }}
           >
             Attendance Details for: {studentName}
