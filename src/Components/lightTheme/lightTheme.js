@@ -2,20 +2,12 @@ import { createTheme } from "@mui/material/styles";
 
 const lightTheme = createTheme({
   palette: {
-    mode: "light",
+    mode: "light", // this ensures the theme is in light mode
     primary: {
-      main: "#1976d2", // Blue
+      main: "#1976d2", // Replace with your light theme primary color
     },
     secondary: {
-      main: "#f50057", // Pink
-    },
-    background: {
-      default: "#ffffff",
-      paper: "#f5f5f5",
-    },
-    text: {
-      primary: "#000000",
-      secondary: "#555555",
+      main: "#9c27b0", // Replace with your light theme secondary color
     },
   },
 });

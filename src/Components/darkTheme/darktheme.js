@@ -2,20 +2,12 @@ import { createTheme } from "@mui/material/styles";
 
 const darkTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "dark", // this ensures the theme is in dark mode
     primary: {
-      main: "#90caf9", // Light blue
+      main: "#90caf9", // Replace with your dark theme primary color
     },
     secondary: {
-      main: "#f48fb1", // Pink
-    },
-    background: {
-      default: "#121212",
-      paper: "#1e1e1e",
-    },
-    text: {
-      primary: "#ffffff",
-      secondary: "#bdbdbd",
+      main: "#ce93d8", // Replace with your dark theme secondary color
     },
   },
 });
