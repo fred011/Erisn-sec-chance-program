@@ -25,7 +25,7 @@ export default function DraggableButton() {
           {dark ? (
             <DarkModeIcon sx={{ color: "black" }} />
           ) : (
-            <LightModeIcon sx={{ color: "#fff" }} />
+            <LightModeIcon sx={{ color: "yellow" }} />
           )}
         </Button>
       </Draggable>
