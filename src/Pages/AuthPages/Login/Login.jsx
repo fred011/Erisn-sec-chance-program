@@ -73,7 +73,7 @@ export default function Login() {
   return (
     <Box
       sx={{
-        backgroundColor: "#f5f5f5", // Light gray background
+        backgroundColor: "#dedede", // Light gray background
         minHeight: "100vh", // Full page height
         display: "flex",
         justifyContent: "center",
