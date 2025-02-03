@@ -63,21 +63,16 @@ const LandingPage = () => {
               offset={-100}
               duration={500}
               href="/"
-              style={{ margin: "0 16px", cursor: "pointer" }}
+              style={{
+                margin: "0 16px",
+                cursor: "pointer",
+                fontSize: "16px",
+                textDecoration: "none",
+              }}
             >
               Home
             </Link>
-            <Link
-              to="features"
-              spy={true}
-              smooth={true}
-              offset={0}
-              duration={500}
-              href="#features"
-              style={{ margin: "0 16px", cursor: "pointer" }}
-            >
-              Key Features
-            </Link>
+
             <Link
               to="contact"
               spy={true}
@@ -85,7 +80,12 @@ const LandingPage = () => {
               offset={0}
               duration={500}
               href="#contact"
-              style={{ margin: "0 16px", cursor: "pointer" }}
+              style={{
+                margin: "0 16px",
+                cursor: "pointer",
+                fontSize: "16px",
+                textDecoration: "none",
+              }}
             >
               Contact us
             </Link>
@@ -116,66 +116,6 @@ const LandingPage = () => {
             Get Started
           </Button>
         </Container>
-      </section>
-
-      <section
-        id="features"
-        className="key-features"
-        style={{ padding: "60px 0", textAlign: "center" }}
-      >
-        <Typography variant="h4" gutterBottom>
-          Key Features
-        </Typography>
-        <Grid2 container spacing={4} justifyContent="center">
-          <Grid2 item xs={12} sm={6} md={4}>
-            <Box
-              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
-            >
-              <Typography variant="h6">Student Records</Typography>
-              <img src="" alt="Student Records" />
-            </Box>
-          </Grid2>
-          <Grid2 item xs={12} sm={6} md={4}>
-            <Box
-              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
-            >
-              <Typography variant="h6">Admission Management</Typography>
-              <img src="" alt="Admission Management" />
-            </Box>
-          </Grid2>
-          <Grid2 item xs={12} sm={6} md={4}>
-            <Box
-              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
-            >
-              <Typography variant="h6">Fee Management</Typography>
-              <img src="" alt="Fee Management" />
-            </Box>
-          </Grid2>
-          <Grid2 item xs={12} sm={6} md={4}>
-            <Box
-              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
-            >
-              <Typography variant="h6">Students` Behavior Tracking</Typography>
-              <img src="" alt="Students' Behavior Tracking" />
-            </Box>
-          </Grid2>
-          <Grid2 item xs={12} sm={6} md={4}>
-            <Box
-              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
-            >
-              <Typography variant="h6">Library Management</Typography>
-              <img src="" alt="Library Management" />
-            </Box>
-          </Grid2>
-          <Grid2 item xs={12} sm={6} md={4}>
-            <Box
-              sx={{ padding: 2, border: "1px solid #ccc", borderRadius: "8px" }}
-            >
-              <Typography variant="h6">Alerts and Notifications</Typography>
-              <img src="" alt="Alerts and Notifications" />
-            </Box>
-          </Grid2>
-        </Grid2>
       </section>
 
       <section
