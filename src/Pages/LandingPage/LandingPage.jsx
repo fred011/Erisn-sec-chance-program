@@ -53,7 +53,7 @@ const LandingPage = () => {
           }}
         >
           <a href="/" className="logo">
-            <img src={logo} alt="Erisn Logo" style={{ height: "50px" }} />
+            <img src={logo} alt="Erisn Logo" style={{ height: "60px" }} />
           </a>
           <nav>
             <Link
@@ -66,7 +66,7 @@ const LandingPage = () => {
               style={{
                 margin: "0 16px",
                 cursor: "pointer",
-                fontSize: "16px",
+                fontSize: "18px",
                 textDecoration: "none",
               }}
             >
@@ -83,7 +83,7 @@ const LandingPage = () => {
               style={{
                 margin: "0 16px",
                 cursor: "pointer",
-                fontSize: "16px",
+                fontSize: "18px",
                 textDecoration: "none",
               }}
             >
