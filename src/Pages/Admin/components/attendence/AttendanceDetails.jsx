@@ -61,22 +61,10 @@ const AttendanceDetails = () => {
         return;
       }
 
-      // Fetch student information along with attendance data
+      // Fetch student attendance data including student name
       const response = await axios.get(`${baseAPI}/attendance/${studentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      // Fetch student name using studentId
-      const studentResponse = await axios.get(
-        `${baseAPI}/students/${studentId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (studentResponse.data) {
-        setStudentName(studentResponse.data.name); // Set student name
-      }
 
       if (!Array.isArray(response.data)) {
         console.error("Invalid data format:", response.data);
@@ -85,7 +73,9 @@ const AttendanceDetails = () => {
         return;
       }
 
+      // Set the attendance data
       setAttendanceData(response.data);
+      setStudentName(response.data[0]?.student?.name); // Accessing student's name
       setPresent(response.data.filter((a) => a.status === "present").length);
       setAbsent(response.data.filter((a) => a.status === "absent").length);
     } catch (err) {
