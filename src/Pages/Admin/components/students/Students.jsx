@@ -17,6 +17,7 @@ import {
   Select,
   MenuItem,
   Card,
+  CircularProgress,
   CardActionArea,
   CardMedia,
   CardContent,
@@ -42,6 +43,7 @@ import { baseAPI } from "../../../../environment";
 export default function Students() {
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   const [classes, setClasses] = useState([]);
   // Define initial form field values
@@ -103,6 +105,7 @@ export default function Students() {
     initialValues, // Set initial values
     validationSchema: edit ? studentEditSchema : studentSchema, // Attach Yup schema for validation
     onSubmit: (values, { resetForm }) => {
+      setLoading(true);
       const data = {
         name: values.name,
         email: values.email,
@@ -136,7 +139,8 @@ export default function Students() {
           .catch((err) => {
             console.log("Error in updating student", err);
             alert(err.response?.data?.error || "Failed to update student");
-          });
+          })
+          .finally(() => setLoading(false));
       } else {
         axios
           .post(`${baseAPI}/student/register`, data, {
@@ -153,7 +157,8 @@ export default function Students() {
           .catch((err) => {
             console.log("Error in registering student", err);
             alert(err.response?.data?.error || "Failed to register student");
-          });
+          })
+          .finally(() => setLoading(false));
       }
     },
   });
@@ -192,6 +197,7 @@ export default function Students() {
   const fetchStudents = () => {
     // Get the token from localStorage
     const token = localStorage.getItem("token");
+    setLoading(true);
 
     axios
       .get(`${baseAPI}/student/fetch-with-query`, {
@@ -206,7 +212,9 @@ export default function Students() {
       })
       .catch((e) => {
         console.log("Error in fetching students", e.response || e.message);
-      });
+      })
+      .finally(setLoading(false));
+    // Set loading to false after fetching
   };
 
   React.useEffect(() => {
@@ -443,8 +451,9 @@ export default function Students() {
             type="submit"
             variant="contained"
             color="primary"
+            disabled={loading}
           >
-            Submit
+            {loading ? <CircularProgress size={24} /> : "Submit"}
           </Button>
           {edit && (
             <Button
@@ -527,37 +536,45 @@ export default function Students() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {students.map((student) => (
-                <TableRow key={student._id}>
-                  <TableCell>{student.name}</TableCell>
-                  <TableCell>{student.email}</TableCell>
-                  <TableCell>
-                    {student.student_class
-                      ? student.student_class.class_text
-                      : "Not Assigned"}
-                  </TableCell>
-                  <TableCell>{student.age}</TableCell>
-                  <TableCell>{student.gender}</TableCell>
-                  <TableCell>{student.guardian}</TableCell>
-                  <TableCell>{student.guardian_phone}</TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => handleEdit(student._id)}
-                      startIcon={<EditIcon />}
-                      sx={{ marginRight: "10px" }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(student._id)}
-                      startIcon={<DeleteIcon />}
-                      color="error"
-                    >
-                      Delete
-                    </Button>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    <CircularProgress />
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                students.map((student) => (
+                  <TableRow key={student._id}>
+                    <TableCell>{student.name}</TableCell>
+                    <TableCell>{student.email}</TableCell>
+                    <TableCell>
+                      {student.student_class
+                        ? student.student_class.class_text
+                        : "Not Assigned"}
+                    </TableCell>
+                    <TableCell>{student.age}</TableCell>
+                    <TableCell>{student.gender}</TableCell>
+                    <TableCell>{student.guardian}</TableCell>
+                    <TableCell>{student.guardian_phone}</TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => handleEdit(student._id)}
+                        startIcon={<EditIcon />}
+                        sx={{ marginRight: "10px" }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(student._id)}
+                        startIcon={<DeleteIcon />}
+                        color="error"
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </TableContainer>

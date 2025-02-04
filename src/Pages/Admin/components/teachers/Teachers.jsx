@@ -15,6 +15,7 @@ import {
   Typography,
   InputLabel,
   Select,
+  CircularProgress,
   MenuItem,
   Card,
   CardActionArea,
@@ -43,7 +44,7 @@ import { baseAPI } from "../../../../environment";
 export default function Teachers() {
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState(null);
-
+  const [loading, setLoading] = React.useState(false);
   const [classes, setClasses] = useState([]);
   // Define initial form field values
   const initialValues = {
@@ -104,6 +105,7 @@ export default function Teachers() {
     initialValues, // Set initial values
     validationSchema: edit ? teacherEditSchema : teacherSchema, // Attach Yup schema for validation
     onSubmit: (values, { resetForm }) => {
+      setLoading(true);
       const data = {
         name: values.name,
         email: values.email,
@@ -143,7 +145,8 @@ export default function Teachers() {
             err.response?.data?.error ||
               `Error ${edit ? "updating" : "registering"} teacher`
           );
-        });
+        })
+        .finally(() => setLoading(false));
     },
   });
 
@@ -159,7 +162,7 @@ export default function Teachers() {
   const [teachers, setTeachers] = useState([]);
   const fetchTeachers = () => {
     const token = localStorage.getItem("token");
-
+    setLoading(true);
     if (!token) {
       console.log("No token found. Please log in.");
       return;
@@ -182,7 +185,8 @@ export default function Teachers() {
         // Enhanced error handling
         const errorMessage = e.response ? e.response.data.message : e.message;
         console.log("Error in fetching teachers:", errorMessage);
-      });
+      })
+      .finally(setLoading(false));
   };
 
   React.useEffect(() => {
@@ -423,8 +427,9 @@ export default function Teachers() {
             sx={{ width: "120px", marginBottom: "15px" }}
             type="submit"
             variant="contained"
+            disabled={loading}
           >
-            Submit
+            {loading ? <CircularProgress size={24} /> : "Submit"}
           </Button>
 
           {edit && (
@@ -490,7 +495,14 @@ export default function Teachers() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {teachers &&
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    <CircularProgress />
+                  </TableCell>
+                </TableRow>
+              ) : (
+                teachers &&
                 teachers.map((teacher) => (
                   <TableRow key={teacher._id}>
                     <TableCell>{teacher.name}</TableCell>
@@ -517,7 +529,8 @@ export default function Teachers() {
                       </IconButton>
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+              )}
             </TableBody>
           </Table>
         </TableContainer>
