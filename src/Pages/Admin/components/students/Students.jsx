@@ -330,6 +330,7 @@ export default function Students() {
               label="Student Class"
               name="student_class"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               {classes &&
                 classes.map((x) => (
@@ -370,6 +371,7 @@ export default function Students() {
               label="Gender"
               name="gender"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <MenuItem value={"Male"}>Male</MenuItem>
               <MenuItem value={"Female"}>Female</MenuItem>

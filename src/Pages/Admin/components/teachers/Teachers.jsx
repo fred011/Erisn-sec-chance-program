@@ -346,6 +346,7 @@ export default function Teachers() {
               label="Gender"
               name="gender"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <MenuItem value={"Male"}>Male</MenuItem>
               <MenuItem value={"Female"}>Female</MenuItem>
