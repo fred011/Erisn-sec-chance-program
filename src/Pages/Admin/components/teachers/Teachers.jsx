@@ -30,7 +30,6 @@ import {
   TableRow,
   Paper,
   IconButton,
-  CircularProgress, // Import CircularProgress component
 } from "@mui/material";
 import axios from "axios";
 
@@ -46,9 +45,6 @@ export default function Teachers() {
   const [editId, setEditId] = useState(null);
 
   const [classes, setClasses] = useState([]);
-  const [loading, setLoading] = useState(false); // State for loading indicator
-  const [teachers, setTeachers] = useState([]);
-
   // Define initial form field values
   const initialValues = {
     name: "",
@@ -160,14 +156,12 @@ export default function Teachers() {
     }));
   };
 
+  const [teachers, setTeachers] = useState([]);
   const fetchTeachers = () => {
-    setLoading(true); // Set loading to true when fetching data
-
     const token = localStorage.getItem("token");
 
     if (!token) {
       console.log("No token found. Please log in.");
-      setLoading(false); // Set loading to false in case of no token
       return;
     }
 
@@ -188,9 +182,6 @@ export default function Teachers() {
         // Enhanced error handling
         const errorMessage = e.response ? e.response.data.message : e.message;
         console.log("Error in fetching teachers:", errorMessage);
-      })
-      .finally(() => {
-        setLoading(false); // Set loading to false once the data is fetched
       });
   };
 
@@ -265,7 +256,7 @@ export default function Teachers() {
             </Typography>
           )}
 
-          {/* Form Fields */}
+          {/* Name Input */}
           <TextField
             name="name"
             label="Name"
@@ -284,7 +275,148 @@ export default function Teachers() {
             </Typography>
           )}
 
-          {/* Other Form Inputs... */}
+          {/* Email Input */}
+          <TextField
+            name="email"
+            label="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
+          />
+          {formik.touched.email && formik.errors.email && (
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.email}
+            </Typography>
+          )}
+
+          {/* Qualification Input */}
+          <TextField
+            name="qualification"
+            label="Qualification"
+            value={formik.values.qualification}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
+          />
+          {formik.touched.qualification && formik.errors.qualification && (
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.qualification}
+            </Typography>
+          )}
+
+          {/* Age Input */}
+          <TextField
+            name="age"
+            label="Age"
+            value={formik.values.age}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
+          />
+          {formik.touched.age && formik.errors.age && (
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.age}
+            </Typography>
+          )}
+
+          {/* Gender Input */}
+          <FormControl fullWidth sx={{ marginBottom: "15px" }}>
+            <InputLabel id="gender">Gender</InputLabel>
+            <Select
+              labelId="gender"
+              id="gender"
+              value={formik.values.gender}
+              label="Gender"
+              name="gender"
+              onChange={formik.handleChange}
+            >
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
+              <MenuItem value={"Other"}>Other</MenuItem>
+            </Select>
+          </FormControl>
+          {formik.touched.gender && formik.errors.gender && (
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.gender}
+            </Typography>
+          )}
+
+          {/* Phone Input */}
+          <TextField
+            name="phone_number"
+            label="Phone Number"
+            value={formik.values.phone_number}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
+          />
+          {formik.touched.phone_number && formik.errors.phone_number && (
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.phone_number}
+            </Typography>
+          )}
+
+          {/* Password Input */}
+          <TextField
+            type="password"
+            name="password"
+            label="Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
+          />
+          {formik.touched.password && formik.errors.password && (
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{ marginBottom: "15px" }}
+            >
+              {formik.errors.password}
+            </Typography>
+          )}
+
+          {/* Confirm Password Input */}
+          <TextField
+            type="password"
+            name="confirm_password"
+            label="Confirm Password"
+            value={formik.values.confirm_password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            sx={{ marginBottom: "15px" }}
+          />
+          {formik.touched.confirm_password &&
+            formik.errors.confirm_password && (
+              <Typography
+                color="error"
+                variant="body2"
+                sx={{ marginBottom: "15px" }}
+              >
+                {formik.errors.confirm_password}
+              </Typography>
+            )}
 
           {/* Submit Button */}
           <Button
@@ -358,14 +490,7 @@ export default function Teachers() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={8} align="center">
-                    <CircularProgress /> {/* Show loader */}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                teachers &&
+              {teachers &&
                 teachers.map((teacher) => (
                   <TableRow key={teacher._id}>
                     <TableCell>{teacher.name}</TableCell>
@@ -392,8 +517,7 @@ export default function Teachers() {
                       </IconButton>
                     </TableCell>
                   </TableRow>
-                ))
-              )}
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
