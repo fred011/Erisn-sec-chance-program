@@ -87,7 +87,7 @@ export default function Login() {
           display: "flex",
           flexDirection: "column",
           width: "40vw",
-          minWidth: "230px",
+          minWidth: "250px",
           backgroundColor: "white", // Keep form background white for contrast
           padding: "30px",
           borderRadius: "10px",
