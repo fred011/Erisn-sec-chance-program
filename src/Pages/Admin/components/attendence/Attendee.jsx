@@ -96,102 +96,91 @@ export default function Attendee({ classId }) {
   return (
     <Box
       sx={{
-        backgroundColor: "#f5f5f5",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 3,
+        p: 3,
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        width: "100%",
+        maxWidth: 500,
       }}
     >
-      <Box
-        sx={{
-          p: 3,
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          width: "100%",
-          maxWidth: 500,
-        }}
+      <Typography
+        variant="h5"
+        sx={{ mb: 3, fontWeight: "500", textAlign: "center" }}
       >
-        <Typography
-          variant="h5"
-          sx={{ mb: 3, fontWeight: "500", textAlign: "center" }}
-        >
-          Attendee Management
-        </Typography>
+        Attendee Management
+      </Typography>
 
-        {loading ? (
-          <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <>
-            {/* Display Current Attendee */}
-            {attendee && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  mb: 3,
-                  p: 2,
-                  backgroundColor: "#fff",
-                  borderRadius: "8px",
-                  boxShadow: 1,
-                }}
-              >
-                <Typography variant="h6">Current Attendee:</Typography>
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: "600", color: "primary.main" }}
-                >
-                  {attendee.name}
-                </Typography>
-              </Box>
-            )}
-
-            {/* Select Teacher Dropdown */}
-            <FormControl fullWidth sx={{ mb: 3 }}>
-              <InputLabel>Select Teacher</InputLabel>
-              <Select
-                value={selectedTeacher}
-                onChange={(e) => setSelectedTeacher(e.target.value)}
-              >
-                <MenuItem value="">
-                  <em>Select Teacher</em>
-                </MenuItem>
-                {teachers.map((teacher) => (
-                  <MenuItem key={teacher._id} value={teacher._id}>
-                    {teacher.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Submit Button */}
-            <Button
-              variant="contained"
-              fullWidth
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          {/* Display Current Attendee */}
+          {attendee && (
+            <Box
               sx={{
-                py: 1.5,
-                fontWeight: "600",
-                backgroundColor: submitting ? "gray" : "primary.main",
-                "&:hover": {
-                  backgroundColor: submitting ? "gray" : "primary.dark",
-                },
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+                p: 2,
+                backgroundColor: "#fff",
+                borderRadius: "8px",
+                boxShadow: 1,
               }}
-              onClick={handleSubmit}
-              disabled={submitting}
             >
-              {submitting
-                ? "Saving..."
-                : attendee
-                ? "Change Attendee"
-                : "Select Attendee"}
-            </Button>
-          </>
-        )}
-      </Box>
+              <Typography variant="h6">Current Attendee:</Typography>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "600", color: "primary.main" }}
+              >
+                {attendee.name}
+              </Typography>
+            </Box>
+          )}
+
+          {/* Select Teacher Dropdown */}
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <InputLabel>Select Teacher</InputLabel>
+            <Select
+              value={selectedTeacher}
+              onChange={(e) => setSelectedTeacher(e.target.value)}
+            >
+              <MenuItem value="">
+                <em>Select Teacher</em>
+              </MenuItem>
+              {teachers.map((teacher) => (
+                <MenuItem key={teacher._id} value={teacher._id}>
+                  {teacher.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Submit Button */}
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              py: 1.5,
+              fontWeight: "600",
+              backgroundColor: submitting ? "gray" : "primary.main",
+              "&:hover": {
+                backgroundColor: submitting ? "gray" : "primary.dark",
+              },
+            }}
+            onClick={handleSubmit}
+            disabled={submitting}
+          >
+            {submitting
+              ? "Saving..."
+              : attendee
+              ? "Change Attendee"
+              : "Select Attendee"}
+          </Button>
+        </>
+      )}
     </Box>
   );
 }
