@@ -115,25 +115,25 @@ const Dashboard = () => {
       title: "Total Students",
       count: students.length,
       color: "#3f51b5",
-      path: "/students",
+      path: "/admin/students",
     },
     {
       title: "Total Teachers",
       count: teachers.length,
       color: "#ff9800",
-      path: "/teachers",
+      path: "/admin/teachers",
     },
     {
       title: "Total Classes",
       count: classes.length,
       color: "#4caf50",
-      path: "/classes",
+      path: "/admin/class",
     },
     {
       title: "Total Subjects",
       count: subjects.length,
       color: "#e91e63",
-      path: "/subjects",
+      path: "/admin/subjects",
     },
   ];
 
