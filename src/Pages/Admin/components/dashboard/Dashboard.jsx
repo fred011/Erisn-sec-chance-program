@@ -4,15 +4,16 @@ import {
   Box,
   Typography,
   CircularProgress,
-  Grid,
   Card,
   CardContent,
   Grid2,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { baseAPI } from "../../../../environment";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [adminDetails, setAdminDetails] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || ""); // Retrieve token from localStorage
   const [loading, setLoading] = useState(true); // Loader state
@@ -110,10 +111,30 @@ const Dashboard = () => {
   }, [token]);
 
   const cardData = [
-    { title: "Total Students", count: students.length, color: "#3f51b5" },
-    { title: "Total Teachers", count: teachers.length, color: "#ff9800" },
-    { title: "Total Classes", count: classes.length, color: "#4caf50" },
-    { title: "Total Subjects", count: subjects.length, color: "#e91e63" },
+    {
+      title: "Total Students",
+      count: students.length,
+      color: "#3f51b5",
+      path: "/students",
+    },
+    {
+      title: "Total Teachers",
+      count: teachers.length,
+      color: "#ff9800",
+      path: "/teachers",
+    },
+    {
+      title: "Total Classes",
+      count: classes.length,
+      color: "#4caf50",
+      path: "/classes",
+    },
+    {
+      title: "Total Subjects",
+      count: subjects.length,
+      color: "#e91e63",
+      path: "/subjects",
+    },
   ];
 
   return (
@@ -122,41 +143,35 @@ const Dashboard = () => {
         sx={{
           height: "270px",
           width: "100%",
-          background: `url(/images/BackG.jpg)`,
-          backgroundSize: "cover",
+          background: `url(/images/BackG.jpg) center/cover no-repeat`,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        />
         {loading ? (
-          <CircularProgress sx={{ color: "white" }} /> // Loader while fetching data
+          <CircularProgress sx={{ color: "white", zIndex: 2 }} />
         ) : (
-          <Box
-            sx={{
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h3" color="lightgrey">
+          <Box sx={{ textAlign: "center", zIndex: 2 }}>
+            <Typography variant="h3" color="white">
               Welcome, {adminDetails ? adminDetails.name : "Admin"}
             </Typography>
-            <Typography variant="h5" color="grey">
-              To Erisn Africa`s Student Management System
+            <Typography variant="h5" color="lightgrey">
+              To The Learner`s Student Management System
             </Typography>
           </Box>
         )}
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: "30px",
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
         <Grid2
           container
           spacing={4}
@@ -164,8 +179,9 @@ const Dashboard = () => {
           sx={{ maxWidth: "90%" }}
         >
           {cardData.map((card, index) => (
-            <Grid2 item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Grid2 xs={12} sm={6} md={4} lg={3} key={index}>
               <Card
+                onClick={() => navigate(card.path)}
                 sx={{
                   backgroundColor: card.color,
                   color: "white",
@@ -174,11 +190,17 @@ const Dashboard = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                  boxShadow: 5,
+                  boxShadow: 6,
                   borderRadius: 4,
+                  transition: "transform 0.2s, box-shadow 0.3s",
+                  cursor: "pointer",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                    boxShadow: 10,
+                  },
                 }}
               >
-                <CardContent sx={{ p: 3 }}>
+                <CardContent>
                   <Typography variant="h4" fontWeight="bold">
                     {card.title}
                   </Typography>
