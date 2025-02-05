@@ -111,8 +111,8 @@ const Dashboard = () => {
 
   const cardData = [
     { title: "Total Students", count: students.length, color: "#3f51b5" },
-    { title: "Total Classes", count: classes.length, color: "#4caf50" },
     { title: "Total Teachers", count: teachers.length, color: "#ff9800" },
+    { title: "Total Classes", count: classes.length, color: "#4caf50" },
     { title: "Total Subjects", count: subjects.length, color: "#e91e63" },
   ];
 
