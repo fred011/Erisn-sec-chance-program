@@ -13,7 +13,7 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { baseAPI } from "../../../environment";
@@ -160,6 +160,15 @@ export default function Login() {
         <Button type="submit" variant="contained" disabled={loading}>
           {loading ? <CircularProgress size={24} /> : "Log In"}
         </Button>
+        <Typography variant="h7">
+          Forgot Password?{" "}
+          <Link
+            to="/forgot-password"
+            style={{ textDecoration: "none", color: "blue" }}
+          >
+            Reset Here
+          </Link>
+        </Typography>
       </Box>
     </Box>
   );

@@ -34,6 +34,9 @@ import AttendanceStudentList from "./Pages/Admin/components/attendence/Attendanc
 import AttendanceDetails from "./Pages/Admin/components/attendence/AttendanceDetails";
 
 import SignOut from "./Pages/AuthPages/LogOut/SignOut";
+import ForgotPassword from "./Pages/AuthPages/forgotPassword/ForgotPassword";
+import ChangePassword from "./Pages/Admin/components/password/ChangePassword";
+import ResetPassword from "./Pages/AuthPages/forgotPassword/ResetPassword";
 
 function App() {
   return (
@@ -44,6 +47,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin-reg" element={<Register />} />
           <Route path="/logout" element={<SignOut />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Admin Route */}
           <Route
@@ -61,6 +66,7 @@ function App() {
             <Route path="class" element={<Class />} />
             <Route path="fees" element={<Fees />} />
             <Route path="examinations" element={<Examinations />} />
+            <Route path="change-password" element={<ChangePassword />} />
             <Route path="notice" element={<Notice />} />
             <Route path="schedule" element={<Schedule />} />
             <Route path="subjects" element={<Subjects />} />
