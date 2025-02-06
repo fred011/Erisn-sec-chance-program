@@ -37,6 +37,8 @@ import SignOut from "./Pages/AuthPages/LogOut/SignOut";
 import ForgotPassword from "./Pages/AuthPages/forgotPassword/ForgotPassword";
 import ChangePassword from "./Pages/Admin/components/password/ChangePassword";
 import ResetPassword from "./Pages/AuthPages/forgotPassword/ResetPassword";
+import ChangePasswordTeacher from "./Pages/Teacher/components/password/ChangePasswordTeacher";
+import ChangePasswordStudent from "./Pages/Student/components/password/ChangePasswordStudent";
 
 function App() {
   return (
@@ -88,6 +90,7 @@ function App() {
             <Route path="attendance" element={<AttendanceTeacher />} />
             <Route path="examinations" element={<ExaminationsTeacher />} />
             <Route path="notice" element={<NoticeTeacher />} />
+            <Route path="change-password" element={<ChangePasswordTeacher />} />
           </Route>
 
           {/* Student Route */}
@@ -104,6 +107,7 @@ function App() {
             <Route path="attendance" element={<AttendanceStudent />} />
             <Route path="examinations" element={<ExaminationsStudent />} />
             <Route path="notice" element={<NoticeStudent />} />
+            <Route path="change-password" element={<ChangePasswordStudent />} />
           </Route>
         </Routes>
       </Router>

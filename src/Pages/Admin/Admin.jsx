@@ -36,6 +36,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HomeIcon from "@mui/icons-material/Home";
 import { Home } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout"; // Import Logout Icon
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const drawerWidth = 240;
 
@@ -178,6 +179,12 @@ export default function Admin() {
       icon: ExplicitIcon,
     },
     { link: "/admin/notice", component: "Notice", icon: NotificationsIcon },
+    {
+      link: "/admin/change-password",
+      component: "Settings",
+      icon: ManageAccountsIcon,
+    },
+
     { link: "/logout", component: "Log Out", icon: LogoutIcon },
   ];
 

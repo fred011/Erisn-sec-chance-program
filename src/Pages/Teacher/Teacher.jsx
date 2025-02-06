@@ -35,6 +35,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout"; // Import Logout Icon
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const drawerWidth = 240;
 
@@ -162,6 +163,11 @@ export default function Teacher() {
       icon: ExplicitIcon,
     },
     { link: "/teacher/notice", component: "Notice", icon: NotificationsIcon },
+    {
+      link: "/admin/change-password",
+      component: "Settings",
+      icon: ManageAccountsIcon,
+    },
     { link: "/logout", component: "Log Out", icon: LogoutIcon },
   ];
 
