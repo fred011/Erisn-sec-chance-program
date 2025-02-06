@@ -29,6 +29,12 @@ export default function ChangePassword() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       alert("Password updated successfully!");
+
+      // Reset the form after success
+      setFormData({
+        currentPassword: "",
+        newPassword: "",
+      });
     } catch (error) {
       alert(error.response?.data?.error || "Something went wrong!");
     } finally {
@@ -55,6 +61,7 @@ export default function ChangePassword() {
         name="currentPassword"
         fullWidth
         margin="normal"
+        value={formData.currentPassword} // Controlled input
         onChange={handleChange}
       />
       <TextField
@@ -63,6 +70,7 @@ export default function ChangePassword() {
         name="newPassword"
         fullWidth
         margin="normal"
+        value={formData.newPassword} // Controlled input
         onChange={handleChange}
       />
       <Button

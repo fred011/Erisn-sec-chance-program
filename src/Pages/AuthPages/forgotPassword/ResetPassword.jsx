@@ -32,6 +32,7 @@ export default function ResetPassword() {
       });
 
       alert("Password reset successfully. Please log in.");
+      setNewPassword(""); // Reset the password field after success
       navigate("/login");
     } catch (err) {
       console.log("Error:", err); // Log error response

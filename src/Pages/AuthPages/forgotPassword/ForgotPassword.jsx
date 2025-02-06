@@ -29,6 +29,9 @@ export default function ForgotPassword() {
     try {
       await axios.post(`${baseAPI}/auth/request-reset-password`, formData);
       alert("Password reset email sent. Check your inbox!");
+
+      // Reset the form after success
+      setFormData({ email: "", role: "" });
     } catch (error) {
       alert(error.response?.data?.error || "Something went wrong!");
     } finally {
@@ -67,6 +70,7 @@ export default function ForgotPassword() {
         variant="outlined"
         margin="normal"
         onChange={handleChange}
+        value={formData.email}
         sx={{
           "& .MuiOutlinedInput-root": {
             borderRadius: 2,
@@ -76,7 +80,12 @@ export default function ForgotPassword() {
 
       <FormControl component="fieldset" sx={{ mt: 2 }}>
         <FormLabel sx={{ fontWeight: 500 }}>Select Role</FormLabel>
-        <RadioGroup row name="role" onChange={handleChange}>
+        <RadioGroup
+          row
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+        >
           <FormControlLabel
             value="admin"
             control={<Radio color="primary" />}
